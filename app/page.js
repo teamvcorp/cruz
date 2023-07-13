@@ -4,7 +4,7 @@ import {BsFillTelephoneFill, BsFillEnvelopeFill, BsFillBuildingsFill,} from 'rea
 import {BiCameraHome} from 'react-icons/bi';
 import {GiPowerGenerator} from 'react-icons/gi';
 import {MdLocationOn, MdHome, MdPhonelink} from 'react-icons/md';
-import {PiPlantBold} from 'react-icons/Pi';
+import {PiPlantBold} from 'react-icons/pi';
 // import BingMap from "./components/BingMap";
 
 export default function Home() {
