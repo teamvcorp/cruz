@@ -46,4 +46,4 @@ function MapGoogle() {
   ) : <></>
 }
 
-export default React.memo(MapGoogle)
+export default MapGoogle

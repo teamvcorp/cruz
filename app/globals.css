@@ -105,6 +105,9 @@ button{
 .h4bigger {
   font-size: 1vw;
 }
+.h4biggest {
+  font-size: 1.25rem;
+}
 .darkBlueTxt {
   color: #003770;
 }

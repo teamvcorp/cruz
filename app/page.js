@@ -1,7 +1,7 @@
 import Image from "next/image";
 import styles from "./page.module.scss";
 import MapGoogle from "./components/GoogleMap";
-
+import Script from "next/script";
 import {
   BsFillTelephoneFill,
   BsFillEnvelopeFill,
@@ -52,7 +52,7 @@ export default function Home() {
               CruzElectric712@gmail.com{" "}
             </h4>
             <div className={styles.map}>
-            <MapGoogle />
+              <MapGoogle />
               <div>
                 <h4 className="h4bigger">
                   {" "}
@@ -131,11 +131,9 @@ export default function Home() {
           </div>
         </div>
       </main>
-      <footer >
+      <footer className={styles.footer}>
         <div className={styles.testimonialsContainer}>
-          <h3 className="darkBlueTxt">Testimonials</h3>
-
-          <div className={styles.box} >
+          <div className="white">
             <p className="darkBlueTxt">
               Cruz fixed my electrical stuff quickly and efficiently! <br></br>
               -Bob
@@ -192,8 +190,23 @@ export default function Home() {
               <BsFillStarFill color="#ffcd02" size={15} />{" "}
             </span>
           </div>
-
-          <h4 className="darkBlueTxt">Ask About Our Apprenticeship Program</h4>
+          <div className="white">
+            <p className="darkBlueTxt">
+              Cruz fixed my electrical stuff quickly and efficiently! <br></br>
+              -Bob
+            </p>
+            <span>
+              {" "}
+              <BsFillStarFill color="#ffcd02" size={15} />{" "}
+              <BsFillStarFill color="#ffcd02" size={15} />{" "}
+              <BsFillStarFill color="#ffcd02" size={15} />{" "}
+              <BsFillStarFill color="#ffcd02" size={15} />{" "}
+              <BsFillStarFill color="#ffcd02" size={15} />{" "}
+            </span>
+          </div>
+        </div>
+        <div className={styles.apprentice}>
+          <h4 className="darkBlueTxt h4biggest">Ask About Our Apprenticeship Program</h4>
         </div>
       </footer>
     </>

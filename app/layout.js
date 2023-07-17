@@ -1,5 +1,5 @@
 import './globals.css'
-
+import Script from 'next/script'
 
 export const metadata = {
   title: 'Cruz Electic Contractor - Storm Lake',
@@ -8,8 +8,11 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
+    <>
+    
     <html lang="en">
       <body>{children}</body>
     </html>
+    </>
   )
 }
