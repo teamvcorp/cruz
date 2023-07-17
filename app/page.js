@@ -1,5 +1,7 @@
 import Image from "next/image";
 import styles from "./page.module.scss";
+import MapGoogle from "./components/GoogleMap";
+
 import {
   BsFillTelephoneFill,
   BsFillEnvelopeFill,
@@ -23,21 +25,6 @@ export default function Home() {
           layout="fill"
         />
       </header>
-      {/* <header className={styles.headerBody}>
-        <div className={styles.headerLeft}>
-          <span>
-            <Image src="/cruz.svg" layout="fill" quality="80" />
-          </span>
-          <h2 className="whiteTxt">Licensed & Insured</h2>
-        </div>
-
-        <div className={styles.headerRight}>
-          <span>
-            <Image src="/electric.svg" layout="fill" quality="80" />
-          </span>
-          <h2 className="redTxt">Serving Storm Lake and Surrounding Areas</h2>
-        </div>
-      </header> */}
 
       <main className={styles.main}>
         <div className={styles.left}>
@@ -64,14 +51,8 @@ export default function Home() {
               </span>{" "}
               CruzElectric712@gmail.com{" "}
             </h4>
-            <div className="">
-              <iframe
-                width="350"
-                height="200"
-                frameborder="0"
-                src="https://www.bing.com/maps/embed?h=300&w=400&cp=42.647167~-92.40875244140625&lvl=11&typ=d&sty=r&src=SHELL&FORM=MBEDV8"
-                scrolling="no"
-              ></iframe>
+            <div className={styles.map}>
+            <MapGoogle />
               <div>
                 <h4 className="h4bigger">
                   {" "}
@@ -82,7 +63,7 @@ export default function Home() {
                   50588{" "}
                 </h4>
 
-                <h4>Hours</h4>
+                <h3 className="darkBlueTxt">Hours</h3>
                 <p className="darkBlueTxt"> Monday-Friday 9:00am-5:00pm</p>
               </div>
 
@@ -148,80 +129,73 @@ export default function Home() {
               </h3>
             </div>
           </div>
-
-          <div className={styles.testimonialsContainer}>
-            <section>
-              <h3 className="darkBlueTxt">Testimonials</h3>
-
-              <div className="white">
-                <p className="darkBlueTxt">
-                  Cruz fixed my electrical stuff quickly and efficiently!{" "}
-                  <br></br>
-                  -Bob
-                </p>
-                <span>
-                  {" "}
-                  <BsFillStarFill color="#ffcd02" size={15} />{" "}
-                  <BsFillStarFill color="#ffcd02" size={15} />{" "}
-                  <BsFillStarFill color="#ffcd02" size={15} />{" "}
-                  <BsFillStarFill color="#ffcd02" size={15} />{" "}
-                  <BsFillStarFill color="#ffcd02" size={15} />{" "}
-                </span>
-              </div>
-
-              <div className="white">
-                <p className="darkBlueTxt">
-                  Cruz fixed my electrical stuff quickly and efficiently!{" "}
-                  <br></br>
-                  -Bob
-                </p>
-                <span>
-                  {" "}
-                  <BsFillStarFill color="#ffcd02" size={15} />{" "}
-                  <BsFillStarFill color="#ffcd02" size={15} />{" "}
-                  <BsFillStarFill color="#ffcd02" size={15} />{" "}
-                  <BsFillStarFill color="#ffcd02" size={15} />{" "}
-                  <BsFillStarFill color="#ffcd02" size={15} />{" "}
-                </span>
-              </div>
-              <div className="white">
-                <p className="darkBlueTxt">
-                  Cruz fixed my electrical stuff quickly and efficiently!{" "}
-                  <br></br>
-                  -Bob
-                </p>
-                <span>
-                  {" "}
-                  <BsFillStarFill color="#ffcd02" size={15} />{" "}
-                  <BsFillStarFill color="#ffcd02" size={15} />{" "}
-                  <BsFillStarFill color="#ffcd02" size={15} />{" "}
-                  <BsFillStarFill color="#ffcd02" size={15} />{" "}
-                  <BsFillStarFill color="#ffcd02" size={15} />{" "}
-                </span>
-              </div>
-              <div className="white">
-                <p className="darkBlueTxt">
-                  Cruz fixed my electrical stuff quickly and efficiently!{" "}
-                  <br></br>
-                  -Bob
-                </p>
-                <span>
-                  {" "}
-                  <BsFillStarFill color="#ffcd02" size={15} />{" "}
-                  <BsFillStarFill color="#ffcd02" size={15} />{" "}
-                  <BsFillStarFill color="#ffcd02" size={15} />{" "}
-                  <BsFillStarFill color="#ffcd02" size={15} />{" "}
-                  <BsFillStarFill color="#ffcd02" size={15} />{" "}
-                </span>
-              </div>
-            </section>
-
-            <h4 className="darkBlueTxt">
-              Ask About Our Apprenticeship Program
-            </h4>
-          </div>
         </div>
       </main>
+      <footer >
+        <div className={styles.testimonialsContainer}>
+          <h3 className="darkBlueTxt">Testimonials</h3>
+
+          <div className={styles.box} >
+            <p className="darkBlueTxt">
+              Cruz fixed my electrical stuff quickly and efficiently! <br></br>
+              -Bob
+            </p>
+            <span>
+              {" "}
+              <BsFillStarFill color="#ffcd02" size={15} />{" "}
+              <BsFillStarFill color="#ffcd02" size={15} />{" "}
+              <BsFillStarFill color="#ffcd02" size={15} />{" "}
+              <BsFillStarFill color="#ffcd02" size={15} />{" "}
+              <BsFillStarFill color="#ffcd02" size={15} />{" "}
+            </span>
+          </div>
+
+          <div className="white">
+            <p className="darkBlueTxt">
+              Cruz fixed my electrical stuff quickly and efficiently! <br></br>
+              -Bob
+            </p>
+            <span>
+              {" "}
+              <BsFillStarFill color="#ffcd02" size={15} />{" "}
+              <BsFillStarFill color="#ffcd02" size={15} />{" "}
+              <BsFillStarFill color="#ffcd02" size={15} />{" "}
+              <BsFillStarFill color="#ffcd02" size={15} />{" "}
+              <BsFillStarFill color="#ffcd02" size={15} />{" "}
+            </span>
+          </div>
+          <div className="white">
+            <p className="darkBlueTxt">
+              Cruz fixed my electrical stuff quickly and efficiently! <br></br>
+              -Bob
+            </p>
+            <span>
+              {" "}
+              <BsFillStarFill color="#ffcd02" size={15} />{" "}
+              <BsFillStarFill color="#ffcd02" size={15} />{" "}
+              <BsFillStarFill color="#ffcd02" size={15} />{" "}
+              <BsFillStarFill color="#ffcd02" size={15} />{" "}
+              <BsFillStarFill color="#ffcd02" size={15} />{" "}
+            </span>
+          </div>
+          <div className="white">
+            <p className="darkBlueTxt">
+              Cruz fixed my electrical stuff quickly and efficiently! <br></br>
+              -Bob
+            </p>
+            <span>
+              {" "}
+              <BsFillStarFill color="#ffcd02" size={15} />{" "}
+              <BsFillStarFill color="#ffcd02" size={15} />{" "}
+              <BsFillStarFill color="#ffcd02" size={15} />{" "}
+              <BsFillStarFill color="#ffcd02" size={15} />{" "}
+              <BsFillStarFill color="#ffcd02" size={15} />{" "}
+            </span>
+          </div>
+
+          <h4 className="darkBlueTxt">Ask About Our Apprenticeship Program</h4>
+        </div>
+      </footer>
     </>
   );
 }

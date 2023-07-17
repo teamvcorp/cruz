@@ -78,7 +78,7 @@ h3 {
 }
 h4 {
   font-family: 'lato', sans-serif;
-  font-size: 1vw;
+  font-size: .75vw;
   font-weight: 400;
   color: var(--darkBlue);
   
@@ -103,7 +103,7 @@ button{
 }
 
 .h4bigger {
-  font-size: 1.25vw;
+  font-size: 1vw;
 }
 .darkBlueTxt {
   color: #003770;
@@ -160,14 +160,13 @@ text-shadow: 6px 6px 0px rgba(0,0,0,0.2);
 html,
 body {
   /* background-image: url(/blueplug.png); */
+  background: linear-gradient( to bottom, #F2F9FF, #F9FCFF, #ffffff);
 
 
 
-  overflow: hidden;
   margin:0;
   padding: 0;
 }
-
 
 a {
   text-decoration: none;
