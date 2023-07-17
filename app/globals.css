@@ -59,26 +59,27 @@ body {
 }
 h1 {
   font-family: 'oswald', sans-serif;
-  font-size: 1.5vw;
+  font-size: 1.5rem;
   font-weight: 700;
   color: #003770;
   text-transform: uppercase;
 }
 h2 {
-  font-family: 'lato', sans-serif;
+  font-family: 'oswald', sans-serif;
   font-size: 1.5vw;
   font-weight: 900;
+  color: var(--darkBlue);
 }
 h3 {
   font-family: 'oswald', sans-serif;
-  font-size: 1vw;
+  font-size: 1rem;
   font-weight: 400;
   color: white;
   text-transform: uppercase;
 }
 h4 {
   font-family: 'lato', sans-serif;
-  font-size: .75vw;
+  font-size: .7rem;
   font-weight: 400;
   color: var(--darkBlue);
   
@@ -87,7 +88,7 @@ h4 {
 
 p {
   font-family: 'lato', sans-serif;
-  font-size: 1vw;
+  font-size: 1.25rem;
   font-weight: 300;
 }
 button{
@@ -99,11 +100,11 @@ button{
   color: white;
   font-family: 'oswald', sans-serif;
   text-transform: uppercase;
-  font-size: 1vw;
+  font-size: 1rem;
 }
 
 .h4bigger {
-  font-size: 1vw;
+  font-size: 1.5vw;
 }
 .h4biggest {
   font-size: 1.25rem;
@@ -149,8 +150,18 @@ button{
   font-weight: 900;
 text-shadow: 6px 6px 0px rgba(0,0,0,0.2);
 }
-
-
+.hiddenNumber {
+  display: none;
+  font-size: 2.5rem;
+  text-align: center;
+}
+@media only screen and (max-width: 1275px) {
+  .rhiddenNumber {
+    display: block; 
+    
+   } 
+  
+}
 
 
 * {

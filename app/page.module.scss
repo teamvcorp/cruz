@@ -15,7 +15,6 @@
   margin-bottom: 3rem;
 
   .left {
-
     width: 45%;
     .contact {
       display: flex;
@@ -23,13 +22,7 @@
       grid-gap: 1rem;
       padding-left: 5rem;
     }
-    .map   {
-      border-radius: 5px;
-      
-      box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-      margin: 0.5rem 0 1rem 0;
 
-    }
     .contact h3 {
       margin: 1rem 0 0.25rem 0;
     }
@@ -46,43 +39,66 @@
 
   .rightTop {
     display: flex;
+    flex-direction: column;
     justify-content: space-around;
     width: 60vw;
-    transform: translateY(-5rem);
+    transform: translateY(-3rem);
+   
+
 
     .aboutContainer {
       background-color: white;
       display: flex;
       flex-direction: column;
+      align-items: center;
       justify-content: space-between;
-      max-width: 40%;
+      max-width: 100%;
+      max-height: 35rem;
+      margin: 1rem 2rem 0 0;
       box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
       padding: 0.5rem 2rem;
+      
     }
     .aboutContainer h1 {
       margin-left: 0.5rem;
     }
     .aboutContainer button {
       align-self: center;
-      margin-bottom: 0.5rem;
+      max-width: 80%;
+      height: fit-content;
+      padding: .75rem 0;
+      margin-bottom: 4rem;
     }
+    .aboutContainer p {
+      width: 90%;
+      padding: 2rem 0;    }
 
     .servicesContainer {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+      grid-gap: 2rem;
+      padding: 2rem 0;
       background-color: white;
       box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-      padding: 0.5rem 1rem;
-      margin-right: 2rem;
+      margin: 1rem 2rem 2rem 0;
+      min-height: 15rem;
     }
     .servicesContainer div {
-      max-width: 50%;
+      display: flex;
+      flex-wrap: wrap;
+      max-width: 100%;
     }
     .servicesContainer h1 {
       /* text-align: center; */
       margin-left: 1rem;
+      text-align: center;
     }
     .servicesContainer h3 {
       margin: 0.5rem;
-      padding: 5px 30px;
+      max-width: 90%;
+      padding: 1.25rem 3rem;
       width: 25rem;
       border-radius: 10px;
     }
@@ -105,20 +121,21 @@
     //   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
     // }
   }
- 
 }
 
 footer.footer {
   display: flex;
   width: 100%;
-  max-height: 27rem;
+  min-height: 15rem;
   background-color: var(--grey);
-  
+
   .testimonialsContainer {
     display: flex;
     flex-direction: row;
+    align-items: center;
     justify-content: space-around;
     width: 100%;
+
     div {
       display: flex;
       flex-direction: column;
@@ -127,28 +144,78 @@ footer.footer {
       text-align: center;
       box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
       border-radius: 10px;
-      width: 15rem;
-      height: 10rem;
-      margin: 1rem;
+      width: fit-content;
+      max-width: 15rem ;
+      height: fit-content;
       padding: 1rem;
-      margin: 2rem 0 5rem 0;
+   
     }
  
   }
 }
 .apprentice {
-  position: absolute;
+display: flex;
+background-color: var(--yellow);
+justify-content: flex-end;
+ width: 100%;
+ padding-right: 4rem;
+
+ .apprentice h4 {
   background-color: var(--yellow);
-  padding: .75rem 5rem;
-  border-radius: 20px 0 0 0;
-  right: 0;
-  bottom: -27.65rem;
-  font-weight: 600;
-  font-size: 2rem;  
+ 
+ }
 }
 
-@media only screen and (max-width: 600px) {
-  .rightTop {
+
+
+@media only screen and (max-width: 1275px) {
+  .left {
+    display: none;
+  }
+  .rightTop h2 {
+    display: block; 
+   } 
+  
+  .main {
     flex-direction: column;
+    align-items: center;
+    margin-top: 3rem;
+  }
+  .servicesContainer, .aboutContainer {
+    margin-right: 0 !important;
+  }
+  .testimonialsContainer p {
+    font-size: 1.25vw;
   }
 }
+@media only screen and (max-width: 1250px) {
+
+  .testimonialsContainer {
+    display: flex;
+    flex-wrap: wrap;
+
+  }
+.apprentice {
+  display: none;
+}
+}
+
+// @media only screen and (max-width: 600px) {
+//   .rightTop {
+//     flex-direction: column;
+//     min-width: 100vw;
+    
+//   }
+//   .rightTop .aboutContainer {
+//     display: none;
+//   }
+//     .main {
+//     flex-direction: column;
+//   }
+
+//   .left {
+//     display: none;
+//   }
+
+  
+// }

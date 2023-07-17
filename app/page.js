@@ -6,7 +6,7 @@ import {
   BsFillTelephoneFill,
   BsFillEnvelopeFill,
   BsFillBuildingsFill,
-  BsFillStarFill,
+  BsFillStarFill,  
 } from "react-icons/bs";
 import { BiCameraHome } from "react-icons/bi";
 import { GiPowerGenerator } from "react-icons/gi";
@@ -51,8 +51,11 @@ export default function Home() {
               </span>{" "}
               CruzElectric712@gmail.com{" "}
             </h4>
-            <div className={styles.map}>
+           
+            <div>
+             
               <MapGoogle />
+             
               <div>
                 <h4 className="h4bigger">
                   {" "}
@@ -77,20 +80,16 @@ export default function Home() {
 
         <div className={styles.right}>
           <div className={styles.rightTop}>
-            <div className={styles.aboutContainer}>
-              <h1>about us</h1>
-              <p>
-                {" "}
-                Cruz Electric opened in 2020 in Cherokee Iowa. We are expanding
-                to our new location in Storm Lake Iowa and all surrounding
-                areas. We are here to serve the customer and provide excellent
-                service. Cruz Electric will cruise right through it!{" "}
-              </p>
-              <button> request a quote </button>
-            </div>
-
-            <div className={styles.servicesContainer}>
+           
+          <h2 className="hiddenNumber">
+              {" "}
+              {/* <span>
+                <BsFillTelephoneFill color="#003770" size={25} />
+              </span>{" "} */}
+              (712) 299-7004{" "}
+            </h2>
               <h1>services</h1>
+            <div className={styles.servicesContainer}>
               <h3 className="darkBlue">
                 <span>
                   <MdHome />
@@ -127,6 +126,17 @@ export default function Home() {
                 </span>{" "}
                 security cameras
               </h3>
+            </div>
+              <h1>about us</h1>
+            <div className={styles.aboutContainer}>
+              <p>
+                {" "}
+                Cruz Electric opened in 2020 in Cherokee Iowa. We are expanding
+                to our new location in Storm Lake Iowa and all surrounding
+                areas. We are here to serve the customer and provide excellent
+                service. Cruz Electric will cruise right through it!{" "}
+              </p>
+              <button> request a quote </button>
             </div>
           </div>
         </div>
@@ -205,10 +215,10 @@ export default function Home() {
             </span>
           </div>
         </div>
-        <div className={styles.apprentice}>
-          <h4 className="darkBlueTxt h4biggest">Ask About Our Apprenticeship Program</h4>
-        </div>
       </footer>
+        <section className={styles.apprentice}>
+          <h4 className="darkBlueTxt h4biggest">Ask About Our Apprenticeship Program</h4>
+        </section>
     </>
   );
 }
