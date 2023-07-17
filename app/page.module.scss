@@ -16,6 +16,7 @@
 
   .left {
     width: 45%;
+    margin-right: 10rem;
     .contact {
       display: flex;
       flex-direction: column;
@@ -40,8 +41,9 @@
   .rightTop {
     display: flex;
     flex-direction: column;
-    justify-content: space-around;
-    width: 60vw;
+    align-items: center;
+
+
     transform: translateY(-3rem);
    
 
@@ -54,7 +56,7 @@
       justify-content: space-between;
       max-width: 100%;
       max-height: 35rem;
-      margin: 1rem 2rem 0 0;
+      margin: 1rem 2rem 0 2rem;
       box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
       padding: 0.5rem 2rem;
       
@@ -78,17 +80,17 @@
       justify-content: center;
       align-items: center;
       flex-wrap: wrap;
-      grid-gap: 2rem;
+      // grid-gap: 2rem;
       padding: 2rem 0;
       background-color: white;
       box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-      margin: 1rem 2rem 2rem 0;
+      margin: 1rem 2rem 2rem 2rem;
       min-height: 15rem;
     }
     .servicesContainer div {
       display: flex;
       flex-wrap: wrap;
-      max-width: 100%;
+      max-width: 90%;
     }
     .servicesContainer h1 {
       /* text-align: center; */
@@ -180,9 +182,14 @@ justify-content: flex-end;
     flex-direction: column;
     align-items: center;
     margin-top: 3rem;
+    margin-bottom: 0;
   }
-  .servicesContainer, .aboutContainer {
-    margin-right: 0 !important;
+  .servicesContainer{
+    display: inline-block;
+
+
+
+
   }
   .testimonialsContainer p {
     font-size: 1.25vw;
@@ -197,6 +204,9 @@ justify-content: flex-end;
   }
 .apprentice {
   display: none;
+}
+.servicesContainer {
+  width: 100%;
 }
 }
 
