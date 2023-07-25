@@ -42,7 +42,7 @@ export default function Home() {
               <span>
                 <BsFillTelephoneFill color="#003770" size={25} />
               </span>{" "}
-              (712) 299-7004{" "}
+              <a href="tel:7122997004">(712) 299-7004</a>
             </h4>
             <h4 className="h4bigger">
               {" "}
