@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@react-google-maps/api": "^2.19.0",
-    "next": "13.4.8",
+    "next": "^14.1.0",
     "react": "18.2.0",
     "react-bingmaps": "^3.6.1",
     "react-dom": "18.2.0",
