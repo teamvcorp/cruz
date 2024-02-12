@@ -7,182 +7,22 @@
 --yellow: #ffcd02;
 --red: #fe3463;
 
-
-
-
-
-
-
-  --max-width: 1100px;
-  --border-radius: 12px;
-  --font-mono: ui-monospace, Menlo, Monaco, 'Cascadia Mono', 'Segoe UI Mono',
-    'Roboto Mono', 'Oxygen Mono', 'Ubuntu Monospace', 'Source Code Pro',
-    'Fira Mono', 'Droid Sans Mono', 'Courier New', monospace;
-
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
-
-  --primary-glow: conic-gradient(
-    from 180deg at 50% 50%,
-    #16abff33 0deg,
-    #0885ff33 55deg,
-    #54d6ff33 120deg,
-    #0071ff33 160deg,
-    transparent 360deg
-  );
-  --secondary-glow: radial-gradient(
-    rgba(255, 255, 255, 1),
-    rgba(255, 255, 255, 0)
-  );
-
-  --tile-start-rgb: 239, 245, 249;
-  --tile-end-rgb: 228, 232, 233;
-  --tile-border: conic-gradient(
-    #00000080,
-    #00000040,
-    #00000030,
-    #00000020,
-    #00000010,
-    #00000010,
-    #00000080
-  );
-
-  --callout-rgb: 238, 240, 241;
-  --callout-border-rgb: 172, 175, 176;
-  --card-rgb: 180, 185, 188;
-  --card-border-rgb: 131, 134, 135;
-}
-
-body {
-  font-size: 62.5%;
+font-family: 'lato', sans-serif;
 }
 h1 {
-  font-family: 'oswald', sans-serif;
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: #003770;
-  text-transform: uppercase;
-}
-h2 {
-  font-family: 'oswald', sans-serif;
-  font-size: 1.5vw;
-  color: var(--darkBlue);
-}
-h3 {
-  font-family: 'oswald', sans-serif;
-  font-size: 1rem;
-  font-weight: 400;
-  color: white;
-  text-transform: uppercase;
-}
-h4 {
-  font-family: 'lato', sans-serif;
-  font-size: .7rem;
-  font-weight: 400;
-  color: var(--darkBlue);
-  
-
-}
-
-p {
-  font-family: 'lato', sans-serif;
-  font-size: 1.25rem;
-  font-weight: 300;
-}
-button{
-  background-color: var(--red);
-  border: none;
-  border-radius: 10px;
-  width: 20rem;
-  height: 3rem;
-  color: white;
-  font-family: 'oswald', sans-serif;
-  text-transform: uppercase;
-  font-size: 1rem;
-}
-
-.h4bigger {
-  font-size: 1.5vw;
-}
-.h4biggest {
-  font-size: 1.25rem;
-}
-.darkBlueTxt {
-  color: #003770;
-}
-.whiteTxt {
-  color: white;
-}
-.redTxt {
-  color: #fe3463;
-}
-
-.white {
-  background-color: white;
-}
-.darkBlue {
-  background-color: var(--darkBlue);
-}
-.yellow {
-  background-color: var(--yellow);
-}
-.blue {
-  background-color: var(--blue);
-}
-.red {
-  background-color: var(--red);
-}
-.blueGrey {
-  background-color: var(--blueGrey);
-}
-.black {
-  background-color: black;
-}
-
-.temp {
-  position: absolute;
-  color: red;
-  left: 15rem;
-  font-size: 7rem;
   text-transform: uppercase;
   font-weight: 900;
-text-shadow: 6px 6px 0px rgba(0,0,0,0.2);
 }
-.hiddenNumber {
-  display: none;
-  font-size: 2.25rem;
-  text-align: center;
-  width: 100%;
+body {
+  display: flex;
+  flex-direction: column;
 }
-@media only screen and (max-width: 1275px) {
-  .rhiddenNumber {
-    display: block; 
-    
-   } 
+.header {
+position: absolute;
+top: 0;
+
+}
+.headerImg {
+  position: relative!important;
   
 }
-
-
-* {
-  box-sizing: border-box;
-  padding: 0;
-  margin: 0;
-
-}
-
-html,
-body {
-  /* background-image: url(/blueplug.png); */
-  background: linear-gradient( to bottom, #F2F9FF, #F9FCFF, #ffffff);
-
-
-
-  margin:0;
-  padding: 0;
-}
-
-a {
-  text-decoration: none;
-}
-

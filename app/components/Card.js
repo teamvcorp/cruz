@@ -4,14 +4,14 @@ import styles from "./component.module.scss";
 
 export const Card = ({ color, children, title, imageSrc }) => {
   return (
-    <div className={styles.cardContainer}>
-      <header className={`${styles.cardHeader} ${styles[color]} `}>
+    <div className={styles.cardContainer} style={{border: `1px solid ${color}`}}>
+      <section className={`${styles.cardHeader} ${styles[color]} `}>
         <span>
           {" "}
           {/* <FaHome color="white" size={30} /> */}
           <h2 className={styles.h2Card}>{title}</h2>
         </span>
-      </header>
+      </section>
 
       <Image
         src={imageSrc}

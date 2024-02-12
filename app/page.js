@@ -10,82 +10,21 @@ import {
 } from "react-icons/bs";
 import { BiCameraHome } from "react-icons/bi";
 import { GiPowerGenerator } from "react-icons/gi";
-import { MdLocationOn, MdHome, MdPhonelink } from "react-icons/md";
+import { MdLocationOn, MdHome, MdPhonelink, MdMargin } from "react-icons/md";
 import { PiPlantBold } from "react-icons/pi";
 // import BingMap from "./components/BingMap";
 
 export default function Home() {
   return (
     <>
-      <header className={styles.headerImage}>
-        <Image
-          className={styles.image}
-          src="/headerwhite.png"
-          objectFit="contain"
-          layout="fill"
-        />
-        <section>
-          <Image
-            className={styles.image}
-            src="/header.jpg"
-            objectFit="contain"
-            layout="fill"
-          />
-        </section>
-      </header>
       <main className={styles.main}>
-        <div className={styles.left}>
-          <div className={styles.contact}>
-            <h4 className="h4bigger">
-              {" "}
-              <span>
-                <BsFillTelephoneFill color="#003770" size={25} />
-              </span>{" "}
-              <a href="tel:7122997004">(712) 299-7004</a>
-            </h4>
-            <h4 className="h4bigger">
-              {" "}
-              <span>
-                <BsFillEnvelopeFill size={20} />
-              </span>{" "}
-              CruzElectric712@gmail.com{" "}
-            </h4>
-
-            <div>
-              <MapGoogle />
-
-              <div>
-                <h4 className="h4bigger">
-                  {" "}
-                  <span>
-                    <MdLocationOn />
-                  </span>{" "}
-                  222 West Milwaukee Ave. <br></br>&nbsp; &nbsp;Storm Lake, IA
-                  50588{" "}
-                </h4>
-
-                <h3 className="darkBlueTxt">Hours</h3>
-                <p className="darkBlueTxt"> Monday-Friday 9:00am-5:00pm</p>
-              </div>
-
-              {/* <BingMap /> */}
-            </div>
-          </div>
-          <div className={styles.emergency}>
-            <h2>24hr Emergency Services Available!</h2>
-          </div>
-        </div>
-
         <div className={styles.right}>
           <div className={styles.rightTop}>
-            <h2 className="hiddenNumber">
-              {" "}
-              {/* <span>
-                <BsFillTelephoneFill color="#003770" size={25} />
-              </span>{" "} */}
-              <a href="tel:7122997004">(712) 299-7004</a>
+            <h2 style={{ marginTop: "140px" }}>
+              <a className={styles.phone} href="tel:7122997004">
+                Call: 712-299-7004
+              </a>
             </h2>
-            <h1>services</h1>
             <div className={styles.servicesContainer}>
               <Card
                 color="blue"
@@ -168,21 +107,21 @@ export default function Home() {
                   providing peace of mind during power outages.
                 </p>
               </Card>
-            </div>
-            <h1>about us</h1>
-            <div className={styles.aboutContainer}>
-              <p>
-                {" "}
-                Cruz Electric opened in 2020 in Cherokee Iowa. We are expanding
-                to our new location in Storm Lake Iowa and all surrounding
-                areas. We are here to serve the customer and provide excellent
-                service. Cruz Electric will cruise right through it!{" "}
-              </p>
-              <button> request a quote </button>
+              <Card title="About Us" color="grey" imageSrc="/header.jpg">
+                <p>
+                  Cruz Electric opened in 2020 in Cherokee Iowa. We are
+                  expanding to our new location in Storm Lake Iowa and all
+                  surrounding areas. We are here to serve the customer and
+                  provide excellent service. Cruz Electric will cruise right
+                  through it!{" "}
+                </p>
+              </Card>
             </div>
           </div>
         </div>
+        <br />
       </main>
+
       <footer className={styles.footer}>
         <div className={styles.testimonialsContainer}>
           <div className="white">
