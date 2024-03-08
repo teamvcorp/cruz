@@ -22,7 +22,7 @@ const PictureContainer = ({ imageSrc }) => {
     </div>
     <div className='homeBtnContainer'>
 
-    <Link className="homeBtn" href='/'> <MdHome size={30} color='blue' /> Home </Link>
+    <Link className="homeBtn" href='/'> <MdHome size={30} color='white' /> Home </Link>
     </div>
     </>
   );
