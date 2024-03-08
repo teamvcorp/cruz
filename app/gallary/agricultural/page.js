@@ -1,3 +1,4 @@
+"use client"
 import PictureContainer from "@/app/components/PictureContainer";
 import {agImages} from '@/lib/images/images'
 

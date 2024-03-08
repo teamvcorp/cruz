@@ -15,14 +15,14 @@ const PictureContainer = ({ imageSrc }) => {
       <div className="embla__container">
         {imageSrc.map((image, index) => (
           <div key={index} className="embla__slide">
-            <Image src={image.src} alt={image.alt} width="500" height="350" />
+            <Image src={image.src} alt={image.alt} width="500" height="315" />
           </div>
         ))}
       </div>
     </div>
-    <div >
+    <div className='homeBtnContainer'>
 
-    <Link className='homeBtn' href='/'> <MdHome /> </Link>
+    <Link className="homeBtn" href='/'> <MdHome size={30} color='blue' /> Home </Link>
     </div>
     </>
   );
