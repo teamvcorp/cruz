@@ -18,111 +18,108 @@ export default function Home() {
   return (
     <>
       <main className={styles.main}>
-        <div className={styles.right}>
-          <div className={styles.rightTop}>
-            <h2 style={{ marginTop: "140px" }}>
-              <a className={styles.phone} href="tel:7122997004">
-                Call: 712-299-7004
-              </a>
-            </h2>
-            <div className={styles.servicesContainer}>
-              <Card
-                color="blue"
-                title="Residential"
-                imageSrc="/residential.jpg"
-              >
-                <p>
-                  At Cruz Electric, we specialize in providing exceptional
-                  residential electrical repair services, ensuring that your
-                  home remains a safe, functional, and comfortable space for you
-                  and your loved ones. Understanding the critical importance of
-                  a well-maintained electrical system, we dedicate ourselves to
-                  delivering solutions that address your specific needs with
-                  precision and care.
-                </p>
-              </Card>
-              <Card
-                color="yellow"
-                title="Commercial"
-                imageSrc="/commercial.jpg"
-              >
-                <p>
-                  Cruz Electric is your trusted partner for comprehensive
-                  commercial electrical repair services, dedicated to ensuring
-                  your business operations run smoothly and efficiently. We
-                  recognize the unique challenges and high standards required
-                  for commercial electrical systems, which is why we offer
-                  specialized repair solutions tailored to meet the demands of
-                  businesses of all sizes.
-                </p>
-              </Card>
-              <Card
-                title="agricultural"
-                color="darkBlue"
-                imageSrc="/agricultural.jpg"
-              >
-                <p>
-                  In the dynamic and demanding world of agriculture, Cruz
-                  Electric stands out as your dependable source for specialized
-                  agricultural electrical repair services. We understand the
-                  critical role that reliable electrical systems play in the
-                  productivity and efficiency of agricultural operations, from
-                  small family farms to large agribusinesses. Our commitment is
-                  to ensure that your agricultural endeavors flourish through
-                  uninterrupted and safe electrical performance.
-                </p>
-              </Card>
+        <div className="whitebox"></div>
+      
 
-              <Card
-                title="communications"
-                color="red"
-                imageSrc="/communications.jpg"
-              >
-                <p>
-                  Cruz Electric excels in providing cutting-edge communications
-                  and low-voltage solutions, including the installation and
-                  repair of security cameras and other essential systems. Our
-                  certified electricians are experts in the latest technologies,
-                  ensuring your property is equipped with reliable and efficient
-                  communication networks and security measures. Whether
-                  upgrading existing systems or installing new setups, we
-                  prioritize safety, quality, and innovation.
-                </p>
-              </Card>
-
-              <Card
-                title="generator install"
-                color="blueGrey"
-                imageSrc="/generator.jpg"
-              >
-                <p>
-                  Cruz Electric is proud to specialize in the installation of
-                  Generac generators, offering top-tier solutions for
-                  uninterrupted power supply to homes and businesses alike. Our
-                  skilled electricians are trained and certified to install
-                  Generac generators, ensuring your installation is performed to
-                  the highest standards of safety and efficiency. We understand
-                  the importance of reliable power, which is why we offer
-                  customized solutions to match your specific energy needs,
-                  providing peace of mind during power outages.
-                </p>
-              </Card>
-              <Card title="About Us" color="grey" imageSrc="/header.jpg">
-                <p>
-                  Cruz Electric opened in 2020 in Cherokee Iowa. We are
-                  expanding to our new location in Storm Lake Iowa and all
-                  surrounding areas. We are here to serve the customer and
-                  provide excellent service. Cruz Electric will cruise right
-                  through it!{" "}
-                </p>
-              </Card>
+        <div className={styles.servicesContainer}>
+        <div className={styles.heroContainer}>
+        <div className='headerBottomBar'> 
+            <p>Licensed & Insured</p>
+            <p> Serving Storm Lake & Surrounding Area</p>
             </div>
+          <div className={styles.heroImg}>
+        
+            
+            <Image className="heroImage" src="/electrician.jpg" width="500" height="350" /> 
+            <p>Empowering Your Space with Expert Electrical Solutions</p>
           </div>
+          <button> Request A Quote</button>
         </div>
-        <br />
+          <Card color="blue" title="Residential" imageSrc="/residential.jpg">
+            <p>
+              At Cruz Electric, we specialize in providing exceptional
+              residential electrical repair services, ensuring that your home
+              remains a safe, functional, and comfortable space for you and your
+              loved ones. Understanding the critical importance of a
+              well-maintained electrical system, we dedicate ourselves to
+              delivering solutions that address your specific needs with
+              precision and care.
+            </p>
+          </Card>
+          <Card color="yellow" title="Commercial" imageSrc="/commercial.jpg">
+            <p>
+              Cruz Electric is your trusted partner for comprehensive commercial
+              electrical repair services, dedicated to ensuring your business
+              operations run smoothly and efficiently. We recognize the unique
+              challenges and high standards required for commercial electrical
+              systems, which is why we offer specialized repair solutions
+              tailored to meet the demands of businesses of all sizes.
+            </p>
+          </Card>
+          <Card
+            title="agricultural"
+            color="darkBlue"
+            imageSrc="/agricultural.jpg"
+          >
+            <p>
+              In the dynamic and demanding world of agriculture, Cruz Electric
+              stands out as your dependable source for specialized agricultural
+              electrical repair services. We understand the critical role that
+              reliable electrical systems play in the productivity and
+              efficiency of agricultural operations, from small family farms to
+              large agribusinesses. Our commitment is to ensure that your
+              agricultural endeavors flourish through uninterrupted and safe
+              electrical performance.
+            </p>
+          </Card>
+
+          <Card
+            title="communications"
+            color="red"
+            imageSrc="/communications.jpg"
+          >
+            <p>
+              Cruz Electric excels in providing cutting-edge communications and
+              low-voltage solutions, including the installation and repair of
+              security cameras and other essential systems. Our certified
+              electricians are experts in the latest technologies, ensuring your
+              property is equipped with reliable and efficient communication
+              networks and security measures. Whether upgrading existing systems
+              or installing new setups, we prioritize safety, quality, and
+              innovation.
+            </p>
+          </Card>
+
+          <Card
+            title="generator install"
+            color="blueGrey"
+            imageSrc="/generator.jpg"
+          >
+            <p>
+              Cruz Electric is proud to specialize in the installation of
+              Generac generators, offering top-tier solutions for uninterrupted
+              power supply to homes and businesses alike. Our skilled
+              electricians are trained and certified to install Generac
+              generators, ensuring your installation is performed to the highest
+              standards of safety and efficiency. We understand the importance
+              of reliable power, which is why we offer customized solutions to
+              match your specific energy needs, providing peace of mind during
+              power outages.
+            </p>
+          </Card>
+          <Card title="About Us" color="grey" imageSrc="/header.jpg">
+            <p>
+              Cruz Electric opened in 2020 in Cherokee Iowa. We are expanding to
+              our new location in Storm Lake Iowa and all surrounding areas. We
+              are here to serve the customer and provide excellent service. Cruz
+              Electric will cruise right through it!{" "}
+            </p>
+          </Card>
+        </div>
       </main>
 
       <footer className={styles.footer}>
+        <h2>Reviews</h2>
         <div className={styles.testimonialsContainer}>
           <div className="white">
             <p className="darkBlueTxt">

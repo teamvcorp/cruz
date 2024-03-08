@@ -3,16 +3,58 @@
   justify-content: space-around;
   flex-wrap: wrap;
   grid-gap: 2rem;
-  
 }
-.phone  {
-  cursor: pointer;
+
+.heroImg {
+  
+  width: 100%;
   display: flex;
-  align-items: center;
-  justify-content: center;
-  color: black;
-  font-weight: 900;
-  font-size: 2rem;
-  text-decoration: none;
- 
+  flex-direction: column;
+
+
+  p {
+    text-shadow: 2px 8px 3px rgba(0,0,0,0.4),
+    0px 8px 13px rgba(0,0,0,0.1),
+    0px 18px 23px rgba(0,0,0,0.1);
+text-align: center;
+margin-top: 10%;
+    position: absolute;
+    color: white;
+    font-size: 3rem;
+    font-weight: bold;
+    width: 80%;
+
+   
+  }
+}
+.heroContainer {
+  width: 90vw;
+  button {
+    color: white;
+    font-weight: bold;
+    font-size: 1.5rem;
+    width: 100%;
+    padding: 0.5rem 0;
+    background-color: var(--red);
+    border-radius: 0 0 5px 5px;
+  }
+}
+.footer 
+{
+  h2 {
+font-size: 2rem;
+text-align: center;
+margin-top: 2rem;
+background-color: var(--blue);
+color: white;
+padding: .5rem 0;
+  }
+}
+.testimonialsContainer {
+
+  text-align: center;
+  margin: 0 3rem;
+  p {
+    margin: 3rem 0;
+  }
 }

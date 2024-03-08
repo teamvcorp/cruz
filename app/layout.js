@@ -14,7 +14,11 @@ export default function RootLayout({ children }) {
         <body>
           {" "}
           <header className="header">
-            <Image className="headerImg" src="/headerwhite.png" layout="fill" objectFit="contain"/>
+            <div className='headerBanner'> Call Us Today (712) 299-7004
+                    </div>
+                   
+            <Image className="headerImg" src="/headerplain.png" layout="fill" objectFit="contain"/>
+         
           </header>
           {children}
         </body>
