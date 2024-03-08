@@ -1,6 +1,6 @@
 "use client"
 import PictureContainer from "@/app/components/PictureContainer";
-import {agImages} from '@/public/lib/images/images'
+import {agImages} from '@/app/lib/images/images'
 
 const agricultural = () => {
   return (

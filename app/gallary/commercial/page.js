@@ -1,6 +1,6 @@
 "use client"
 import PictureContainer from "@/app/components/PictureContainer";
-import { commImages } from "@/public/lib/images/images";
+import { commImages } from "@/app/lib/images/images";
 
 const CommercialGallery = () => {
   return <PictureContainer imageSrc={commImages} />;

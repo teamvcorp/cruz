@@ -13,7 +13,7 @@ const PictureContainer = ({ imageSrc }) => {
      <div className="whitebox"></div>
     <div className="embla" ref={emblaRef}>
       <div className="embla__container">
-        {imageSrc.map((image, index) => (
+        {imageSrc?.map((image, index) => (
           <div key={index} className="embla__slide">
             <Image src={image.src} alt={image.alt} width="500" height="315" />
           </div>
