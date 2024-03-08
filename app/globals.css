@@ -123,7 +123,7 @@ body {
   z-index: 1;
 }
 .whitebox {
-  background-color: white;
+  background-color: rgb(239, 243, 248);
   height: 17vh;
   width: 100%;
 }
@@ -131,19 +131,23 @@ body {
   position: relative !important;
   padding-right: 0.5rem;
 }
-.headerBottomBar {
-  display: flex;
-  
-  background-color: var(--yellow);
-  display: flex;
-  justify-content: space-between;
-  padding: 0.25rem 1rem;
-  font-size: 1rem;
-  font-weight: bold;
-  font-family: Arial, Helvetica, sans-serif;
-  border-radius: 5px 5px 0 0;
-  width: 90vw;
+
+
+/* Gallery */
+
+.embla {
+
+
+  overflow: hidden;
+
+
 }
-.heroImage {
-  opacity: 60%;
+.embla__container {
+  display: flex;
+
+  
+}
+.embla__slide {
+  flex: 0 0 100%;
+  min-width: 0;
 }

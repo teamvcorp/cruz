@@ -17,8 +17,13 @@
       align-items: center;
       grid-gap: 1rem;
       .h2Card {
+        width: 100%;
+        font-weight: bold;
+        font-size: 2rem;
+        text-align: center;
         color: white;
         text-transform: uppercase;
+        text-shadow: 2px 4px 3px rgba(0,0,0,0.3);
       }
     }
   }
@@ -45,4 +50,19 @@
     line-height: 1.7rem;
     padding: 1rem;
   }
+}
+.gallery {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  grid-gap: 1rem;
+  background-color: orange;
+  border-radius: 0 0 5px 5px;
+  text-align: center;
+  color: white;
+  text-transform: uppercase;
+  text-shadow: 2px 4px 3px rgba(0,0,0,0.3);
+
+
+
 }

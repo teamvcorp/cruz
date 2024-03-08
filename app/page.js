@@ -1,13 +1,11 @@
 import Image from "next/legacy/image";
+import Link from "next/link";
 import styles from "./page.module.scss";
 import MapGoogle from "./components/GoogleMap";
 import { Card } from "./components/Card";
-import {
-  BsFillTelephoneFill,
-  BsFillEnvelopeFill,
-  BsFillBuildingsFill,
-  BsFillStarFill,
-} from "react-icons/bs";
+import { BsFillStarFill, BsFillPeopleFill } from "react-icons/bs";
+import { TbMessageStar } from "react-icons/tb";
+import { TfiPencilAlt } from "react-icons/tfi";
 import { BiCameraHome } from "react-icons/bi";
 import { GiPowerGenerator } from "react-icons/gi";
 import { MdLocationOn, MdHome, MdPhonelink, MdMargin } from "react-icons/md";
@@ -19,23 +17,37 @@ export default function Home() {
     <>
       <main className={styles.main}>
         <div className="whitebox"></div>
-      
 
         <div className={styles.servicesContainer}>
-        <div className={styles.heroContainer}>
-        <div className='headerBottomBar'> 
-            <p>Licensed & Insured</p>
-            <p> Serving Storm Lake & Surrounding Area</p>
+          <div className={styles.heroContainer}>
+            <div className={styles.heroBanner}>
+              <p>Licensed & Insured</p>
+              <p> Serving Storm Lake & Surrounding Area</p>
             </div>
-          <div className={styles.heroImg}>
-        
-            
-            <Image className="heroImage" src="/electrician.jpg" width="500" height="350" /> 
-            <p>Empowering Your Space with Expert Electrical Solutions</p>
+            <div className={styles.heroImg}>
+              <Image
+                className="heroImage"
+                src="/hero.jpg"
+                width="500"
+                height="350"
+              />
+              <p>Empowering Your Space with Expert Electrical Solutions</p>
+            </div>
+            <Link
+              className={styles.quoteBtn}
+              href="mailto:cruzelectric712@@gmail.com?
+          &subject=Please reach out to me for a quote"
+            >
+              <TfiPencilAlt size={25} />
+              Request A Quote
+            </Link>
           </div>
-          <button> Request A Quote</button>
-        </div>
-          <Card color="blue" title="Residential" imageSrc="/residential.jpg">
+          <Card
+            color="blue"
+            title="Residential"
+            imageSrc="/residential.jpg"
+            gallaryPage="residential"
+          >
             <p>
               At Cruz Electric, we specialize in providing exceptional
               residential electrical repair services, ensuring that your home
@@ -46,7 +58,12 @@ export default function Home() {
               precision and care.
             </p>
           </Card>
-          <Card color="yellow" title="Commercial" imageSrc="/commercial.jpg">
+          <Card
+            color="yellow"
+            title="Commercial"
+            imageSrc="/commercial.jpg"
+            gallaryPage="commercial"
+          >
             <p>
               Cruz Electric is your trusted partner for comprehensive commercial
               electrical repair services, dedicated to ensuring your business
@@ -60,6 +77,7 @@ export default function Home() {
             title="agricultural"
             color="darkBlue"
             imageSrc="/agricultural.jpg"
+            gallaryPage="agricultural"
           >
             <p>
               In the dynamic and demanding world of agriculture, Cruz Electric
@@ -77,6 +95,7 @@ export default function Home() {
             title="communications"
             color="red"
             imageSrc="/communications.jpg"
+            gallaryPage="communications"
           >
             <p>
               Cruz Electric excels in providing cutting-edge communications and
@@ -94,6 +113,7 @@ export default function Home() {
             title="generator install"
             color="blueGrey"
             imageSrc="/generator.jpg"
+            gallaryPage="generator"
           >
             <p>
               Cruz Electric is proud to specialize in the installation of
@@ -119,7 +139,9 @@ export default function Home() {
       </main>
 
       <footer className={styles.footer}>
-        <h2>Reviews</h2>
+        <h2>
+          <TbMessageStar size={30} /> Reviews
+        </h2>
         <div className={styles.testimonialsContainer}>
           <div className="white">
             <p className="darkBlueTxt">
@@ -215,9 +237,11 @@ export default function Home() {
         </div>
       </footer>
       <section className={styles.apprentice}>
+        <span><BsFillPeopleFill size={25} /></span>
         <h4 className="darkBlueTxt h4biggest">
-          Ask About Our Apprenticeship Program
+         Ask About Our Apprenticeship Program!
         </h4>
+        
       </section>
     </>
   );
