@@ -3,8 +3,9 @@ import Image from "next/image";
 
 
 export const metadata = {
-  title: "Cruz Electic Contractor - Storm Lake",
-  description: "Electric storm lake contractor isaac cruz cherokee",
+  title: "Cruz Electric Contractor - Storm Lake & Cherokee",
+  description: "Experienced electric contractor serving Storm Lake and Cherokee areas. Contact Isaac Cruz for reliable electrical services.",
+  keywords: "electric contractor, Storm Lake, Cherokee, Isaac Cruz, electrical services, reliable electrician, residential electrician, commercial electrician, cherokee county",
 };
 
 export default function RootLayout({ children }) {
