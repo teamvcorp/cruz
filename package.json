@@ -9,14 +9,20 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@headlessui/react": "^2.2.9",
+    "@heroicons/react": "^2.2.0",
     "@react-google-maps/api": "^2.19.0",
+    "autoprefixer": "^10.4.24",
     "embla-carousel-autoplay": "^8.0.0",
     "embla-carousel-react": "^8.0.0",
     "next": "^14.1.0",
+    "postcss": "^8.5.6",
     "react": "18.2.0",
     "react-bingmaps": "^3.6.1",
     "react-dom": "18.2.0",
     "react-icons": "^4.10.1",
-    "sass": "^1.63.6"
+    "sass": "^1.63.6",
+    "sharp": "^0.34.5",
+    "tailwindcss": "^3.4.19"
   }
 }
