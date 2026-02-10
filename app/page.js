@@ -21,7 +21,7 @@ const services = [
     icon: BoltIcon,
     imageSrc: '/residential.jpg',
     description:
-      'At Cruz Electric, we specialize in providing exceptional residential electrical repair services, ensuring that your home remains a safe, functional, and comfortable space for you and your loved ones. Understanding the critical importance of a well-maintained electrical system, we dedicate ourselves to delivering solutions that address your specific needs with precision and care.',
+      'At Cruz Electric, our residential electricians specialize in providing exceptional residential electrical repair services, ensuring that your home remains a safe, functional, and comfortable space for you and your loved ones. Understanding the critical importance of a well-maintained electrical system, our licensed electricians dedicate themselves to delivering electrical solutions that address your specific needs with precision and care.',
   },
   {
     title: 'Commercial',
@@ -30,7 +30,7 @@ const services = [
     icon: BuildingOffice2Icon,
     imageSrc: '/commercial.jpg',
     description:
-      'Cruz Electric is your trusted partner for comprehensive commercial electrical repair services, dedicated to ensuring your business operations run smoothly and efficiently. We recognize the unique challenges and high standards required for commercial electrical systems, which is why we offer specialized repair solutions tailored to meet the demands of businesses of all sizes.',
+      'Cruz Electric is your trusted partner for comprehensive commercial electrical repair services. Our commercial electricians are dedicated to ensuring your business operations run smoothly and efficiently. We recognize the unique challenges and high standards required for commercial electrical systems, which is why our professional electricians offer specialized electrical repair solutions tailored to meet the demands of businesses of all sizes.',
   },
   {
     title: 'Agricultural',
@@ -39,7 +39,7 @@ const services = [
     icon: WrenchScrewdriverIcon,
     imageSrc: '/agricultural.jpg',
     description:
-      'In the dynamic and demanding world of agriculture, Cruz Electric stands out as your dependable source for specialized agricultural electrical repair services. We understand the critical role that reliable electrical systems play in the productivity and efficiency of agricultural operations, from small family farms to large agribusinesses.',
+      'In the dynamic and demanding world of agriculture, Cruz Electric stands out as your dependable source for specialized agricultural electrical repair services. Our agricultural electricians understand the critical role that reliable electrical systems play in the productivity and efficiency of agricultural operations, from small family farms to large agribusinesses. Our licensed electricians provide expert electrical service for all farm electrical needs.',
   },
   {
     title: 'Communications',
@@ -48,7 +48,7 @@ const services = [
     icon: VideoCameraIcon,
     imageSrc: '/communications.jpg',
     description:
-      'Cruz Electric excels in providing cutting-edge communications and low-voltage solutions, including the installation and repair of security cameras and other essential systems. Our certified electricians are experts in the latest technologies, ensuring your property is equipped with reliable and efficient communication networks and security measures.',
+      'Cruz Electric excels in providing cutting-edge communications and low-voltage solutions, including the installation and repair of security cameras and other essential systems. Our certified electricians are experts in the latest technologies, ensuring your property is equipped with reliable and efficient communication networks and security measures. As professional electricians, we handle all your low-voltage electrical needs.',
   },
   {
     title: 'Generator Install',
@@ -57,7 +57,7 @@ const services = [
     icon: CpuChipIcon,
     imageSrc: '/generator.jpg',
     description:
-      'Cruz Electric is proud to specialize in the installation of Generac generators, offering top-tier solutions for uninterrupted power supply to homes and businesses alike. Our skilled electricians are trained and certified to install Generac generators, ensuring your installation is performed to the highest standards of safety and efficiency.',
+      'Cruz Electric is proud to specialize in the installation of Generac generators, offering top-tier solutions for uninterrupted power supply to homes and businesses alike. Our skilled electricians are trained and certified to install Generac generators, ensuring your installation is performed to the highest standards of safety and efficiency. As licensed electricians, we provide complete generator electrical installation and service.',
   },
 ]
 
@@ -86,34 +86,39 @@ const testimonials = [
 
 const faqs = [
   {
-    question: 'What areas do you serve?',
+    question: 'What areas does your electrician service cover?',
     answer:
-      'Cruz Electric serves Storm Lake, Cherokee, and all surrounding areas in Iowa. We are expanding our reach to serve even more communities across the region.',
+      'Our electricians serve Storm Lake, Cherokee, Aurelia, Larrabee, and all surrounding communities in Buena Vista County and Cherokee County, Iowa. We proudly provide residential electrician services, commercial electrician services, and agricultural electrician services throughout northwest Iowa. If you\'re searching for an "electrician near me," we\'re your local electrical contractor.',
   },
   {
-    question: 'Are you licensed and insured?',
+    question: 'Are your electricians licensed and insured?',
     answer:
-      'Yes! Cruz Electric is fully licensed and insured. We take pride in meeting all safety standards and legal requirements to give our customers complete peace of mind.',
+      'Yes! All Cruz Electric electricians are fully licensed and insured. We are a licensed electrical contractor that takes pride in meeting all safety standards and legal requirements. Our professional electricians comply with all Iowa electrical codes to give our customers complete peace of mind.',
   },
   {
-    question: 'What types of electrical services do you offer?',
+    question: 'What types of electrical services do your electricians offer?',
     answer:
-      'We offer a wide range of services including residential electrical repair, commercial electrical services, agricultural electrical systems, communications and low-voltage solutions (including security cameras), and Generac generator installation.',
+      'Our electricians offer a wide range of electrical services including residential electrical repair, commercial electrical services, agricultural electrical systems, communications and low-voltage solutions (including security cameras), emergency electrical repair, electrical panel upgrades, outlet and switch installation, lighting installation and repair, and Generac generator installation. Whether you need a residential electrician, commercial electrician, or emergency electrician, we have you covered.',
   },
   {
-    question: 'Do you install Generac generators?',
+    question: 'How do I choose a good electrician?',
     answer:
-      'Yes! Cruz Electric specializes in the installation of Generac generators. Our skilled electricians are trained and certified to install Generac generators to the highest standards of safety and efficiency, providing uninterrupted power supply for your home or business.',
+      'When choosing an electrician, look for a licensed and insured electrical contractor with local experience, positive customer reviews, and transparent pricing. Cruz Electric is a locally-owned electrical contractor with 5+ years of experience, 5-star reviews, and certified electricians trained to handle all types of electrical work. We provide free estimates and stand behind our electrical services with a satisfaction guarantee.',
   },
   {
-    question: 'How can I request a quote?',
+    question: 'Do your electricians install Generac generators?',
     answer:
-      'You can request a quote by calling us at (712) 299-7004 or by emailing us at cruzelectric712@gmail.com. We respond quickly to all inquiries and are happy to provide a free estimate for your project.',
+      'Yes! Our electricians specialize in the installation of Generac generators. Our skilled electricians are trained and certified to install Generac generators to the highest standards of safety and efficiency, providing uninterrupted power supply for your home or business. We are authorized Generac generator installers.',
   },
   {
-    question: 'Do you offer an apprenticeship program?',
+    question: 'How can I request an electrician quote?',
     answer:
-      'Yes! Ask us about our apprenticeship program. We are committed to training the next generation of skilled electricians and welcome inquiries from those interested in starting a career in the electrical trade.',
+      'You can request a quote from our electricians by calling us at (712) 299-7004 or by emailing us at cruzelectric712@gmail.com. Our electricians respond quickly to all inquiries and are happy to provide a free estimate for your electrical project. Whether you need an emergency electrician or scheduled electrical service, we\'re here to help.',
+  },
+  {
+    question: 'Do you offer an electrician apprenticeship program?',
+    answer:
+      'Yes! Ask us about our electrician apprenticeship program. We are committed to training the next generation of skilled electricians and welcome inquiries from those interested in starting a career as a professional electrician in the electrical trade.',
   },
 ]
 
@@ -128,6 +133,7 @@ export default function Home() {
             src="/hero.jpg"
             alt="Cruz Electric hero"
             fill
+            sizes="100vw"
             className="object-cover brightness-50"
             priority
           />
@@ -147,13 +153,13 @@ export default function Home() {
         <div className="mx-auto max-w-7xl px-6 py-24 sm:py-32 lg:px-8 lg:py-40">
           <div className="max-w-2xl">
             <div className="mb-4 inline-flex items-center rounded-full bg-cruz-yellow/90 px-4 py-1.5 text-sm font-bold text-gray-900">
-              Licensed &amp; Insured — Serving Storm Lake &amp; Surrounding Area
+              Licensed &amp; Insured — Serving Storm Lake, Cherokee, Aurelia, Larrabee &amp; All Buena Vista &amp; Cherokee Counties
             </div>
             <h1 className="text-4xl font-bold tracking-tight text-white sm:text-6xl">
-              Empowering Your Space with Expert Electrical Solutions
+              Professional Electrician — Expert Electrical Solutions for Your Home, Business & Farm
             </h1>
             <p className="mt-6 text-lg leading-8 text-gray-200">
-              Cruz Electric provides reliable residential, commercial, and agricultural electrical services. From repairs to Generac generator installations, we cruise right through it!
+              Cruz Electric is your trusted local electrician providing reliable electrical repair, electrical service, and new electrical installations throughout Storm Lake, Cherokee, Aurelia, Larrabee, and all of Buena Vista and Cherokee Counties. As a licensed electrical contractor, we specialize in residential electrician services, commercial electrical work, agricultural electrical systems, and Generac generator installations. From emergency electrical repairs to complete electrical installations, we cruise right through it!
             </p>
             <div className="mt-10 flex flex-col gap-4 sm:flex-row sm:items-center">
               <a
@@ -177,12 +183,12 @@ export default function Home() {
       <div className="bg-gray-50 py-16 sm:py-24">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="mx-auto max-w-2xl text-center">
-            <h2 className="text-base font-semibold leading-7 text-cruz-blue">Our Services</h2>
+            <h2 className="text-base font-semibold leading-7 text-cruz-blue">Professional Electrician Services</h2>
             <p className="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-              Electrical Solutions You Can Trust
+              Comprehensive Electrical Services from Licensed Electricians
             </p>
             <p className="mt-6 text-lg leading-8 text-gray-600">
-              From residential repairs to commercial installations, Cruz Electric delivers quality workmanship for every project.
+              As your local electrician, Cruz Electric delivers quality electrical workmanship for every project. Our certified electricians are experts in all types of electrical work.
             </p>
           </div>
 
@@ -206,6 +212,7 @@ export default function Home() {
                     src={service.imageSrc}
                     alt={service.title}
                     fill
+                    sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
                     className="object-cover transition-transform duration-300 group-hover:scale-105"
                   />
                 </div>
@@ -229,6 +236,40 @@ export default function Home() {
         </div>
       </div>
 
+      {/* Electrician Services Keywords Section */}
+      <div className="bg-white py-16 sm:py-24">
+        <div className="mx-auto max-w-7xl px-6 lg:px-8">
+          <div className="mx-auto max-w-2xl text-center">
+            <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+              Your Trusted Local Electrician
+            </h2>
+            <p className="mt-6 text-lg leading-8 text-gray-600">
+              When you search for "electrician near me" or need electrical services, Cruz Electric is your local answer. Our licensed electricians provide professional electrical solutions for every need.
+            </p>
+          </div>
+          <div className="mx-auto mt-16 grid max-w-2xl grid-cols-1 gap-6 sm:mt-20 lg:mx-0 lg:max-w-none lg:grid-cols-3">
+            <div className="flex flex-col rounded-2xl bg-gray-50 p-8">
+              <h3 className="text-lg font-semibold text-gray-900">Residential Electrician</h3>
+              <p className="mt-4 text-sm text-gray-600">
+                Home electrical repairs, outlet installation, lighting upgrades, panel replacements, circuit breaker repairs, whole house rewiring, GFCI installation, ceiling fan installation, and all residential electrical needs.
+              </p>
+            </div>
+            <div className="flex flex-col rounded-2xl bg-gray-50 p-8">
+              <h3 className="text-lg font-semibold text-gray-900">Commercial Electrician</h3>
+              <p className="mt-4 text-sm text-gray-600">
+                Commercial electrical installations, parking lot lighting, storefront electrical, office wiring, electrical code compliance, three-phase power, commercial panel upgrades, and business electrical systems.
+              </p>
+            </div>
+            <div className="flex flex-col rounded-2xl bg-gray-50 p-8">
+              <h3 className="text-lg font-semibold text-gray-900">Emergency Electrician</h3>
+              <p className="mt-4 text-sm text-gray-600">
+                24/7 emergency electrical repair, power outage troubleshooting, electrical fire prevention, circuit breaker tripping issues, no power problems, electrical safety inspections, and urgent electrical repairs.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
       {/* About Section */}
       <div id="about" className="relative overflow-hidden bg-gray-900 py-16 sm:py-24">
         <div className="absolute inset-0">
@@ -236,6 +277,7 @@ export default function Home() {
             src="/header.jpg"
             alt="Cruz Electric team"
             fill
+            sizes="100vw"
             className="object-cover brightness-[0.15] saturate-50"
           />
         </div>
@@ -250,12 +292,12 @@ export default function Home() {
         </div>
         <div className="relative mx-auto max-w-7xl px-6 lg:px-8">
           <div className="mx-auto max-w-2xl lg:mx-0">
-            <h2 className="text-base font-semibold leading-7 text-cruz-yellow">About Us</h2>
+            <h2 className="text-base font-semibold leading-7 text-cruz-yellow">About Your Local Electrician</h2>
             <p className="mt-2 text-3xl font-bold tracking-tight text-white sm:text-4xl">
-              Cruz Electric — We Cruise Right Through It!
+              Licensed Electrician & Electrical Contractor — We Cruise Right Through It!
             </p>
             <p className="mt-6 text-lg leading-8 text-gray-300">
-              Cruz Electric opened in 2020 in Cherokee, Iowa. We are expanding to our new location in Storm Lake, Iowa and all surrounding areas. We are here to serve the customer and provide excellent service.
+              Cruz Electric opened in 2020 in Cherokee, Iowa. As a licensed electrician and professional electrical contractor, we have expanded to serve Storm Lake, Aurelia, Larrabee, and all surrounding communities throughout Buena Vista County and Cherokee County. Whether you need an emergency electrician, residential electrician, commercial electrician, or agricultural electrical services, we are dedicated to serving our community with excellent, reliable electrical services.
             </p>
           </div>
 
@@ -280,9 +322,9 @@ export default function Home() {
       <div id="reviews" className="bg-white py-16 sm:py-24">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="mx-auto max-w-2xl text-center">
-            <h2 className="text-base font-semibold leading-7 text-cruz-blue">Reviews</h2>
+            <h2 className="text-base font-semibold leading-7 text-cruz-blue">Client Testimonials</h2>
             <p className="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-              What Our Customers Say
+              Why Choose Our Electricians
             </p>
           </div>
 
@@ -308,6 +350,78 @@ export default function Home() {
                 </div>
               </div>
             ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Service Areas Section */}
+      <div className="bg-white py-16 sm:py-24">
+        <div className="mx-auto max-w-7xl px-6 lg:px-8">
+          <div className="mx-auto max-w-2xl text-center">
+            <h2 className="text-base font-semibold leading-7 text-cruz-blue">Service Areas</h2>
+            <p className="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+              Proudly Serving Northwest Iowa
+            </p>
+            <p className="mt-6 text-lg leading-8 text-gray-600">
+              Cruz Electric provides expert electrical services throughout Buena Vista County, Cherokee County, and surrounding areas in Iowa.
+            </p>
+          </div>
+
+          <div className="mx-auto mt-16 max-w-2xl sm:mt-20 lg:max-w-4xl">
+            <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
+              <div className="rounded-2xl bg-gray-50 p-8 ring-1 ring-gray-200">
+                <h3 className="text-xl font-bold text-gray-900 mb-4">Primary Service Areas</h3>
+                <ul className="space-y-3 text-gray-600">
+                  <li className="flex items-start">
+                    <span className="mr-2 text-cruz-blue">•</span>
+                    <div>
+                      <Link href="/locations/storm-lake" className="font-semibold hover:text-cruz-blue transition-colors">Storm Lake, IA</Link>
+                      <span className="text-sm block text-gray-500">Buena Vista County</span>
+                    </div>
+                  </li>
+                  <li className="flex items-start">
+                    <span className="mr-2 text-cruz-blue">•</span>
+                    <div>
+                      <Link href="/locations/cherokee" className="font-semibold hover:text-cruz-blue transition-colors">Cherokee, IA</Link>
+                      <span className="text-sm block text-gray-500">Cherokee County</span>
+                    </div>
+                  </li>
+                  <li className="flex items-start">
+                    <span className="mr-2 text-cruz-blue">•</span>
+                    <div>
+                      <Link href="/locations/aurelia" className="font-semibold hover:text-cruz-blue transition-colors">Aurelia, IA</Link>
+                      <span className="text-sm block text-gray-500">Cherokee County</span>
+                    </div>
+                  </li>
+                  <li className="flex items-start">
+                    <span className="mr-2 text-cruz-blue">•</span>
+                    <div>
+                      <Link href="/locations/larrabee" className="font-semibold hover:text-cruz-blue transition-colors">Larrabee, IA</Link>
+                      <span className="text-sm block text-gray-500">Cherokee County</span>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+
+              <div className="rounded-2xl bg-gray-50 p-8 ring-1 ring-gray-200">
+                <h3 className="text-xl font-bold text-gray-900 mb-4">Counties Served</h3>
+                <ul className="space-y-3 text-gray-600">
+                  <li className="flex items-start">
+                    <span className="mr-2 text-cruz-blue">•</span>
+                    <Link href="/locations/buena-vista-county" className="font-semibold hover:text-cruz-blue transition-colors">Buena Vista County</Link>
+                  </li>
+                  <li className="flex items-start">
+                    <span className="mr-2 text-cruz-blue">•</span>
+                    <Link href="/locations/cherokee-county" className="font-semibold hover:text-cruz-blue transition-colors">Cherokee County</Link>
+                  </li>
+                </ul>
+                <div className="mt-6 pt-6 border-t border-gray-200">
+                  <p className="text-sm text-gray-600">
+                    We also serve surrounding communities including Alta, Newell, Marcus, Quimby, Washta, and more throughout northwest Iowa.
+                  </p>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>

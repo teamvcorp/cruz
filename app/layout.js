@@ -43,9 +43,195 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <head>
-        <title>Cruz Electric Contractor - Storm Lake &amp; Cherokee</title>
-        <meta name="description" content="Experienced electric contractor serving Storm Lake and Cherokee areas. Contact Isaac Cruz for reliable electrical services." />
-        <meta name="keywords" content="electric contractor, Storm Lake, Cherokee, Isaac Cruz, electrical services, reliable electrician, residential electrician, commercial electrician, cherokee county" />
+        <title>Electrician in Storm Lake, Cherokee, Aurelia & Larrabee IA | Licensed Electrical Contractor | Cruz Electric</title>
+        <meta name="description" content="Professional electrician providing electrical repair, installation & service in Storm Lake, Cherokee, Aurelia, Larrabee & all Buena Vista/Cherokee Counties IA. Licensed electrician for residential, commercial & agricultural. Call (712) 299-7004." />
+        <meta name="keywords" content="electrician, electrician near me, local electrician, electrician Storm Lake IA, electrician Cherokee IA, electrician Aurelia IA, electrician Larrabee IA, electrician Buena Vista County, electrician Cherokee County, electrical contractor, electrical repair, electrical service, residential electrician, commercial electrician, agricultural electrician, emergency electrician, licensed electrician, certified electrician Iowa, professional electrician, generator installation, Generac generator, electric contractor Iowa, Isaac Cruz electrician" />
+        
+        {/* Geo Tags */}
+        <meta name="geo.region" content="US-IA" />
+        <meta name="geo.placename" content="Storm Lake, Aurelia, Cherokee, Larrabee" />
+        <meta name="geo.position" content="42.6411;-95.2094" />
+        <meta name="ICBM" content="42.6411, -95.2094" />
+        
+        {/* Open Graph */}
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content="Professional Electrician | Storm Lake, Cherokee, Aurelia & Larrabee IA | Cruz Electric" />
+        <meta property="og:description" content="Trusted electrician providing electrical repair, installation & service in Storm Lake, Cherokee, Aurelia, Larrabee & surrounding Iowa areas. Licensed & insured electrical contractor." />
+        <meta property="og:url" content="https://cruzelectric.com" />
+        <meta property="og:locale" content="en_US" />
+        <meta property="og:site_name" content="Cruz Electric" />
+        
+        {/* Twitter Card */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Professional Electrician | Storm Lake, Cherokee, Aurelia & Larrabee IA" />
+        <meta name="twitter:description" content="Professional electrician providing electrical services in Storm Lake, Cherokee, Aurelia & Larrabee IA. Licensed & insured. Call (712) 299-7004" />
+        
+        {/* Canonical URL */}
+        <link rel="canonical" href="https://cruzelectric.com" />
+        
+        {/* JSON-LD Structured Data for Local Business */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Electrician",
+              "@id": "https://cruzelectric.com",
+              "name": "Cruz Electric - Professional Electrician",
+              "image": "https://cruzelectric.com/header.jpg",
+              "description": "Professional electrician and licensed electrical contractor providing residential, commercial, and agricultural electrical services including electrical repairs, electrical installations, panel upgrades, and Generac generator installations throughout Iowa.",
+              "url": "https://cruzelectric.com",
+              "telephone": "+17122997004",
+              "email": "cruzelectric712@gmail.com",
+              "priceRange": "$$",
+              "foundingDate": "2020",
+              "address": {
+                "@type": "PostalAddress",
+                "addressLocality": "Storm Lake",
+                "addressRegion": "IA",
+                "postalCode": "50588",
+                "addressCountry": "US"
+              },
+              "geo": {
+                "@type": "GeoCoordinates",
+                "latitude": "42.6411",
+                "longitude": "-95.2094"
+              },
+              "areaServed": [
+                {
+                  "@type": "City",
+                  "name": "Storm Lake",
+                  "address": {
+                    "@type": "PostalAddress",
+                    "addressRegion": "IA",
+                    "addressCountry": "US"
+                  }
+                },
+                {
+                  "@type": "City",
+                  "name": "Cherokee",
+                  "address": {
+                    "@type": "PostalAddress",
+                    "addressRegion": "IA",
+                    "addressCountry": "US"
+                  }
+                },
+                {
+                  "@type": "City",
+                  "name": "Aurelia",
+                  "address": {
+                    "@type": "PostalAddress",
+                    "addressRegion": "IA",
+                    "addressCountry": "US"
+                  }
+                },
+                {
+                  "@type": "City",
+                  "name": "Larrabee",
+                  "address": {
+                    "@type": "PostalAddress",
+                    "addressRegion": "IA",
+                    "addressCountry": "US"
+                  }
+                },
+                {
+                  "@type": "AdministrativeArea",
+                  "name": "Buena Vista County",
+                  "address": {
+                    "@type": "PostalAddress",
+                    "addressRegion": "IA",
+                    "addressCountry": "US"
+                  }
+                },
+                {
+                  "@type": "AdministrativeArea",
+                  "name": "Cherokee County",
+                  "address": {
+                    "@type": "PostalAddress",
+                    "addressRegion": "IA",
+                    "addressCountry": "US"
+                  }
+                }
+              ],
+              "openingHoursSpecification": [
+                {
+                  "@type": "OpeningHoursSpecification",
+                  "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+                  "opens": "07:00",
+                  "closes": "18:00"
+                }
+              ],
+              "sameAs": [],
+              "aggregateRating": {
+                "@type": "AggregateRating",
+                "ratingValue": "5",
+                "reviewCount": "5"
+              },
+              "hasOfferCatalog": {
+                "@type": "OfferCatalog",
+                "name": "Electrical Services",
+                "itemListElement": [
+                  {
+                    "@type": "Offer",
+                    "itemOffered": {
+                      "@type": "Service",
+                      "name": "Residential Electrical Repair",
+                      "description": "Expert residential electrical repair and installation services"
+                    }
+                  },
+                  {
+                    "@type": "Offer",
+                    "itemOffered": {
+                      "@type": "Service",
+                      "name": "Commercial Electrical Services",
+                      "description": "Professional commercial electrical repair and installation"
+                    }
+                  },
+                  {
+                    "@type": "Offer",
+                    "itemOffered": {
+                      "@type": "Service",
+                      "name": "Agricultural Electrical Services",
+                      "description": "Specialized agricultural electrical systems and repairs"
+                    }
+                  },
+                  {
+                    "@type": "Offer",
+                    "itemOffered": {
+                      "@type": "Service",
+                      "name": "Generator Installation",
+                      "description": "Generac generator sales, installation, and maintenance"
+                    }
+                  },
+                  {
+                    "@type": "Offer",
+                    "itemOffered": {
+                      "@type": "Service",
+                      "name": "Security Camera Installation",
+                      "description": "Low-voltage communications and security camera systems"
+                    }
+                  },
+                  {
+                    "@type": "Offer",
+                    "itemOffered": {
+                      "@type": "Service",
+                      "name": "Electrical Service Upgrades",
+                      "description": "Electrical panel upgrades and service installations"
+                    }
+                  },
+                  {
+                    "@type": "Offer",
+                    "itemOffered": {
+                      "@type": "Service",
+                      "name": "Emergency Electrical Repair",
+                      "description": "24/7 emergency electrical repair services"
+                    }
+                  }
+                ]
+              }
+            })
+          }}
+        />
       </head>
       <body className="bg-white">
         {/* Top banner */}
@@ -193,7 +379,7 @@ export default function RootLayout({ children }) {
                   className="h-10 w-auto brightness-0 invert"
                 />
                 <p className="text-sm leading-6 text-gray-300">
-                  Licensed & Insured electrical contractor serving Larrabee, Storm Lake, Cherokee, and all surrounding areas in Iowa since 2020.
+                  Licensed & Insured electrician and electrical contractor serving Larrabee, Storm Lake, Cherokee, Aurelia and all surrounding areas in Iowa since 2020. Professional electrician services for residential, commercial, and agricultural electrical needs.
                 </p>
                 <div className="flex gap-x-4">
                   <a href="tel:7122997004" className="text-gray-400 hover:text-white transition-colors">

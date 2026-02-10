@@ -20,6 +20,21 @@ import ag1 from "@/public/images/ag1.jpg";
 import ag2 from "@/public/images/ag2.jpg";
 
 import gen1 from "@/public/images/gen1.jpg";
+import gen2 from "@/public/images/gen2.png";
+
+import emp1 from "@/public/images/emp1.jpeg";
+import emp2 from "@/public/images/emp2.png";
+import emp3 from "@/public/images/emp3.jpg";
+import emp4 from "@/public/images/emp4.jpg";
+import emp5 from "@/public/images/emp5.jpg";
+
+export const empImages = [
+  { src: emp1, alt: "first" },
+  { src: emp2, alt: "second" },
+  { src: emp3, alt: "third" },
+  { src: emp4, alt: "fourth" },
+  { src: emp5, alt: "fifth" },
+];
 
 export const commImages = [
   { src: comm1, alt: "first" },
@@ -48,6 +63,7 @@ export const agImages = [
 ];
 export const genImages = [
   { src: gen1, alt: "first" },
+  { src: gen2, alt: "second" },
   
 
 ];

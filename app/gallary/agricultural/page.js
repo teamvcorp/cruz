@@ -2,10 +2,10 @@
 import PictureContainer from "@/app/components/PictureContainer";
 import {agImages} from '@/app/lib/images/images'
 
-const agricultural = () => {
+const Agricultural = () => {
   return (
     <PictureContainer imageSrc={agImages}/>
   )
 };
 
-export default agricultural
+export default Agricultural
