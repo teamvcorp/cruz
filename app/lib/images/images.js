@@ -23,7 +23,7 @@ import gen1 from "@/public/images/gen1.jpg";
 import gen2 from "@/public/images/gen2.png";
 
 import emp1 from "@/public/images/emp1.jpeg";
-import emp2 from "@/public/images/emp2.png";
+import emp2 from "@/public/images/emp2.jpg";
 import emp3 from "@/public/images/emp3.jpg";
 import emp4 from "@/public/images/emp4.jpg";
 import emp5 from "@/public/images/emp5.jpg";

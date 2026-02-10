@@ -103,7 +103,7 @@ const GalleryIndex = () => {
                     src={employee.imageUrl}
                     alt={employee.name}
                     fill
-                    className="object-cover"
+                    className="object-cover object-top"
                     sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 25vw"
                   />
                 </div>
