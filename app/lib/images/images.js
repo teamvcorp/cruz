@@ -20,7 +20,7 @@ import ag1 from "@/public/images/ag1.jpg";
 import ag2 from "@/public/images/ag2.jpg";
 
 import gen1 from "@/public/images/gen1.jpg";
-import gen2 from "@/public/images/gen2.png";
+import gen2 from "@/public/images/gen2.PNG";
 
 import emp1 from "@/public/images/emp1.jpeg";
 import emp2 from "@/public/images/emp2.jpg";
