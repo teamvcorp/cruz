@@ -3,6 +3,16 @@ import Image from 'next/image'
 import { ArrowRightIcon } from '@heroicons/react/24/outline'
 import { StarIcon, TrophyIcon } from '@heroicons/react/24/solid'
 import {empImages} from '@/app/lib/images/images'
+import { pageMetadata } from '@/app/lib/site'
+
+export const metadata = pageMetadata({
+  title: 'Electrical Project Gallery & Our Team | Cruz Electric',
+  description:
+    'Browse completed residential, commercial, agricultural, communications and Generac generator projects by Cruz Electric, and meet our licensed electricians serving northwest Iowa.',
+  keywords:
+    'electrical project gallery, electrician portfolio Iowa, Cruz Electric team, licensed electricians Storm Lake IA',
+  path: '/gallary',
+})
 
 const galleries = [
   { name: 'Residential', href: '/gallary/residential', color: 'bg-cruz-blue' },

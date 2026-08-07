@@ -1,16 +1,15 @@
 import Image from "next/image";
 import Link from "next/link";
 import { PhoneIcon, EnvelopeIcon, MapPinIcon, CheckCircleIcon } from '@heroicons/react/24/solid'
+import { SITE, pageMetadata } from '@/app/lib/site'
 
-export const metadata = {
+export const metadata = pageMetadata({
   title: 'Electrician Cherokee County IA | Licensed Electrical Contractor | Cruz Electric',
   description: 'Expert electrician serving all of Cherokee County IA including Cherokee, Aurelia, Larrabee, Marcus. Electrical repair, installation & service. Call (712) 299-7004.',
   keywords: 'electrician Cherokee County IA, electrical contractor Cherokee County, electrician Cherokee IA, electrician Aurelia, electrician Marcus IA, licensed electrician Iowa',
-  openGraph: {
-    title: 'Electrician Cherokee County IA | Licensed Electrical Contractor',
-    description: 'Expert electrician serving all of Cherokee County IA. Professional electrical services. Call (712) 299-7004',
-  }
-}
+  // Self-referencing canonical: tells Google THIS url is the original.
+  path: '/locations/cherokee-county',
+})
 
 const services = [
   'Residential Electrical Repair',
@@ -55,17 +54,17 @@ export default function CherokeeCountyPage() {
             <p className="mt-6 text-lg leading-8 text-gray-600">
               Since 2020, Cruz Electric has been Cherokee County's trusted electrical contractor. From Cherokee to Aurelia to Larrabee and beyond, we provide expert electrical repair, service, and installations throughout the county.
             </p>
-            <div className="mt-10 flex items-center gap-x-4">
+            <div className="mt-10 flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-x-4">
               <a
-                href="tel:7122997004"
-                className="rounded-md bg-cruz-red px-6 py-3 text-sm font-semibold text-white shadow-sm hover:bg-red-500"
+                href={SITE.phoneHref}
+                className="rounded-md bg-cruz-red px-6 py-3 text-center text-sm font-semibold text-white shadow-sm hover:bg-red-500"
               >
                 <PhoneIcon className="inline-block h-5 w-5 mr-2" />
                 Call (712) 299-7004
               </a>
               <a
                 href="mailto:cruzelectric712@gmail.com?subject=Cherokee County Electrical Service Request"
-                className="rounded-md bg-cruz-blue px-6 py-3 text-sm font-semibold text-white shadow-sm hover:bg-blue-600"
+                className="rounded-md bg-cruz-blue px-6 py-3 text-center text-sm font-semibold text-white shadow-sm hover:bg-blue-600"
               >
                 <EnvelopeIcon className="inline-block h-5 w-5 mr-2" />
                 Email Us
@@ -177,7 +176,7 @@ export default function CherokeeCountyPage() {
             </p>
             <div className="mt-10 flex items-center justify-center gap-x-6">
               <a
-                href="tel:7122997004"
+                href={SITE.phoneHref}
                 className="rounded-md bg-cruz-red px-8 py-3 text-lg font-semibold text-white shadow-sm hover:bg-red-500"
               >
                 Call (712) 299-7004

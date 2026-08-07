@@ -1,9 +1,7 @@
-'use client'
-
 import Image from "next/image";
 import Link from "next/link";
-import { Disclosure, DisclosureButton, DisclosurePanel } from '@headlessui/react'
-import { PlusIcon, MinusIcon } from '@heroicons/react/24/outline'
+import FaqAccordion from "@/app/components/FaqAccordion";
+import { SITE, quoteMailto } from "@/app/lib/site";
 import {
   BoltIcon,
   BuildingOffice2Icon,
@@ -122,20 +120,68 @@ const faqs = [
   },
 ]
 
+/**
+ * FAQPage structured data, generated from the same `faqs` array the accordion
+ * renders -- so the markup can never disagree with the visible text, which is
+ * exactly what Google penalises.
+ */
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqs.map((faq) => ({
+    '@type': 'Question',
+    name: faq.question,
+    acceptedAnswer: { '@type': 'Answer', text: faq.answer },
+  })),
+}
+
+/** Individual customer reviews, matching the testimonials rendered below. */
+const reviewSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Electrician',
+  '@id': `${SITE.url}/#business`,
+  name: SITE.name,
+  review: testimonials.map((t) => ({
+    '@type': 'Review',
+    author: { '@type': 'Person', name: t.name },
+    reviewRating: { '@type': 'Rating', ratingValue: '5', bestRating: '5' },
+    reviewBody: t.text,
+  })),
+}
+
 export default function Home() {
   return (
     <div className="bg-white">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(faqSchema).replace(/</g, '\\u003c'),
+        }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(reviewSchema).replace(/</g, '\\u003c'),
+        }}
+      />
+
       {/* Hero Section */}
       <div className="relative isolate overflow-hidden">
-        {/* Background image */}
+        {/* Background image. This is the Largest Contentful Paint element on
+            the site, so it carries `priority` (preloaded, never lazy) and a
+            fetchPriority hint. The source was a 437x372 file being stretched
+            full-bleed; it is now a real 2400x1350 photo. */}
         <div className="absolute inset-0 -z-10">
           <Image
             src="/hero.jpg"
-            alt="Cruz Electric hero"
+            alt=""
+            aria-hidden="true"
             fill
             sizes="100vw"
+            quality={70}
             className="object-cover brightness-50"
             priority
+            fetchPriority="high"
           />
         </div>
 
@@ -163,16 +209,16 @@ export default function Home() {
             </p>
             <div className="mt-10 flex flex-col gap-4 sm:flex-row sm:items-center">
               <a
-                href="mailto:cruzelectric712@gmail.com?subject=Please reach out to me for a quote"
+                href={quoteMailto}
                 className="rounded-md bg-cruz-red px-6 py-3 text-center text-sm font-semibold text-white shadow-lg hover:bg-red-500 transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cruz-red"
               >
                 Request A Quote
               </a>
               <a
-                href="tel:7122997004"
+                href={SITE.phoneHref}
                 className="rounded-md bg-white/10 px-6 py-3 text-center text-sm font-semibold text-white ring-1 ring-inset ring-white/20 hover:bg-white/20 transition-colors"
               >
-                Call (712) 299-7004
+                Call {SITE.phoneDisplay}
               </a>
             </div>
           </div>
@@ -434,24 +480,7 @@ export default function Home() {
             <p className="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
               Frequently Asked Questions
             </p>
-            <dl className="mt-10 divide-y divide-gray-900/10">
-              {faqs.map((faq) => (
-                <Disclosure key={faq.question} as="div" className="py-6 first:pt-0 last:pb-0">
-                  <dt>
-                    <DisclosureButton className="group flex w-full items-start justify-between text-left text-gray-900">
-                      <span className="text-base font-semibold leading-7">{faq.question}</span>
-                      <span className="ml-6 flex h-7 items-center">
-                        <PlusIcon aria-hidden="true" className="h-6 w-6 group-data-[open]:hidden" />
-                        <MinusIcon aria-hidden="true" className="h-6 w-6 hidden group-data-[open]:block" />
-                      </span>
-                    </DisclosureButton>
-                  </dt>
-                  <DisclosurePanel as="dd" className="mt-2 pr-12">
-                    <p className="text-base leading-7 text-gray-600">{faq.answer}</p>
-                  </DisclosurePanel>
-                </Disclosure>
-              ))}
-            </dl>
+            <FaqAccordion faqs={faqs} />
           </div>
         </div>
       </div>
@@ -469,13 +498,13 @@ export default function Home() {
           </div>
           <div className="mt-6 flex flex-col gap-3 sm:flex-row lg:mt-0 lg:shrink-0">
             <a
-              href="tel:7122997004"
+              href={SITE.phoneHref}
               className="inline-flex items-center justify-center rounded-md bg-white px-5 py-2.5 text-sm font-semibold text-cruz-red shadow-sm hover:bg-gray-100 transition-colors"
             >
               Call Us Today
             </a>
             <a
-              href="mailto:cruzelectric712@gmail.com?subject=Apprenticeship Program Inquiry"
+              href={`mailto:${SITE.email}?subject=Apprenticeship Program Inquiry`}
               className="inline-flex items-center justify-center rounded-md bg-white/10 px-5 py-2.5 text-sm font-semibold text-white ring-1 ring-inset ring-white/20 hover:bg-white/20 transition-colors"
             >
               Learn More <span aria-hidden="true" className="ml-1">&rarr;</span>

@@ -18,6 +18,11 @@
 # misc
 .DS_Store
 *.pem
+# Windows Explorer thumbnail caches. Two of these were committed into public/
+# and were therefore being served to the open internet.
+Thumbs.db
+ehthumbs.db
+Desktop.ini
 
 # debug
 npm-debug.log*

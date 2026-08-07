@@ -2,14 +2,47 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap');
+/*
+  The Lato @import that used to live here was removed. An @import inside a CSS
+  file is render-blocking AND serialised: the browser had to download this
+  stylesheet, parse it, then open a fresh connection to fonts.googleapis.com,
+  then another to fonts.gstatic.com, before any text could paint. Lato is now
+  self-hosted through next/font/google in app/layout.js -- same origin, no
+  extra round trips, and no layout shift on swap.
+*/
 
 @layer base {
   html {
     scroll-behavior: smooth;
+    /* Stops iOS Safari from inflating text in landscape. */
+    -webkit-text-size-adjust: 100%;
   }
+
   body {
     @apply font-sans antialiased;
+  }
+
+  /*
+    Belt-and-braces guard against horizontal scroll on phones. The decorative
+    blurred gradient blobs on the homepage are ~68rem wide and deliberately
+    positioned outside the viewport; without this, some mobile browsers let the
+    body scroll sideways to reveal them.
+  */
+  body {
+    overflow-x: hidden;
+  }
+
+  /* Never let a media element force the page wider than the screen. */
+  img,
+  video,
+  svg {
+    max-width: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
   }
 }
 

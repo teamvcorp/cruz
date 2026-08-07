@@ -1,16 +1,15 @@
 import Image from "next/image";
 import Link from "next/link";
 import { PhoneIcon, EnvelopeIcon, MapPinIcon, CheckCircleIcon } from '@heroicons/react/24/solid'
+import { SITE, pageMetadata } from '@/app/lib/site'
 
-export const metadata = {
+export const metadata = pageMetadata({
   title: 'Electrician Aurelia IA | Local Electrical Repair & Service | Cruz Electric',
   description: 'Licensed electrician serving Aurelia IA. Residential, commercial & agricultural electrical repair and installation. Fast, reliable service. Call (712) 299-7004.',
   keywords: 'electrician Aurelia IA, electrical repair Aurelia, emergency electrician Aurelia Iowa, generator installation Aurelia, residential electrician Aurelia, commercial electrician Cherokee County',
-  openGraph: {
-    title: 'Electrician Aurelia IA | Local Electrical Repair & Service',
-    description: 'Licensed electrician serving Aurelia IA. Fast, reliable electrical service. Call (712) 299-7004',
-  }
-}
+  // Self-referencing canonical: tells Google THIS url is the original.
+  path: '/locations/aurelia',
+})
 
 const services = [
   'Residential Electrical Repair',
@@ -44,17 +43,17 @@ export default function AureliaPage() {
             <p className="mt-6 text-lg leading-8 text-gray-600">
               Cruz Electric provides professional electrical services to Aurelia and the surrounding Cherokee County area. From residential repairs to agricultural installations, we're your local electrical experts.
             </p>
-            <div className="mt-10 flex items-center gap-x-4">
+            <div className="mt-10 flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-x-4">
               <a
-                href="tel:7122997004"
-                className="rounded-md bg-cruz-red px-6 py-3 text-sm font-semibold text-white shadow-sm hover:bg-red-500"
+                href={SITE.phoneHref}
+                className="rounded-md bg-cruz-red px-6 py-3 text-center text-sm font-semibold text-white shadow-sm hover:bg-red-500"
               >
                 <PhoneIcon className="inline-block h-5 w-5 mr-2" />
                 Call (712) 299-7004
               </a>
               <a
                 href="mailto:cruzelectric712@gmail.com?subject=Aurelia Electrical Service Request"
-                className="rounded-md bg-cruz-blue px-6 py-3 text-sm font-semibold text-white shadow-sm hover:bg-blue-600"
+                className="rounded-md bg-cruz-blue px-6 py-3 text-center text-sm font-semibold text-white shadow-sm hover:bg-blue-600"
               >
                 <EnvelopeIcon className="inline-block h-5 w-5 mr-2" />
                 Email Us
@@ -157,7 +156,7 @@ export default function AureliaPage() {
             </p>
             <div className="mt-10 flex items-center justify-center gap-x-6">
               <a
-                href="tel:7122997004"
+                href={SITE.phoneHref}
                 className="rounded-md bg-cruz-red px-8 py-3 text-lg font-semibold text-white shadow-sm hover:bg-red-500"
               >
                 Call (712) 299-7004

@@ -17,7 +17,9 @@ module.exports = {
         },
       },
       fontFamily: {
-        sans: ['Lato', 'sans-serif'],
+        // --font-lato is provided by next/font/google in app/layout.js. The
+        // fallback stack matters: it is what renders during the swap window.
+        sans: ['var(--font-lato)', 'system-ui', 'sans-serif'],
       },
     },
   },

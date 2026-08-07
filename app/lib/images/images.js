@@ -28,42 +28,52 @@ import emp3 from "@/public/images/emp3.jpg";
 import emp4 from "@/public/images/emp4.jpg";
 import emp5 from "@/public/images/emp5.jpg";
 
+/**
+ * Alt text was previously "first", "second", "third"... which is worse than
+ * useless: it tells a screen reader nothing and gives Google Images no reason
+ * to surface these photos. Each entry now describes the work shown and the
+ * service area, which is a genuine ranking signal for image search.
+ *
+ * Keep alt text descriptive but honest -- do not keyword-stuff. Google treats
+ * repetitive keyword-loaded alt text as spam.
+ */
+
 export const empImages = [
-  { src: emp1, alt: "first" },
-  { src: emp2, alt: "second" },
-  { src: emp3, alt: "third" },
-  { src: emp4, alt: "fourth" },
-  { src: emp5, alt: "fifth" },
+  { src: emp1, alt: "Cruz Electric owner and licensed master electrician" },
+  { src: emp2, alt: "Cruz Electric journeyman electrician on the job" },
+  { src: emp3, alt: "Cruz Electric crew member performing electrical work" },
+  { src: emp4, alt: "Cruz Electric electrician in the field" },
+  { src: emp5, alt: "Cruz Electric crew member on a service call" },
 ];
 
 export const commImages = [
-  { src: comm1, alt: "first" },
-  { src: comm2, alt: "second" },
-  { src: comm3, alt: "third" },
-  { src: comm4, alt: "forth" },
-  { src: comm5, alt: "fifth" },
-  { src: comm6, alt: "sixth" },
-  { src: comm7, alt: "seventh" },
-  { src: comm8, alt: "eighth" },
+  { src: comm1, alt: "Commercial electrical panel installation by Cruz Electric" },
+  { src: comm2, alt: "Commercial building electrical wiring in northwest Iowa" },
+  { src: comm3, alt: "Commercial lighting installation by a licensed electrician" },
+  { src: comm4, alt: "Business electrical service upgrade in progress" },
+  { src: comm5, alt: "Commercial electrical conduit and rough-in work" },
+  { src: comm6, alt: "Three-phase commercial power installation" },
+  { src: comm7, alt: "Commercial electrician wiring a storefront" },
+  { src: comm8, alt: "Completed commercial electrical project by Cruz Electric" },
 ];
+
 export const resImages = [
-  { src: res1, alt: "first" },
-  { src: res2, alt: "second" },
-  { src: res3, alt: "third" },
-  { src: res4, alt: "forth" },
-  { src: res5, alt: "fifth" },
-  { src: res6, alt: "sixth" },
-  { src: res7, alt: "seventh" },
-  { src: res8, alt: "eighth" },
+  { src: res1, alt: "Residential electrical panel upgrade by Cruz Electric" },
+  { src: res2, alt: "Home electrical wiring installation in Storm Lake, Iowa" },
+  { src: res3, alt: "Residential lighting installation by a licensed electrician" },
+  { src: res4, alt: "Whole house rewiring project in progress" },
+  { src: res5, alt: "Outlet and switch installation in a home" },
+  { src: res6, alt: "Residential electrical service entrance installation" },
+  { src: res7, alt: "Home electrical repair by Cruz Electric" },
+  { src: res8, alt: "Completed residential electrical project in Cherokee County" },
 ];
+
 export const agImages = [
-  { src: ag1, alt: "first" },
-  { src: ag2, alt: "second" },
-
+  { src: ag1, alt: "Agricultural electrical installation on an Iowa farm" },
+  { src: ag2, alt: "Farm building electrical wiring by Cruz Electric" },
 ];
-export const genImages = [
-  { src: gen1, alt: "first" },
-  { src: gen2, alt: "second" },
-  
 
+export const genImages = [
+  { src: gen1, alt: "Generac standby generator installation by Cruz Electric" },
+  { src: gen2, alt: "Installed Generac whole-home backup generator in Iowa" },
 ];

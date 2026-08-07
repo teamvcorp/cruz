@@ -1,16 +1,15 @@
 import Image from "next/image";
 import Link from "next/link";
 import { PhoneIcon, EnvelopeIcon, CheckCircleIcon, BoltIcon, ShieldCheckIcon, ClockIcon, StarIcon } from '@heroicons/react/24/solid'
+import { SITE, pageMetadata } from '@/app/lib/site'
 
-export const metadata = {
-  title: 'Professional Electrician | Licensed Electrical Contractor | Residential & Commercial Electrician',
+export const metadata = pageMetadata({
+  title: 'Professional Electrician | Electrical Contractor | Cruz Electric',
   description: 'Experienced electrician providing expert electrical services. Licensed electrician for residential, commercial & agricultural electrical repair, installation & service. Call (712) 299-7004.',
   keywords: 'electrician, professional electrician, licensed electrician, electrical contractor, residential electrician, commercial electrician, emergency electrician, electrician near me, certified electrician, local electrician, electrical services, electrical repair, electrical installation',
-  openGraph: {
-    title: 'Professional Electrician | Licensed Electrical Contractor',
-    description: 'Experienced electrician providing expert electrical services. Licensed & insured. Call (712) 299-7004',
-  }
-}
+  // Self-referencing canonical: tells Google THIS url is the original.
+  path: '/electrician',
+})
 
 const services = [
   'Residential Electrical Services',
@@ -74,15 +73,15 @@ export default function ElectricianPage() {
             </p>
             <div className="mt-10 flex items-center justify-center gap-x-4">
               <a
-                href="tel:7122997004"
-                className="rounded-md bg-cruz-red px-6 py-3 text-sm font-semibold text-white shadow-sm hover:bg-red-500"
+                href={SITE.phoneHref}
+                className="rounded-md bg-cruz-red px-6 py-3 text-center text-sm font-semibold text-white shadow-sm hover:bg-red-500"
               >
                 <PhoneIcon className="inline-block h-5 w-5 mr-2" />
                 Call Electrician: (712) 299-7004
               </a>
               <a
                 href="mailto:cruzelectric712@gmail.com?subject=Electrician Service Request"
-                className="rounded-md bg-cruz-blue px-6 py-3 text-sm font-semibold text-white shadow-sm hover:bg-blue-600"
+                className="rounded-md bg-cruz-blue px-6 py-3 text-center text-sm font-semibold text-white shadow-sm hover:bg-blue-600"
               >
                 <EnvelopeIcon className="inline-block h-5 w-5 mr-2" />
                 Email Us
@@ -191,7 +190,7 @@ export default function ElectricianPage() {
                 When you need an emergency electrician, we respond fast. Our electricians provide 24/7 emergency electrical services for urgent electrical issues. Power outages, electrical fires, circuit problems — our emergency electrician service is here when you need it most.
               </p>
               <a
-                href="tel:7122997004"
+                href={SITE.phoneHref}
                 className="mt-6 text-sm font-semibold text-cruz-red hover:text-red-700"
               >
                 Call Emergency Electrician <span aria-hidden="true">→</span>
@@ -243,7 +242,7 @@ export default function ElectricianPage() {
             </p>
             <div className="mt-10 flex items-center justify-center gap-x-6">
               <a
-                href="tel:7122997004"
+                href={SITE.phoneHref}
                 className="rounded-md bg-cruz-red px-8 py-3 text-lg font-semibold text-white shadow-sm hover:bg-red-500"
               >
                 Call Electrician: (712) 299-7004

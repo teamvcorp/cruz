@@ -1,23 +1,24 @@
-"use client"
-import PictureContainer from "@/app/components/PictureContainer";
-import { commImages } from "@/app/lib/images/images";
-import Link from "next/link";
-import { HomeIcon } from '@heroicons/react/24/solid';
+import PictureContainer from "@/app/components/PictureContainer"
+import { commImages } from "@/app/lib/images/images"
+import { pageMetadata } from "@/app/lib/site"
 
-const Communications = () => {
+// Server component. This page used to be 'use client', which made it
+// impossible to export metadata -- so it shipped with no title, no
+// description and no canonical of its own. PictureContainer stays a client
+// component; only it needs the carousel JS.
+export const metadata = pageMetadata({
+  title: "Security Camera & Low-Voltage Gallery | Cruz Electric",
+  description: "Security camera and low-voltage communications installations by Cruz Electric in Storm Lake, Cherokee and northwest Iowa. Licensed & insured. Call (712) 299-7004.",
+  keywords: "security camera installation Iowa, low voltage electrician, data cabling Storm Lake IA, camera system installer Cherokee IA",
+  path: "/gallary/communications",
+})
+
+export default function CommunicationsGallery() {
   return (
-    <div className="min-h-screen bg-gray-50">
-      <div className="mx-auto max-w-4xl px-4 pt-8 sm:px-6 lg:px-8">
-        <h1 className="text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl">
-          Communications Gallery
-        </h1>
-        <p className="mt-2 text-sm leading-6 text-gray-600">
-          Browse our communications and low-voltage project work.
-        </p>
-      </div>
-      <PictureContainer imageSrc={commImages} />
-    </div>
-  );
-};
-
-export default Communications;
+    <PictureContainer
+      imageSrc={commImages}
+      title="Communications & Low-Voltage Projects"
+      description="Security camera installations and low-voltage communications work by Cruz Electric across Storm Lake, Cherokee and surrounding Iowa communities."
+    />
+  )
+}

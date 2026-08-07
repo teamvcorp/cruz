@@ -1,16 +1,65 @@
 /** @type {import('next').NextConfig} */
+
+/**
+ * Security response headers.
+ *
+ * Note on CSP: a strict script-src policy would need per-request nonces, which
+ * forces every page out of static generation and into dynamic rendering -- a
+ * real load-speed cost for a marketing site. We therefore ship the headers that
+ * are free, plus a frame-ancestors CSP (clickjacking protection only, no effect
+ * on script execution) rather than a full policy.
+ */
+const securityHeaders = [
+  // Tell browsers to only ever reach this origin over HTTPS.
+  {
+    key: 'Strict-Transport-Security',
+    value: 'max-age=63072000; includeSubDomains; preload',
+  },
+  // Stop the browser guessing a response's type (MIME-confusion attacks).
+  { key: 'X-Content-Type-Options', value: 'nosniff' },
+  // Clickjacking: modern browsers honour frame-ancestors, older ones XFO.
+  { key: 'Content-Security-Policy', value: "frame-ancestors 'self'" },
+  { key: 'X-Frame-Options', value: 'SAMEORIGIN' },
+  // Send the full URL same-origin, origin-only cross-origin, nothing on downgrade.
+  { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
+  // Drop powerful APIs this site never uses.
+  {
+    key: 'Permissions-Policy',
+    value: 'camera=(), microphone=(), geolocation=(), interest-cohort=()',
+  },
+]
+
 const nextConfig = {
+  // Don't advertise the framework/version to attackers scanning for CVEs.
+  poweredByHeader: false,
+  compress: true,
+  reactStrictMode: true,
+
   images: {
+    // AVIF first (roughly 30% smaller than WebP), WebP as the fallback, and
+    // the original format for anything that supports neither. next/image
+    // content-negotiates per request.
+    formats: ['image/avif', 'image/webp'],
     deviceSizes: [640, 750, 828, 1080, 1200, 1920],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
-    remotePatterns: [
+    // Optimised derivatives are immutable for a month; the source files only
+    // change on deploy, and the URL hash changes with them.
+    minimumCacheTTL: 2678400,
+    // The images.unsplash.com pattern that used to be here was unused. An open
+    // remotePatterns entry turns /_next/image into an open proxy that third
+    // parties can drive at your bandwidth, so it is removed rather than left.
+    remotePatterns: [],
+  },
+
+  async headers() {
+    return [
+      { source: '/:path*', headers: securityHeaders },
       {
-        protocol: 'https',
-        hostname: 'images.unsplash.com',
-        port: '',
-        pathname: '/**',
+        // Fingerprinted build assets are safe to cache forever.
+        source: '/_next/static/:path*',
+        headers: [{ key: 'Cache-Control', value: 'public, max-age=31536000, immutable' }],
       },
-    ],
+    ]
   },
 }
 

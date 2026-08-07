@@ -1,0 +1,165 @@
+# SEO, Mobile & Performance Optimization — 2026-08-07
+
+Reference notes for the Cruz Electric site (Next.js 14 App Router).
+Supersedes the technical claims in `LOCAL-SEO-NEXT-STEPS.md` and
+`ELECTRICIAN-KEYWORD-SEO-ENHANCEMENT.md`, which describe keyword work that was
+real but was being silently cancelled out by the bug described below.
+
+---
+
+## 1. The bug that was undoing the previous SEO work
+
+`app/layout.js` was marked `'use client'` and wrote its own `<head>` by hand.
+
+In the App Router, page-level `export const metadata` still runs — but the
+layout's hardcoded tags are emitted **as well**. Every page therefore shipped:
+
+- two `<title>` tags
+- two `<meta name="description">` tags
+- `<link rel="canonical" href="https://cruzelectric.com">` — **the homepage URL,
+  on every single page**
+
+That canonical is an instruction to Google saying "this page is a duplicate of
+the homepage; index the homepage instead." All six `/locations/*` pages,
+`/electrician`, and every gallery page were asking to be de-indexed. The
+keyword work in the two older docs could not rank while that was in place.
+
+### Verified before
+
+```
+$ grep -o '<title>[^<]*</title>' .next/server/app/locations/storm-lake.html
+<title>Electrician in Storm Lake, Cherokee, Aurelia & Larrabee IA | ...</title>
+<title>Electrician Storm Lake IA | 24/7 Electrical Repair & Service | ...</title>
+$ grep -o '<link rel="canonical"[^>]*>' .next/server/app/locations/storm-lake.html
+<link rel="canonical" href="https://cruzelectric.com"/>
+```
+
+### Verified after
+
+```
+/locations/storm-lake   titles: 1   descriptions: 1
+<link rel="canonical" href="https://cruzelectric.com/locations/storm-lake"/>
+<meta property="og:image" content="https://cruzelectric.com/og-image.jpg"/>
+```
+
+### The rule to keep
+
+**`app/layout.js` must stay a server component.** If it ever needs `useState`,
+put the stateful part in a child client component — that is exactly why
+`app/components/SiteHeader.js` exists. Never hand-write `<head>` in a layout;
+use the `metadata` export.
+
+---
+
+## 2. What changed
+
+### SEO
+
+| Change | File |
+|---|---|
+| Root layout → server component, real `metadata` export | `app/layout.js` |
+| Interactive nav split out (only client component in the chrome) | `app/components/SiteHeader.js` |
+| `metadataBase` set — killed 3 build warnings, fixes relative OG URLs | `app/layout.js` |
+| Self-referencing canonical on every page via `pageMetadata()` | `app/lib/site.js` |
+| `og:image` / `twitter:image` — previously **absent site-wide** | `public/og-image.jpg` |
+| 5 gallery pages given titles, descriptions, canonicals, `<h1>`, body copy | `app/gallary/*/page.js` |
+| Gallery image `alt` text: `"first"`, `"second"` → descriptive | `app/lib/images/images.js` |
+| `FAQPage` + `Review` JSON-LD added, generated from the rendered arrays | `app/page.js` |
+| NAP centralised so it cannot drift (local-SEO consistency signal) | `app/lib/site.js` |
+| Sitemap derived from config instead of a hand-maintained list | `app/sitemap.js` |
+| `/electrician` title 101 chars → 64 (Google truncates near 60) | `app/electrician/page.js` |
+| Footer service-area links so location pages aren't near-orphans | `app/components/SiteFooter.js` |
+
+Note: `openGraph` in Next metadata is **shallow-merged**. A page that defines
+`openGraph` replaces the layout's entirely — which is why every subpage was
+losing `og:image`, `og:url` and `og:site_name`. `pageMetadata()` handles this.
+
+### Mobile
+
+- All six location pages: CTA row was `flex items-center gap-x-4`, two buttons
+  side by side, overflowing at 375px. Now stacks below `sm:`.
+- Touch targets raised to 44×44 (menu, close, footer icons, carousel arrows).
+- Tap-to-call button added beside the mobile menu button — the primary
+  conversion action is no longer buried inside the menu.
+- Footer link columns go single-column below `sm:` instead of two cramped ones.
+- `overflow-x: hidden` on `body` — the decorative blurred gradient blobs on the
+  homepage are ~68rem wide and positioned off-viewport by design.
+- FAQ answer padding `pr-12` → `pr-2 sm:pr-12`; it was clipping text on phones.
+- `prefers-reduced-motion` respected for smooth scrolling.
+
+### Load speed
+
+- **Images: 72.7 MB → 12.08 MB.** All photos were committed straight off a
+  camera (4032×3024 and up). `commercial.jpg` alone was 5797 KB → 278 KB.
+  Resized to the largest size the layout can actually display, ×2 for retina.
+- `hero.jpg` was **437×372 stretched full-bleed** — visibly blurry. Regenerated
+  at 2400×1350 from the unused 6480×4320 `electrician.jpg`.
+- Lato moved from a render-blocking `@import` of `fonts.googleapis.com` in
+  `globals.css` to `next/font/google`. Self-hosted, no extra DNS+TLS round
+  trips, and emits a `size-adjust` fallback face so the swap causes no layout
+  shift.
+- AVIF + WebP enabled. Measured: mobile hero **26.8 KB** WebP @828px,
+  57 KB AVIF @1920px.
+- Carousel: only slide 1 is `priority`; slides 2-8 are explicitly lazy. Embla
+  keeps all slides mounted in an overflow-hidden track, so without this the
+  browser can be tricked into fetching all eight photos on load.
+- Homepage is now a server component (FAQ accordion extracted). Route JS
+  13.6 kB → 6.57 kB.
+- Dropped unused deps: `react-bingmaps`, `@react-google-maps/api`,
+  `react-icons`, `sass`.
+- Deleted dead code: `_document.js` (Pages Router leftover referencing an
+  undefined `NEXT_PUBLIC_GA_TRACKING_ID` — **Google Analytics was never
+  running**), `BingMap.js`, `GoogleMap.js`, `Card.js`, 3 orphan stylesheets,
+  9 unused images incl. a 2.2 MB `cruz.svg`.
+
+### Security
+
+- `npm audit`: **5 vulnerabilities (1 critical, 4 high) → 2 high.**
+  Next 14.1.0 → 14.2.35 cleared the critical; sharp → 0.35.3.
+- Response headers added in `next.config.js`: HSTS, `X-Content-Type-Options`,
+  `Referrer-Policy`, `Permissions-Policy`, `frame-ancestors` CSP +
+  `X-Frame-Options`. `poweredByHeader: false`.
+- Removed an unused `images.unsplash.com` entry from `remotePatterns`. An open
+  remote pattern turns `/_next/image` into a proxy third parties can drive at
+  your bandwidth (this is also advisory GHSA-9g9p-9gw9-jx7f).
+- Two `Thumbs.db` files were committed inside `public/` and therefore served to
+  the open internet. Deleted and added to `.gitignore`.
+- JSON-LD is escaped (`</` → `<`) before injection.
+
+**No strict script CSP.** It would require per-request nonces, which forces
+every page out of static generation into dynamic rendering — a real load-speed
+cost on a marketing site. Documented in `next.config.js`.
+
+---
+
+## 3. Still outstanding
+
+1. **Next.js 14 → 15/16.** Two high-severity advisories remain and are only
+   fixed in a major release. Most do not apply here (no Server Actions, no
+   middleware, no rewrites, no custom server, no Pages Router), and removing the
+   open `remotePatterns` already mitigated one. Still worth scheduling — this is
+   a breaking upgrade that needs its own testing pass.
+2. **`/gallary/communications` and `/gallary/commercial` render the same photo
+   set** (`commImages`). Pre-existing. Two pages with identical imagery is a
+   thin/duplicate-content signal. Needs real communications photos.
+3. **Google Analytics is not installed.** Dead code removed; nothing wired up.
+   Add `@next/third-parties` `GoogleAnalytics` once a GA4 ID (`G-XXXXXXX`)
+   exists.
+4. **`aggregateRating` is self-declared.** Google does not show review snippets
+   for self-serving LocalBusiness reviews. Real ratings come from the Google
+   Business Profile — still the highest-leverage item, see
+   `LOCAL-SEO-NEXT-STEPS.md`.
+5. **Location page titles run 70-83 chars** and will truncate in results. Left
+   as-is because the important keywords are front-loaded; trim if desired.
+6. **`sameAs: []` is empty** in the business schema. Add Google Business
+   Profile / Facebook URLs when available — these are strong entity signals.
+7. Employee names on `/gallary` are placeholders ("Two Dudes", "Crew Members").
+
+## 4. Verify after any future change
+
+```bash
+npm run build
+# exactly one of each, and a canonical matching the page's own path:
+grep -c '<title>' .next/server/app/locations/storm-lake.html   # must be 1
+grep -o '<link rel="canonical"[^>]*>' .next/server/app/locations/storm-lake.html
+```
