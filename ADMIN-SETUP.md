@@ -148,3 +148,26 @@ simply wrong.
 > visitors. No data or capability was exposed — every route rejects
 > independently, so the list came back empty and writes were refused — but it
 > looked signed in. Fixed: only an explicit `200` now counts as authenticated.
+
+---
+
+## Managing the team
+
+The **Team** tab adds and removes the electricians shown on `/gallary`.
+
+- **Add** — photo, name, role. A head-and-shoulders shot works best; the cards
+  are tall. Alt text is generated for you from the name and role rather than
+  asked for twice.
+- **Publish** — new people are drafts until you publish them, same as photos.
+- **Reorder** — arrows move someone up or down. This is the order visitors
+  see, so put the owner first.
+- **Edit** — fix a name or role without re-uploading the photo.
+- **Remove** — deletes the person and their photo permanently.
+
+**Publishing one real person replaces all the placeholder cards at once.** That
+is deliberate: mixing a named electrician beside an anonymous "Electrician"
+card reads as though someone was left out. Add everyone, then publish.
+
+Team photos go through exactly the same pipeline as gallery photos, so **EXIF
+and GPS are stripped from portraits too** — a photo of a crew member taken on
+site does not carry that location.

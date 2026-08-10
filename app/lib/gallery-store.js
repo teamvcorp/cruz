@@ -21,6 +21,17 @@ const MANIFEST_PATH = 'gallery/manifest.json'
 
 export const CATEGORIES = ['residential', 'commercial', 'agricultural', 'communications', 'generator']
 
+/**
+ * Two kinds of item share this manifest:
+ *   'gallery' — project photos, filed under a CATEGORY
+ *   'team'    — crew members, with a name and role, shown on /gallary
+ *
+ * One manifest rather than two stores: the CRUD, the auth, the upload
+ * pipeline and the cache invalidation are identical, and only a handful of
+ * fields differ. A parallel team-store.js would have duplicated all of it.
+ */
+export const KINDS = ['gallery', 'team']
+
 const emptyManifest = () => ({ version: 1, items: [] })
 
 /**
@@ -71,18 +82,66 @@ async function writeManifest(manifest) {
   })
 }
 
-/** Photos for one gallery, newest first. Only published ones are public. */
+/**
+ * Photos for one gallery, newest first. Only published ones are public.
+ * Items predating the team feature have no `kind`, so treat those as gallery.
+ */
 export async function getPublishedItems(category) {
   const { items } = await readManifest('cached')
   return items
-    .filter((i) => i.published && (!category || i.category === category))
+    .filter((i) => i.published && (i.kind ?? 'gallery') === 'gallery')
+    .filter((i) => !category || i.category === category)
     .sort((a, b) => (a.uploadedAt < b.uploadedAt ? 1 : -1))
+}
+
+/**
+ * Published crew members, in display order.
+ *
+ * Sorted by `order` ascending so the owner controls who appears first —
+ * unlike the galleries, where newest-first is the sensible default.
+ */
+export async function getPublishedTeam() {
+  const { items } = await readManifest('cached')
+  return items
+    .filter((i) => i.published && i.kind === 'team')
+    .sort((a, b) => (a.order ?? 0) - (b.order ?? 0) || (a.uploadedAt < b.uploadedAt ? -1 : 1))
 }
 
 /** Everything, including drafts — admin UI only. */
 export async function getAllItems() {
   const { items } = await readManifest()
-  return items.sort((a, b) => (a.uploadedAt < b.uploadedAt ? 1 : -1))
+  return items
+    .map((i) => ({ ...i, kind: i.kind ?? 'gallery' }))
+    .sort((a, b) => (a.uploadedAt < b.uploadedAt ? 1 : -1))
+}
+
+/**
+ * Moves a crew member up or down the display order.
+ *
+ * Normalises the whole team to 0..n-1 first, so a manifest where order was
+ * never set (or has collided) still reorders predictably rather than doing
+ * nothing.
+ */
+export async function reorderTeam(id, direction) {
+  const manifest = await readManifest()
+  const team = manifest.items
+    .filter((i) => i.kind === 'team')
+    .sort((a, b) => (a.order ?? 0) - (b.order ?? 0))
+
+  const idx = team.findIndex((i) => i.id === id)
+  if (idx === -1) return false
+
+  const target = direction === 'up' ? idx - 1 : idx + 1
+  if (target < 0 || target >= team.length) return false
+
+  ;[team[idx], team[target]] = [team[target], team[idx]]
+  team.forEach((member, i) => {
+    const item = manifest.items.find((x) => x.id === member.id)
+    if (item) item.order = i
+  })
+
+  await writeManifest(manifest)
+  return true
 }
 
 export async function addItem(item) {
@@ -97,9 +156,12 @@ export async function updateItem(id, patch) {
   const idx = manifest.items.findIndex((i) => i.id === id)
   if (idx === -1) return null
 
-  // Whitelist the mutable fields. Never let a request overwrite id, url or
-  // dimensions, which are set server-side at upload time.
-  const allowed = ['published', 'alt', 'category']
+  // Whitelist the mutable fields. Never let a request overwrite id, url,
+  // kind or dimensions, which are set server-side at upload time.
+  const allowed =
+    manifest.items[idx].kind === 'team'
+      ? ['published', 'alt', 'name', 'role']
+      : ['published', 'alt', 'category']
   for (const key of allowed) {
     if (key in patch) manifest.items[idx][key] = patch[key]
   }

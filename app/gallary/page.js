@@ -4,7 +4,7 @@ import { ArrowRightIcon } from '@heroicons/react/24/outline'
 import { BoltIcon } from '@heroicons/react/24/solid'
 import { empImages } from '@/app/lib/images/images'
 import { pageMetadata } from '@/app/lib/site'
-import { getPublishedItems } from '@/app/lib/gallery-store'
+import { getPublishedItems, getPublishedTeam } from '@/app/lib/gallery-store'
 import Section from '@/app/components/ui/Section'
 import SectionHeading from '@/app/components/ui/SectionHeading'
 import Card from '@/app/components/ui/Card'
@@ -29,12 +29,14 @@ const galleries = [
 ]
 
 /**
- * TODO(owner): replace `name` with the crew's real names. These are
- * deliberately role-based rather than the previous "Two Dudes" / "Crew
- * Members" placeholders, but real names and real credentials are far stronger
- * trust signals on a trades site than anonymous labels.
+ * Fallback crew, shown only until the owner adds real people through /admin.
+ *
+ * Role-based rather than the previous "Two Dudes" / "Crew Members"
+ * placeholders, but still a placeholder: real names and credentials are a far
+ * stronger trust signal on a trades site than anonymous labels. Adding even
+ * one person in the admin Team tab replaces this list entirely.
  */
-const crew = [
+const fallbackCrew = [
   { name: 'Owner & master electrician', note: 'Licensed master electrician, Generac certified', src: empImages[0].src, alt: empImages[0].alt },
   { name: 'Journeyman electrician', note: 'Residential and commercial installations', src: empImages[1].src, alt: empImages[1].alt },
   { name: 'Journeyman electrician', note: 'Agricultural and farmstead systems', src: empImages[2].src, alt: empImages[2].alt },
@@ -49,6 +51,15 @@ export default async function GalleryIndex() {
       galleries.map(async (g) => [g.slug, (await getPublishedItems(g.slug)).length])
     )
   )
+
+  // All-or-nothing: as soon as one real electrician is published, drop the
+  // placeholders entirely. Mixing the two would put a named person next to an
+  // anonymous "Electrician" card and read as though someone was left out.
+  const managed = await getPublishedTeam()
+  const crew =
+    managed.length > 0
+      ? managed.map((m) => ({ name: m.name, note: m.role, src: m.url, alt: m.alt }))
+      : fallbackCrew
 
   return (
     <>

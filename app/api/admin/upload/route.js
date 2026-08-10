@@ -4,7 +4,7 @@ import { put } from '@vercel/blob'
 import sharp from 'sharp'
 import { randomUUID } from 'node:crypto'
 import { getAdminUser, isAdminConfigured } from '@/app/lib/auth'
-import { addItem, CATEGORIES } from '@/app/lib/gallery-store'
+import { addItem, CATEGORIES, KINDS } from '@/app/lib/gallery-store'
 
 /**
  * Owner photo upload.
@@ -85,17 +85,29 @@ export async function POST(request) {
   }
 
   const file = form.get('file')
+  const kind = String(form.get('kind') || 'gallery')
   const category = String(form.get('category') || '')
   const alt = String(form.get('alt') || '').trim()
+  const name = String(form.get('name') || '').trim()
+  const role = String(form.get('role') || '').trim()
 
   if (!file || typeof file.arrayBuffer !== 'function') return fail('No file was attached.', 400)
-  if (!CATEGORIES.includes(category)) return fail('Pick a gallery for this photo.', 400)
+  if (!KINDS.includes(kind)) return fail('Unknown upload type.', 400)
 
-  // Alt text is required, not optional. Every bundled gallery image has a
-  // written description for screen readers and image search; letting uploads
-  // through without one would quietly undo that.
-  if (alt.length < 10) return fail('Describe the photo in at least 10 characters.', 400)
-  if (alt.length > 200) return fail('Keep the description under 200 characters.', 400)
+  if (kind === 'gallery') {
+    if (!CATEGORIES.includes(category)) return fail('Pick a gallery for this photo.', 400)
+
+    // Alt text is required, not optional. Every bundled gallery image has a
+    // written description for screen readers and image search; letting
+    // uploads through without one would quietly undo that.
+    if (alt.length < 10) return fail('Describe the photo in at least 10 characters.', 400)
+    if (alt.length > 200) return fail('Keep the description under 200 characters.', 400)
+  } else {
+    if (name.length < 2) return fail("Enter the electrician's name.", 400)
+    if (name.length > 80) return fail('Keep the name under 80 characters.', 400)
+    if (role.length < 2) return fail('Enter a role, e.g. "Journeyman electrician".', 400)
+    if (role.length > 80) return fail('Keep the role under 80 characters.', 400)
+  }
 
   // 3. Size cap.
   if (typeof file.size === 'number' && file.size > MAX_BYTES) {
@@ -107,8 +119,10 @@ export async function POST(request) {
   if (input.length === 0) return fail('That file was empty.', 400)
 
   // 4. Magic bytes — never trust the extension or Content-Type.
-  const kind = sniffImageType(input)
-  if (!kind) {
+  //    Named `format` rather than `kind`: `kind` is the upload type
+  //    (gallery vs team) read from the form above.
+  const format = sniffImageType(input)
+  if (!format) {
     return fail('That file is not a photo. JPEG, PNG, WebP and HEIC are supported.', 415)
   }
 
@@ -126,7 +140,7 @@ export async function POST(request) {
   } catch (err) {
     // HEIC support depends on how libvips was built, so say something useful
     // rather than "processing failed".
-    if (kind === 'heif') {
+    if (format === 'heif') {
       return fail(
         'This server cannot read HEIC photos. On iPhone: Settings > Camera > Formats > Most Compatible, then re-take or convert to JPEG.',
         415
@@ -135,9 +149,10 @@ export async function POST(request) {
     return fail('That photo could not be processed. Try a different file.', 422)
   }
 
-  // 6. Server-generated path. The client filename never touches it.
+  // 6. Server-generated path. The client filename never touches it, so
+  //    "../../" and null bytes in it are irrelevant.
   const id = randomUUID()
-  const pathname = `gallery/${category}/${id}.jpg`
+  const pathname = kind === 'team' ? `team/${id}.jpg` : `gallery/${category}/${id}.jpg`
 
   let blob
   try {
@@ -150,19 +165,34 @@ export async function POST(request) {
     return fail('Could not save the photo. Please try again.', 502)
   }
 
-  const item = await addItem({
+  const base = {
     id,
+    kind,
     url: blob.url,
     pathname,
-    category,
-    alt,
     width: meta.width,
     height: meta.height,
     bytes: output.length,
     uploadedAt: new Date().toISOString(),
     uploadedBy: user,
     published: false, // review step — nothing goes public automatically
-  })
+  }
+
+  const item = await addItem(
+    kind === 'team'
+      ? {
+          ...base,
+          name,
+          role,
+          // Derived rather than asked for: the alt text of a staff portrait is
+          // just who it is, and making the owner write it twice invites
+          // mismatches.
+          alt: `${name}, ${role} at Cruz Electric`,
+          // Appended to the end of the running order; reorder from the admin UI.
+          order: Number.MAX_SAFE_INTEGER,
+        }
+      : { ...base, category, alt }
+  )
 
   return NextResponse.json({ item }, { status: 201 })
 }

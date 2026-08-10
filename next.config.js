@@ -52,10 +52,22 @@ const nextConfig = {
     // Optimised derivatives are immutable for a month; the source files only
     // change on deploy, and the URL hash changes with them.
     minimumCacheTTL: 2678400,
-    // The images.unsplash.com pattern that used to be here was unused. An open
-    // remotePatterns entry turns /_next/image into an open proxy that third
-    // parties can drive at your bandwidth, so it is removed rather than left.
-    remotePatterns: [],
+    // Owner uploads are served from Vercel Blob, so next/image has to be told
+    // that host is allowed — with an empty remotePatterns every uploaded photo
+    // is rejected with a 400.
+    //
+    // Scoped as tightly as the platform allows: HTTPS only, and only the
+    // *.public.blob.vercel-storage.com hostname Vercel issues. A broader entry
+    // (or the previous unused images.unsplash.com one) turns /_next/image into
+    // an open proxy third parties can drive at your bandwidth — see advisory
+    // GHSA-9g9p-9gw9-jx7f. Do not widen this.
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: '**.public.blob.vercel-storage.com',
+        pathname: '/**',
+      },
+    ],
   },
 
   async headers() {

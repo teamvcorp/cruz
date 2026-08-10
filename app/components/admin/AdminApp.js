@@ -10,6 +10,8 @@ import {
   EyeSlashIcon,
   TrashIcon,
   ArrowRightOnRectangleIcon,
+  ArrowUpIcon,
+  ArrowDownIcon,
 } from '@heroicons/react/24/solid'
 import Button from '@/app/components/ui/Button'
 
@@ -330,6 +332,300 @@ function UploadForm({ onUploaded }) {
 
 /* -------------------------------------------------------------------------- */
 
+/**
+ * Add a crew member. Same upload pipeline as a gallery photo — magic-byte
+ * checking, sharp re-encode, EXIF/GPS stripped — so a portrait taken on a job
+ * site cannot leak where it was shot either.
+ */
+function TeamForm({ onAdded }) {
+  const [file, setFile] = useState(null)
+  const [preview, setPreview] = useState('')
+  const [name, setName] = useState('')
+  const [role, setRole] = useState('')
+  const [busy, setBusy] = useState(false)
+  const [error, setError] = useState('')
+  const [done, setDone] = useState('')
+
+  useEffect(() => {
+    if (!file) {
+      setPreview('')
+      return
+    }
+    const url = URL.createObjectURL(file)
+    setPreview(url)
+    return () => URL.revokeObjectURL(url)
+  }, [file])
+
+  async function submit(e) {
+    e.preventDefault()
+    if (!file) return
+    setBusy(true)
+    setError('')
+    setDone('')
+    try {
+      const body = new FormData()
+      body.append('file', file)
+      body.append('kind', 'team')
+      body.append('name', name)
+      body.append('role', role)
+
+      const res = await fetch('/api/admin/upload', { method: 'POST', body })
+      const data = await res.json().catch(() => ({}))
+      if (!res.ok) {
+        setError(data.error || 'Could not add them.')
+        return
+      }
+      setDone(`${name} added as a draft. Press Publish to put them on the site.`)
+      setFile(null)
+      setName('')
+      setRole('')
+      e.target.reset()
+      onAdded(data.item)
+    } catch {
+      setError('Could not reach the server.')
+    } finally {
+      setBusy(false)
+    }
+  }
+
+  return (
+    <form onSubmit={submit} className="flex flex-col gap-5 rounded-sm bg-white p-6 ring-1 ring-gray-200">
+      <h2 className="font-display text-2xl font-extrabold uppercase text-gray-900">
+        Add an electrician
+      </h2>
+
+      <div>
+        <label htmlFor="team-file" className="mb-1.5 block text-sm font-semibold text-gray-900">
+          Photo
+        </label>
+        <input
+          id="team-file"
+          type="file"
+          accept="image/jpeg,image/png,image/webp,image/heic,image/heif"
+          required
+          onChange={(e) => setFile(e.target.files?.[0] ?? null)}
+          className="w-full rounded-sm border border-dashed border-gray-300 bg-gray-50 p-3 text-sm file:mr-3 file:rounded-sm file:border-0 file:bg-cruz-blue file:px-4 file:py-2.5 file:text-sm file:font-semibold file:text-white"
+        />
+        <p className="mt-1.5 text-xs text-gray-500">
+          A head-and-shoulders shot works best — these are shown in a tall card.
+        </p>
+      </div>
+
+      {preview && (
+        <img
+          src={preview}
+          alt="Selected photo preview"
+          className="max-h-64 w-full rounded-sm object-contain ring-1 ring-gray-200"
+        />
+      )}
+
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+        <div>
+          <label htmlFor="team-name" className="mb-1.5 block text-sm font-semibold text-gray-900">
+            Name
+          </label>
+          <input
+            id="team-name"
+            required
+            minLength={2}
+            maxLength={80}
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            placeholder="e.g. Isaac Cruz"
+            className={INPUT}
+          />
+        </div>
+        <div>
+          <label htmlFor="team-role" className="mb-1.5 block text-sm font-semibold text-gray-900">
+            Role
+          </label>
+          <input
+            id="team-role"
+            required
+            minLength={2}
+            maxLength={80}
+            value={role}
+            onChange={(e) => setRole(e.target.value)}
+            placeholder="e.g. Master electrician"
+            className={INPUT}
+          />
+        </div>
+      </div>
+
+      <Banner kind="error">{error}</Banner>
+      <Banner kind="ok">{done}</Banner>
+
+      <Button type="submit" variant="primary" size="lg" disabled={busy || !file}>
+        <ArrowUpTrayIcon className="h-5 w-5" aria-hidden="true" />
+        {busy ? 'Adding…' : 'Add to the team'}
+      </Button>
+    </form>
+  )
+}
+
+function TeamRow({ item, index, total, onChange, onDelete, onReorder }) {
+  const [busy, setBusy] = useState(false)
+  const [editing, setEditing] = useState(false)
+  const [name, setName] = useState(item.name ?? '')
+  const [role, setRole] = useState(item.role ?? '')
+  const [error, setError] = useState('')
+
+  async function patch(body) {
+    setBusy(true)
+    setError('')
+    try {
+      const res = await fetch('/api/admin/photos', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id: item.id, ...body }),
+      })
+      const data = await res.json().catch(() => ({}))
+      if (!res.ok) {
+        setError(data.error || 'Could not save.')
+        return null
+      }
+      return data
+    } finally {
+      setBusy(false)
+    }
+  }
+
+  async function saveDetails() {
+    const data = await patch({ name, role })
+    if (data?.item) {
+      onChange(data.item)
+      setEditing(false)
+    }
+  }
+
+  async function remove() {
+    if (!confirm(`Remove ${item.name} from the site? This cannot be undone.`)) return
+    setBusy(true)
+    try {
+      const res = await fetch(`/api/admin/photos?id=${encodeURIComponent(item.id)}`, {
+        method: 'DELETE',
+      })
+      if (res.ok) onDelete(item.id)
+    } finally {
+      setBusy(false)
+    }
+  }
+
+  return (
+    <li className="flex flex-col gap-4 rounded-sm bg-white p-4 ring-1 ring-gray-200 sm:flex-row">
+      <div className="relative h-40 w-full shrink-0 overflow-hidden rounded-sm bg-gray-100 sm:h-32 sm:w-24">
+        <Image src={item.url} alt={item.alt} fill sizes="96px" className="object-cover object-top" />
+      </div>
+
+      <div className="flex min-w-0 flex-1 flex-col gap-2">
+        <div className="flex flex-wrap items-center gap-2">
+          <span
+            className={`inline-flex items-center gap-1 rounded-sm px-2 py-1 text-xs font-bold uppercase tracking-wide ${
+              item.published ? 'bg-green-100 text-green-800' : 'bg-amber-100 text-amber-900'
+            }`}
+          >
+            {item.published ? (
+              <>
+                <CheckCircleIcon className="h-3.5 w-3.5" aria-hidden="true" /> On the site
+              </>
+            ) : (
+              'Draft'
+            )}
+          </span>
+          <span className="text-xs text-gray-500">
+            {index + 1} of {total}
+          </span>
+        </div>
+
+        {editing ? (
+          <div className="flex flex-col gap-2">
+            <input value={name} onChange={(e) => setName(e.target.value)} className={INPUT} aria-label="Name" />
+            <input value={role} onChange={(e) => setRole(e.target.value)} className={INPUT} aria-label="Role" />
+            <div className="flex gap-2">
+              <Button onClick={saveDetails} variant="primary" size="sm" disabled={busy}>
+                Save
+              </Button>
+              <button
+                type="button"
+                onClick={() => {
+                  setEditing(false)
+                  setName(item.name ?? '')
+                  setRole(item.role ?? '')
+                }}
+                className="rounded-sm px-3 py-2 text-sm font-semibold text-gray-700 hover:bg-gray-100"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        ) : (
+          <div>
+            <p className="font-display text-xl font-bold uppercase leading-tight text-gray-900">
+              {item.name}
+            </p>
+            <p className="text-sm text-gray-600">{item.role}</p>
+          </div>
+        )}
+
+        <Banner kind="error">{error}</Banner>
+
+        {!editing && (
+          <div className="mt-auto flex flex-wrap items-center gap-2 pt-1">
+            <Button
+              onClick={async () => {
+                const data = await patch({ published: !item.published })
+                if (data?.item) onChange(data.item)
+              }}
+              variant={item.published ? 'secondary' : 'primary'}
+              size="sm"
+              disabled={busy}
+            >
+              {item.published ? 'Unpublish' : 'Publish'}
+            </Button>
+            <button
+              type="button"
+              onClick={() => setEditing(true)}
+              disabled={busy}
+              className="rounded-sm px-3 py-2 text-sm font-semibold text-gray-700 hover:bg-gray-100"
+            >
+              Edit
+            </button>
+            <span className="flex gap-1">
+              <button
+                type="button"
+                onClick={() => onReorder(item.id, 'up')}
+                disabled={busy || index === 0}
+                className="inline-flex h-9 w-9 items-center justify-center rounded-sm bg-gray-100 text-gray-700 disabled:opacity-40"
+              >
+                <span className="sr-only">Move {item.name} up</span>
+                <ArrowUpIcon className="h-4 w-4" aria-hidden="true" />
+              </button>
+              <button
+                type="button"
+                onClick={() => onReorder(item.id, 'down')}
+                disabled={busy || index === total - 1}
+                className="inline-flex h-9 w-9 items-center justify-center rounded-sm bg-gray-100 text-gray-700 disabled:opacity-40"
+              >
+                <span className="sr-only">Move {item.name} down</span>
+                <ArrowDownIcon className="h-4 w-4" aria-hidden="true" />
+              </button>
+            </span>
+            <button
+              type="button"
+              onClick={remove}
+              disabled={busy}
+              className="inline-flex items-center gap-1.5 rounded-sm px-3 py-2 text-sm font-semibold text-red-700 hover:bg-red-50"
+            >
+              <TrashIcon className="h-4 w-4" aria-hidden="true" />
+              Remove
+            </button>
+          </div>
+        )}
+      </div>
+    </li>
+  )
+}
+
 function PhotoRow({ item, onChange, onDelete }) {
   const [busy, setBusy] = useState(false)
 
@@ -431,6 +727,7 @@ export default function AdminApp() {
   const [items, setItems] = useState([])
   const [loading, setLoading] = useState(false)
   const [configError, setConfigError] = useState(null)
+  const [tab, setTab] = useState('photos')
 
   /**
    * Fail closed.
@@ -494,8 +791,26 @@ export default function AdminApp() {
 
   if (!authed) return <LoginForm onSignedIn={load} />
 
-  const drafts = items.filter((i) => !i.published)
+  const photos = items.filter((i) => (i.kind ?? 'gallery') === 'gallery')
+  // Team is ordered by `order`, not upload date — the owner controls who
+  // appears first, so the admin list must match what the site shows.
+  const team = items
+    .filter((i) => i.kind === 'team')
+    .sort((a, b) => (a.order ?? 0) - (b.order ?? 0))
+
   const live = items.filter((i) => i.published)
+  const drafts = items.filter((i) => !i.published)
+
+  async function reorder(id, move) {
+    const res = await fetch('/api/admin/photos', {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ id, move }),
+    })
+    // Reordering rewrites `order` across the whole team, so refetch rather
+    // than trying to mirror the server's arithmetic on the client.
+    if (res.ok) load()
+  }
 
   return (
     <div className="mx-auto max-w-4xl px-5 py-8 sm:px-6">
@@ -523,33 +838,102 @@ export default function AdminApp() {
         </div>
       </header>
 
-      <UploadForm onUploaded={(item) => setItems((prev) => [item, ...prev])} />
+      {/* Two jobs, two tabs — the forms are different enough that stacking
+          both on one screen made the page long and easy to mis-fill. */}
+      <div className="mb-6 flex gap-1 border-b-2 border-gray-200" role="tablist">
+        {[
+          { id: 'photos', label: `Gallery photos (${photos.length})` },
+          { id: 'team', label: `Team (${team.length})` },
+        ].map((t) => (
+          <button
+            key={t.id}
+            type="button"
+            role="tab"
+            aria-selected={tab === t.id}
+            onClick={() => setTab(t.id)}
+            className={`-mb-0.5 border-b-4 px-4 py-3 font-display text-lg font-bold uppercase tracking-wide transition ${
+              tab === t.id
+                ? 'border-cruz-blue text-cruz-blue'
+                : 'border-transparent text-gray-500 hover:text-gray-900'
+            }`}
+          >
+            {t.label}
+          </button>
+        ))}
+      </div>
 
-      <section className="mt-10">
-        <h2 className="font-display text-2xl font-extrabold uppercase text-gray-900">Your photos</h2>
+      {tab === 'photos' ? (
+        <>
+          <UploadForm onUploaded={(item) => setItems((prev) => [item, ...prev])} />
 
-        {loading && <p className="mt-4 text-sm text-gray-500">Loading…</p>}
+          <section className="mt-10">
+            <h2 className="font-display text-2xl font-extrabold uppercase text-gray-900">
+              Your photos
+            </h2>
 
-        {!loading && items.length === 0 && (
-          <p className="mt-4 rounded-sm bg-white p-6 text-sm text-gray-600 ring-1 ring-gray-200">
-            No uploads yet. The galleries are still showing the photos built into the site — adding
-            one here adds to them rather than replacing them.
-          </p>
-        )}
+            {loading && <p className="mt-4 text-sm text-gray-500">Loading…</p>}
 
-        <ul role="list" className="mt-4 flex flex-col gap-3">
-          {items.map((item) => (
-            <PhotoRow
-              key={item.id}
-              item={item}
-              onChange={(updated) =>
-                setItems((prev) => prev.map((i) => (i.id === updated.id ? updated : i)))
-              }
-              onDelete={(id) => setItems((prev) => prev.filter((i) => i.id !== id))}
-            />
-          ))}
-        </ul>
-      </section>
+            {!loading && photos.length === 0 && (
+              <p className="mt-4 rounded-sm bg-white p-6 text-sm text-gray-600 ring-1 ring-gray-200">
+                No uploads yet. The galleries are still showing the photos built into the site —
+                adding one here adds to them rather than replacing them.
+              </p>
+            )}
+
+            <ul role="list" className="mt-4 flex flex-col gap-3">
+              {photos.map((item) => (
+                <PhotoRow
+                  key={item.id}
+                  item={item}
+                  onChange={(updated) =>
+                    setItems((prev) => prev.map((i) => (i.id === updated.id ? updated : i)))
+                  }
+                  onDelete={(id) => setItems((prev) => prev.filter((i) => i.id !== id))}
+                />
+              ))}
+            </ul>
+          </section>
+        </>
+      ) : (
+        <>
+          <TeamForm onAdded={(item) => setItems((prev) => [item, ...prev])} />
+
+          <section className="mt-10">
+            <h2 className="font-display text-2xl font-extrabold uppercase text-gray-900">
+              Your team
+            </h2>
+            <p className="mt-1 text-sm text-gray-600">
+              Shown on the gallery page in this order. Published people replace the placeholder
+              crew built into the site.
+            </p>
+
+            {loading && <p className="mt-4 text-sm text-gray-500">Loading…</p>}
+
+            {!loading && team.length === 0 && (
+              <p className="mt-4 rounded-sm bg-white p-6 text-sm text-gray-600 ring-1 ring-gray-200">
+                No electricians added yet. Until you add someone, the site shows the placeholder
+                crew cards.
+              </p>
+            )}
+
+            <ul role="list" className="mt-4 flex flex-col gap-3">
+              {team.map((item, i) => (
+                <TeamRow
+                  key={item.id}
+                  item={item}
+                  index={i}
+                  total={team.length}
+                  onChange={(updated) =>
+                    setItems((prev) => prev.map((x) => (x.id === updated.id ? updated : x)))
+                  }
+                  onDelete={(id) => setItems((prev) => prev.filter((x) => x.id !== id))}
+                  onReorder={reorder}
+                />
+              ))}
+            </ul>
+          </section>
+        </>
+      )}
     </div>
   )
 }

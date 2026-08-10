@@ -2,7 +2,14 @@ import { cookies } from 'next/headers'
 import { NextResponse } from 'next/server'
 import { revalidatePath, revalidateTag } from 'next/cache'
 import { getAdminUser, missingAdminConfig } from '@/app/lib/auth'
-import { getAllItems, updateItem, removeItem, CATEGORIES, GALLERY_TAG } from '@/app/lib/gallery-store'
+import {
+  getAllItems,
+  updateItem,
+  removeItem,
+  reorderTeam,
+  CATEGORIES,
+  GALLERY_TAG,
+} from '@/app/lib/gallery-store'
 
 export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
@@ -58,11 +65,34 @@ export async function PATCH(request) {
     return NextResponse.json({ error: 'Invalid request.' }, { status: 400 })
   }
 
-  const { id, published, alt, category } = body ?? {}
+  const { id, published, alt, category, name, role, move } = body ?? {}
   if (!id) return NextResponse.json({ error: 'Missing photo id.' }, { status: 400 })
+
+  // Reordering is its own operation — it rewrites `order` across the whole
+  // team, not just one record, so it cannot go through the field whitelist.
+  if (move === 'up' || move === 'down') {
+    const ok = await reorderTeam(id, move)
+    if (!ok) return NextResponse.json({ error: 'Could not move that person.' }, { status: 400 })
+    revalidateGalleries()
+    return NextResponse.json({ ok: true })
+  }
 
   const patch = {}
   if (typeof published === 'boolean') patch.published = published
+  if (typeof name === 'string') {
+    const trimmed = name.trim()
+    if (trimmed.length < 2 || trimmed.length > 80) {
+      return NextResponse.json({ error: 'Name must be 2–80 characters.' }, { status: 400 })
+    }
+    patch.name = trimmed
+  }
+  if (typeof role === 'string') {
+    const trimmed = role.trim()
+    if (trimmed.length < 2 || trimmed.length > 80) {
+      return NextResponse.json({ error: 'Role must be 2–80 characters.' }, { status: 400 })
+    }
+    patch.role = trimmed
+  }
   if (typeof alt === 'string') {
     const trimmed = alt.trim()
     if (trimmed.length < 10 || trimmed.length > 200) {
