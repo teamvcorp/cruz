@@ -8,10 +8,30 @@
  * business. Defining them once makes drift impossible.
  */
 
+/**
+ * PRODUCTION DOMAIN — the single most damaging value in this file to get wrong.
+ *
+ * It drives metadataBase, every canonical, og:url, the sitemap, robots.txt's
+ * Host directive and the JSON-LD @id. If it names a domain the site is not
+ * actually served from, every page tells Google "the real version of me lives
+ * over there" — which is an explicit instruction to de-index this one.
+ *
+ * That is not hypothetical. This was 'https://cruzelectric.com' until
+ * 2026-08-09 while the site was in fact served from electricbycruz.com, and
+ * the site dropped out of search results because of it. cruzelectric.com is a
+ * different site entirely and 404s on these paths.
+ *
+ * Overridable by env so it can be corrected without a code change, but the
+ * default must always be the real production domain.
+ */
+export const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL || 'https://electricbycruz.com')
+  .trim()
+  .replace(/\/+$/, '') // never allow a trailing slash — it doubles up in URLs
+
 export const SITE = {
   name: 'Cruz Electric',
   legalName: 'Cruz Electric',
-  url: 'https://cruzelectric.com',
+  url: SITE_URL,
 
   // NAP -- keep these byte-identical to the Google Business Profile.
   phoneDisplay: '(712) 299-7004',

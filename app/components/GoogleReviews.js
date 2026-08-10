@@ -29,7 +29,7 @@ import { useEffect, useRef, useState } from 'react'
  *
  * CONFIG
  * NEXT_PUBLIC_GOOGLE_MAPS_API_KEY  — restrict by HTTP referrer to
- *                                    cruzelectric.com/* AND to the Maps
+ *                                    electricbycruz.com/* AND to the Maps
  *                                    JavaScript API only. It is public by
  *                                    design; referrer restriction is the
  *                                    only thing preventing quota theft.

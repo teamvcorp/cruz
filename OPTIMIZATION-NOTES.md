@@ -312,3 +312,70 @@ against real storage. Test with one photo before relying on it.
    JavaScript API only
 4. `/gallary/communications` still renders the commercial photo set
 5. `sameAs: []` in the business schema — add the Google Business Profile URL
+
+---
+
+# CRITICAL — wrong production domain (found 2026-08-09)
+
+**The site dropped out of Google search results.** Root cause: every page
+declared a canonical pointing at a domain the site is not served from.
+
+The site is served from **`https://electricbycruz.com`**
+(`cruzelectriccontractor.com` forwards to it). `SITE.url` said
+`https://cruzelectric.com` — a **different site**, running Wix, that returns
+404 on every path this app serves.
+
+Evidence at the time:
+
+```
+electricbycruz.com/locations/storm-lake  → 200   (real site, fine)
+cruzelectric.com/locations/storm-lake    → 404   (different site)
+
+electricbycruz.com emitted:
+  <link rel="canonical" href="https://cruzelectric.com"/>
+  robots.txt:  Host: https://cruzelectric.com
+               Sitemap: https://cruzelectric.com/sitemap.xml
+```
+
+A cross-domain canonical is an explicit instruction to Google: *index that URL
+instead of this one.* Google obeyed. The target 404s, so nothing was indexed
+anywhere.
+
+## How it happened
+
+The wrong domain was inherited — the original `app/layout.js` hardcoded
+`<link rel="canonical" href="https://cruzelectric.com" />` and the original
+`sitemap.js` used it as `baseUrl`. The SEO rewrite adopted that value as
+`SITE.url` without verifying it against the live site, then fanned it out to
+every page's canonical, `og:url`, the JSON-LD `@id`, the sitemap and a new
+`Host:` directive. One wrong signal became a comprehensive one.
+
+The lesson is narrow and worth keeping: **verify the production domain against
+the running site before wiring it into `metadataBase`.** A single `curl` would
+have caught it at any point.
+
+## The fix
+
+- `SITE_URL` in `app/lib/site.js` is now `NEXT_PUBLIC_SITE_URL ||
+  'https://electricbycruz.com'`, trailing slash stripped. Nothing else
+  hardcodes a domain.
+- New `npm run check:seo` (`scripts/check-seo.js`) runs against the build
+  output and asserts, for every public page: exactly one `<title>`, exactly one
+  meta description, an `<h1>`, no `noindex`, and a canonical on the expected
+  host pointing at that page's own path.
+  Confirmed it catches this exact bug — pointed at the wrong domain it reports
+  28 problems across 14 pages.
+
+Note: `cruzelectric712@gmail.com` is the real contact email and has nothing to
+do with the domain. Do not "correct" it.
+
+## Recovery (owner actions, outside the code)
+
+1. Deploy the fix, then confirm `electricbycruz.com` emits canonicals on its
+   own domain.
+2. Google Search Console: add/verify `electricbycruz.com` as a property,
+   submit `https://electricbycruz.com/sitemap.xml`, and use **URL Inspection →
+   Request Indexing** on the homepage and the six location pages.
+3. If `cruzelectric.com` is yours, 301 it to `electricbycruz.com`. If it is
+   not, nothing to do — just never reference it again.
+4. Recovery takes days to weeks; Google must recrawl before pages return.

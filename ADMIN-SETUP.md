@@ -71,7 +71,7 @@ opposite effect from the one intended.
 
 ## 5. Test it end to end
 
-1. `cruzelectric.com/admin` → login form appears
+1. `electricbycruz.com/admin` → login form appears
 2. Sign in
 3. Upload one photo, pick a gallery, write the description
 4. It appears as a **Draft** — press **Publish**
