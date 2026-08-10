@@ -41,7 +41,14 @@ const nextConfig = {
     // content-negotiates per request.
     formats: ['image/avif', 'image/webp'],
     deviceSizes: [640, 750, 828, 1080, 1200, 1920],
-    imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
+    // 16 was dropped from Next 16's defaults: devicePixelRatio 2 means a 16px
+    // slot actually fetches the 32px candidate, so the entry only bloated
+    // every srcset. Nothing here renders below 32px.
+    imageSizes: [32, 48, 64, 96, 128, 256, 384],
+    // Next 16 changed the default to [75] and coerces any other value to the
+    // nearest allowed one. Without this, the hero's quality={70} and the
+    // carousel's quality={78} would be silently rewritten to 75.
+    qualities: [70, 75, 78],
     // Optimised derivatives are immutable for a month; the source files only
     // change on deploy, and the URL hash changes with them.
     minimumCacheTTL: 2678400,
@@ -52,14 +59,10 @@ const nextConfig = {
   },
 
   async headers() {
-    return [
-      { source: '/:path*', headers: securityHeaders },
-      {
-        // Fingerprinted build assets are safe to cache forever.
-        source: '/_next/static/:path*',
-        headers: [{ key: 'Cache-Control', value: 'public, max-age=31536000, immutable' }],
-      },
-    ]
+    // Note: no Cache-Control override for /_next/static here. Next already
+    // serves fingerprinted build output as immutable, and overriding it makes
+    // Next warn that it can break dev behaviour.
+    return [{ source: '/:path*', headers: securityHeaders }]
   },
 }
 

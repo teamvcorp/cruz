@@ -133,12 +133,23 @@ export const localBusinessSchema = {
       closes: '18:00',
     },
   ],
+  // Add the Google Business Profile and any social URLs here when available --
+  // sameAs is one of the strongest signals tying this markup to that profile.
   sameAs: [],
-  aggregateRating: {
-    '@type': 'AggregateRating',
-    ratingValue: '5',
-    reviewCount: '5',
-  },
+  /*
+    NO aggregateRating here, deliberately.
+
+    Google: "If the entity that's being reviewed controls the reviews about
+    itself, their pages that use LocalBusiness or any other type of
+    Organization structured data are ineligible for star review feature." That
+    covers testimonials published on your own site and Google reviews embedded
+    via a widget alike -- so a self-declared aggregateRating can never render
+    stars, and it is the element most associated with spammy-markup manual
+    actions. The individual Review objects on the homepage stay: they are
+    truthful, and they help AI/LLM search summarise the business.
+
+    Real star ratings come from the Google Business Profile, not from here.
+  */
   hasOfferCatalog: {
     '@type': 'OfferCatalog',
     name: 'Electrical Services',

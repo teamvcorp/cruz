@@ -12,7 +12,8 @@ import { SITE, footerNavigation, serviceAreas } from '@/app/lib/site'
  */
 export default function SiteFooter() {
   return (
-    <footer className="bg-gray-900" aria-labelledby="footer-heading">
+    <footer className="bg-cruz-ink" aria-labelledby="footer-heading">
+      <div className="hazard-stripe" aria-hidden="true" />
       <h2 id="footer-heading" className="sr-only">
         Footer
       </h2>
@@ -54,7 +55,7 @@ export default function SiteFooter() {
           {/* grid-cols-1 below sm: two columns of links at 320px wrap badly. */}
           <div className="mt-12 grid grid-cols-1 gap-8 sm:grid-cols-2 xl:col-span-2 xl:mt-0 xl:grid-cols-3">
             <div>
-              <h3 className="text-sm font-semibold leading-6 text-white">Services</h3>
+              <h3 className="font-display text-lg font-bold uppercase tracking-wide text-cruz-yellow">Services</h3>
               <ul role="list" className="mt-6 space-y-4">
                 {footerNavigation.services.map((item) => (
                   <li key={item.name}>
@@ -69,7 +70,7 @@ export default function SiteFooter() {
               </ul>
             </div>
             <div>
-              <h3 className="text-sm font-semibold leading-6 text-white">Company</h3>
+              <h3 className="font-display text-lg font-bold uppercase tracking-wide text-cruz-yellow">Company</h3>
               <ul role="list" className="mt-6 space-y-4">
                 {footerNavigation.company.map((item) => (
                   <li key={item.name}>
@@ -84,7 +85,7 @@ export default function SiteFooter() {
               </ul>
             </div>
             <div className="sm:col-span-2 xl:col-span-1">
-              <h3 className="text-sm font-semibold leading-6 text-white">Contact</h3>
+              <h3 className="font-display text-lg font-bold uppercase tracking-wide text-cruz-yellow">Contact</h3>
               <ul role="list" className="mt-6 space-y-4">
                 {footerNavigation.contact.map((item) => (
                   <li key={item.name}>
@@ -103,7 +104,7 @@ export default function SiteFooter() {
 
         {/* Service-area link block: internal linking for the location pages. */}
         <div className="mt-12 border-t border-white/10 pt-8">
-          <h3 className="text-sm font-semibold leading-6 text-white">Areas We Serve</h3>
+          <h3 className="font-display text-lg font-bold uppercase tracking-wide text-cruz-yellow">Areas We Serve</h3>
           <ul role="list" className="mt-4 flex flex-wrap gap-x-6 gap-y-2">
             {serviceAreas.map((area) => (
               <li key={area.slug}>

@@ -1,6 +1,7 @@
 import PictureContainer from "@/app/components/PictureContainer"
 import { commImages } from "@/app/lib/images/images"
 import { pageMetadata } from "@/app/lib/site"
+import { getPublishedItems } from "@/app/lib/gallery-store"
 
 // Server component. This page used to be 'use client', which made it
 // impossible to export metadata -- so it shipped with no title, no
@@ -13,10 +14,14 @@ export const metadata = pageMetadata({
   path: "/gallary/communications",
 })
 
-export default function CommunicationsGallery() {
+export default async function CommunicationsGallery() {
+  // Owner uploads from /admin are appended to the photos bundled with the
+  // site rather than replacing them.
+  const uploaded = await getPublishedItems("communications")
+
   return (
     <PictureContainer
-      imageSrc={commImages}
+      imageSrc={[...commImages, ...uploaded.map((u) => ({ src: u.url, alt: u.alt }))]}
       title="Communications & Low-Voltage Projects"
       description="Security camera installations and low-voltage communications work by Cruz Electric across Storm Lake, Cherokee and surrounding Iowa communities."
     />

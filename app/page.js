@@ -1,7 +1,5 @@
-import Image from "next/image";
-import Link from "next/link";
-import FaqAccordion from "@/app/components/FaqAccordion";
-import { SITE, quoteMailto } from "@/app/lib/site";
+import Image from 'next/image'
+import Link from 'next/link'
 import {
   BoltIcon,
   BuildingOffice2Icon,
@@ -9,53 +7,64 @@ import {
   VideoCameraIcon,
   CpuChipIcon,
   StarIcon,
+  PhoneIcon,
 } from '@heroicons/react/24/solid'
+import { SITE, quoteMailto, serviceAreas } from '@/app/lib/site'
+import { locations } from '@/app/lib/locations'
+import FaqAccordion from '@/app/components/FaqAccordion'
+import GoogleReviews from '@/app/components/GoogleReviews'
+import BottomCTA from '@/app/components/BottomCTA'
+import Section from '@/app/components/ui/Section'
+import SectionHeading from '@/app/components/ui/SectionHeading'
+import Card from '@/app/components/ui/Card'
+import Stat from '@/app/components/ui/Stat'
+import Button from '@/app/components/ui/Button'
 
 const services = [
   {
     title: 'Residential',
     href: '/gallary/residential',
-    color: 'bg-cruz-blue',
+    barClass: 'bg-cruz-blue',
     icon: BoltIcon,
     imageSrc: '/residential.jpg',
     description:
-      'At Cruz Electric, our residential electricians specialize in providing exceptional residential electrical repair services, ensuring that your home remains a safe, functional, and comfortable space for you and your loved ones. Understanding the critical importance of a well-maintained electrical system, our licensed electricians dedicate themselves to delivering electrical solutions that address your specific needs with precision and care.',
+      'Home electrical repair, panel and service upgrades, rewiring, lighting, outlets and GFCI protection. Our residential electricians work in houses of every age across northwest Iowa.',
   },
   {
     title: 'Commercial',
     href: '/gallary/commercial',
-    color: 'bg-cruz-yellow',
+    barClass: 'bg-cruz-dark-blue',
     icon: BuildingOffice2Icon,
     imageSrc: '/commercial.jpg',
     description:
-      'Cruz Electric is your trusted partner for comprehensive commercial electrical repair services. Our commercial electricians are dedicated to ensuring your business operations run smoothly and efficiently. We recognize the unique challenges and high standards required for commercial electrical systems, which is why our professional electricians offer specialized electrical repair solutions tailored to meet the demands of businesses of all sizes.',
+      'Three-phase power, storefront and office wiring, parking lot lighting, commercial panel upgrades and code compliance — scheduled around your business day, not ours.',
   },
   {
     title: 'Agricultural',
     href: '/gallary/agricultural',
-    color: 'bg-cruz-dark-blue',
+    barClass: 'bg-cruz-ink',
     icon: WrenchScrewdriverIcon,
     imageSrc: '/agricultural.jpg',
     description:
-      'In the dynamic and demanding world of agriculture, Cruz Electric stands out as your dependable source for specialized agricultural electrical repair services. Our agricultural electricians understand the critical role that reliable electrical systems play in the productivity and efficiency of agricultural operations, from small family farms to large agribusinesses. Our licensed electricians provide expert electrical service for all farm electrical needs.',
+      'Grain systems, livestock buildings, machine sheds and farmstead services. We size services for the equipment actually installed, not what was there when the yard was first wired.',
   },
   {
     title: 'Communications',
     href: '/gallary/communications',
-    color: 'bg-cruz-red',
+    barClass: 'bg-cruz-red',
     icon: VideoCameraIcon,
     imageSrc: '/communications.jpg',
     description:
-      'Cruz Electric excels in providing cutting-edge communications and low-voltage solutions, including the installation and repair of security cameras and other essential systems. Our certified electricians are experts in the latest technologies, ensuring your property is equipped with reliable and efficient communication networks and security measures. As professional electricians, we handle all your low-voltage electrical needs.',
+      'Security cameras, data cabling and low-voltage systems, installed by licensed electricians rather than left as an afterthought.',
   },
   {
-    title: 'Generator Install',
+    title: 'Generators',
     href: '/gallary/generator',
-    color: 'bg-cruz-blue-grey',
+    barClass: 'bg-cruz-blue-grey',
     icon: CpuChipIcon,
     imageSrc: '/generator.jpg',
     description:
-      'Cruz Electric is proud to specialize in the installation of Generac generators, offering top-tier solutions for uninterrupted power supply to homes and businesses alike. Our skilled electricians are trained and certified to install Generac generators, ensuring your installation is performed to the highest standards of safety and efficiency. As licensed electricians, we provide complete generator electrical installation and service.',
+      'Certified Generac installation and service. When the power goes out at the end of a rural line, a standby generator keeps the well, the sump and the livestock running.',
   },
 ]
 
@@ -74,11 +83,11 @@ const testimonials = [
   },
   {
     name: 'David Orthman',
-    text: 'I am very pleased with the work that Cruz Electric did for me installing my Generac generator. Though I obviously hope I don\'t need to use it I am confident it will take care of all my electrical needs if I do.',
+    text: "I am very pleased with the work that Cruz Electric did for me installing my Generac generator. Though I obviously hope I don't need to use it I am confident it will take care of all my electrical needs if I do.",
   },
   {
     name: 'Cat R',
-    text: 'Wonderful experience! They got an old house all fixed up. Fixed outside lighting that hadn\'t worked in over a decade. Couldn\'t be happier!',
+    text: "Wonderful experience! They got an old house all fixed up. Fixed outside lighting that hadn't worked in over a decade. Couldn't be happier!",
   },
 ]
 
@@ -111,7 +120,7 @@ const faqs = [
   {
     question: 'How can I request an electrician quote?',
     answer:
-      'You can request a quote from our electricians by calling us at (712) 299-7004 or by emailing us at cruzelectric712@gmail.com. Our electricians respond quickly to all inquiries and are happy to provide a free estimate for your electrical project. Whether you need an emergency electrician or scheduled electrical service, we\'re here to help.',
+      "You can request a quote from our electricians by calling us at (712) 299-7004 or by emailing us at cruzelectric712@gmail.com. Our electricians respond quickly to all inquiries and are happy to provide a free estimate for your electrical project. Whether you need an emergency electrician or scheduled electrical service, we're here to help.",
   },
   {
     question: 'Do you offer an electrician apprenticeship program?',
@@ -120,11 +129,8 @@ const faqs = [
   },
 ]
 
-/**
- * FAQPage structured data, generated from the same `faqs` array the accordion
- * renders -- so the markup can never disagree with the visible text, which is
- * exactly what Google penalises.
- */
+/** Generated from the same array the accordion renders, so the markup can
+ *  never disagree with the visible text. */
 const faqSchema = {
   '@context': 'https://schema.org',
   '@type': 'FAQPage',
@@ -135,7 +141,6 @@ const faqSchema = {
   })),
 }
 
-/** Individual customer reviews, matching the testimonials rendered below. */
 const reviewSchema = {
   '@context': 'https://schema.org',
   '@type': 'Electrician',
@@ -151,367 +156,304 @@ const reviewSchema = {
 
 export default function Home() {
   return (
-    <div className="bg-white">
+    <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify(faqSchema).replace(/</g, '\\u003c'),
-        }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema).replace(/</g, '\\u003c') }}
       />
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify(reviewSchema).replace(/</g, '\\u003c'),
-        }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(reviewSchema).replace(/</g, '\\u003c') }}
       />
 
-      {/* Hero Section */}
-      <div className="relative isolate overflow-hidden">
-        {/* Background image. This is the Largest Contentful Paint element on
-            the site, so it carries `priority` (preloaded, never lazy) and a
-            fetchPriority hint. The source was a 437x372 file being stretched
-            full-bleed; it is now a real 2400x1350 photo. */}
-        <div className="absolute inset-0 -z-10">
-          <Image
-            src="/hero.jpg"
-            alt=""
-            aria-hidden="true"
-            fill
-            sizes="100vw"
-            quality={70}
-            className="object-cover brightness-50"
-            priority
-            fetchPriority="high"
-          />
-        </div>
+      {/* ---------------- Hero ---------------- */}
+      <div className="relative isolate overflow-hidden bg-cruz-ink">
+        <Image
+          src="/hero.jpg"
+          alt=""
+          aria-hidden="true"
+          fill
+          sizes="100vw"
+          quality={70}
+          priority
+          fetchPriority="high"
+          className="-z-20 object-cover"
+        />
+        {/* Darker than the old brightness-50: condensed display type at this
+            size needs real separation from the photograph underneath. */}
+        <div
+          aria-hidden="true"
+          className="absolute inset-0 -z-10 bg-gradient-to-br from-cruz-ink/95 via-cruz-ink/75 to-cruz-dark-blue/60"
+        />
 
-        {/* Gradient blobs */}
-        <div aria-hidden="true" className="absolute -top-40 -z-10 transform-gpu blur-3xl sm:-top-80">
-          <div
-            style={{
-              clipPath:
-                'polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)',
-            }}
-            className="relative left-[calc(50%-11rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 rotate-[30deg] bg-gradient-to-tr from-cruz-yellow to-cruz-blue opacity-30 sm:left-[calc(50%-30rem)] sm:w-[72.1875rem]"
-          />
-        </div>
+        <div className="mx-auto max-w-7xl px-5 py-16 sm:px-6 sm:py-24 lg:px-8 lg:py-28">
+          <div className="max-w-3xl">
+            <p className="inline-flex items-center gap-2 rounded-sm bg-cruz-yellow px-3.5 py-2 font-display text-sm font-extrabold uppercase tracking-wider text-cruz-ink">
+              <BoltIcon className="h-4 w-4" aria-hidden="true" />
+              Licensed &amp; insured · since {SITE.foundingDate}
+            </p>
 
-        <div className="mx-auto max-w-7xl px-6 py-24 sm:py-32 lg:px-8 lg:py-40">
-          <div className="max-w-2xl">
-            <div className="mb-4 inline-flex items-center rounded-full bg-cruz-yellow/90 px-4 py-1.5 text-sm font-bold text-gray-900">
-              Licensed &amp; Insured — Serving Storm Lake, Cherokee, Aurelia, Larrabee &amp; All Buena Vista &amp; Cherokee Counties
-            </div>
-            <h1 className="text-4xl font-bold tracking-tight text-white sm:text-6xl">
-              Professional Electrician — Expert Electrical Solutions for Your Home, Business & Farm
+            <h1 className="mt-5 text-balance font-display text-6xl font-extrabold uppercase leading-[0.9] text-white sm:text-7xl lg:text-8xl">
+              Your local
+              <span className="block text-cruz-yellow">electrician</span>
             </h1>
-            <p className="mt-6 text-lg leading-8 text-gray-200">
-              Cruz Electric is your trusted local electrician providing reliable electrical repair, electrical service, and new electrical installations throughout Storm Lake, Cherokee, Aurelia, Larrabee, and all of Buena Vista and Cherokee Counties. As a licensed electrical contractor, we specialize in residential electrician services, commercial electrical work, agricultural electrical systems, and Generac generator installations. From emergency electrical repairs to complete electrical installations, we cruise right through it!
+
+            <div className="my-6 h-1.5 w-32 bg-cruz-red" aria-hidden="true" />
+
+            <p className="max-w-2xl text-lg leading-8 text-gray-200">
+              Residential, commercial and farm electrical work across Buena Vista and Cherokee
+              Counties. Panel upgrades, generators, rewires and emergency repair — from a licensed
+              electrical contractor who actually answers the phone.
             </p>
-            <div className="mt-10 flex flex-col gap-4 sm:flex-row sm:items-center">
-              <a
-                href={quoteMailto}
-                className="rounded-md bg-cruz-red px-6 py-3 text-center text-sm font-semibold text-white shadow-lg hover:bg-red-500 transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cruz-red"
-              >
-                Request A Quote
-              </a>
-              <a
-                href={SITE.phoneHref}
-                className="rounded-md bg-white/10 px-6 py-3 text-center text-sm font-semibold text-white ring-1 ring-inset ring-white/20 hover:bg-white/20 transition-colors"
-              >
+
+            <p className="mt-6 font-display text-sm font-bold uppercase tracking-[0.14em] text-cruz-yellow">
+              Storm Lake · Cherokee · Aurelia · Larrabee
+            </p>
+
+            <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
+              <Button href={SITE.phoneHref} variant="primary" size="lg">
+                <PhoneIcon className="h-5 w-5" aria-hidden="true" />
                 Call {SITE.phoneDisplay}
-              </a>
+              </Button>
+              <Button href={quoteMailto} variant="ghost" size="lg">
+                Request a quote
+              </Button>
+            </div>
+
+            <div className="mt-9 flex flex-wrap gap-x-7 gap-y-2 border-t border-white/15 pt-5 text-sm text-gray-300">
+              <span>
+                <b className="font-bold text-white">5.0</b> Google rating
+              </span>
+              <span>
+                <b className="font-bold text-white">Generac</b> certified installer
+              </span>
+              <span>
+                <b className="font-bold text-white">Free</b> estimates
+              </span>
             </div>
           </div>
         </div>
+        <div className="hazard-stripe" aria-hidden="true" />
       </div>
 
-      {/* Services Section */}
-      <div className="bg-gray-50 py-16 sm:py-24">
-        <div className="mx-auto max-w-7xl px-6 lg:px-8">
-          <div className="mx-auto max-w-2xl text-center">
-            <h2 className="text-base font-semibold leading-7 text-cruz-blue">Professional Electrician Services</h2>
-            <p className="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-              Comprehensive Electrical Services from Licensed Electricians
-            </p>
-            <p className="mt-6 text-lg leading-8 text-gray-600">
-              As your local electrician, Cruz Electric delivers quality electrical workmanship for every project. Our certified electricians are experts in all types of electrical work.
-            </p>
-          </div>
+      {/* ---------------- Services ---------------- */}
+      <Section tone="muted" space="md">
+        <SectionHeading
+          eyebrow="What we do"
+          title="Every job, wired to code"
+          intro="Five service areas, one licensed crew. Our certified electricians handle all types of electrical work across northwest Iowa."
+        />
 
-          <div className="mx-auto mt-12 grid max-w-md grid-cols-1 gap-8 sm:mt-16 md:max-w-2xl md:grid-cols-2 lg:max-w-none lg:grid-cols-3">
-            {services.map((service) => (
+        <div className="mt-12 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {services.map((service, i) => (
+            <Card key={service.title} tone="white" pad="none" className="group">
               <div
-                key={service.title}
-                className="group relative flex flex-col overflow-hidden rounded-2xl bg-white shadow-lg ring-1 ring-gray-200 transition-shadow hover:shadow-xl"
+                className={`${service.barClass} flex items-center justify-between gap-3 px-5 py-3`}
               >
-                {/* Service header bar */}
-                <div className={`${service.color} flex items-center gap-x-3 px-5 py-3`}>
-                  <service.icon className="h-6 w-6 text-white" />
-                  <h3 className="text-lg font-bold uppercase text-white tracking-wide">
-                    {service.title}
-                  </h3>
-                </div>
-
-                {/* Service image */}
-                <div className="relative h-48 w-full overflow-hidden">
-                  <Image
-                    src={service.imageSrc}
-                    alt={service.title}
-                    fill
-                    sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                    className="object-cover transition-transform duration-300 group-hover:scale-105"
-                  />
-                </div>
-
-                {/* Description */}
-                <div className="flex flex-1 flex-col p-5">
-                  <p className="flex-1 text-sm leading-6 text-gray-600">
-                    {service.description}
-                  </p>
-                  <Link
-                    href={service.href}
-                    className="mt-4 inline-flex items-center justify-center rounded-md bg-gray-900 px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-gray-700 transition-colors"
-                  >
-                    View Gallery
-                    <span aria-hidden="true" className="ml-2">&rarr;</span>
-                  </Link>
-                </div>
+                <h3 className="flex items-center gap-2.5 font-display text-xl font-extrabold uppercase tracking-wide text-white">
+                  <service.icon className="h-5 w-5" aria-hidden="true" />
+                  {service.title}
+                </h3>
+                {/* Numbered because this is a fixed catalogue repeated in the
+                    same order sitewide, not decoration. */}
+                <span className="font-display text-sm tracking-[0.12em] text-white/80 tabular-nums">
+                  {String(i + 1).padStart(2, '0')}
+                </span>
               </div>
-            ))}
-          </div>
-        </div>
-      </div>
 
-      {/* Electrician Services Keywords Section */}
-      <div className="bg-white py-16 sm:py-24">
-        <div className="mx-auto max-w-7xl px-6 lg:px-8">
-          <div className="mx-auto max-w-2xl text-center">
-            <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-              Your Trusted Local Electrician
-            </h2>
-            <p className="mt-6 text-lg leading-8 text-gray-600">
-              When you search for "electrician near me" or need electrical services, Cruz Electric is your local answer. Our licensed electricians provide professional electrical solutions for every need.
+              <div className="relative aspect-[16/10] w-full overflow-hidden">
+                <Image
+                  src={service.imageSrc}
+                  alt={`${service.title} electrical work by Cruz Electric`}
+                  fill
+                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                  className="object-cover transition-transform duration-300 group-hover:scale-105"
+                />
+              </div>
+
+              <div className="flex flex-1 flex-col gap-4 p-5">
+                <p className="flex-1 text-sm leading-6 text-gray-600">{service.description}</p>
+                <Link
+                  href={service.href}
+                  className="font-display text-base font-extrabold uppercase tracking-wide text-cruz-blue hover:text-cruz-dark-blue"
+                >
+                  See the work <span aria-hidden="true">&rarr;</span>
+                </Link>
+              </div>
+            </Card>
+          ))}
+        </div>
+      </Section>
+
+      {/* ---------------- Trust band ---------------- */}
+      <Section tone="ink" space="sm">
+        <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
+          <Stat value="5+" label="Years serving NW Iowa" />
+          <Stat value="100%" label="Licensed &amp; insured" />
+          <Stat value="5.0" label="Google review average" />
+          <Stat value="24/7" label="Emergency call-out" />
+        </div>
+      </Section>
+
+      {/* ---------------- Local electrician / keyword section ---------------- */}
+      <Section tone="white" space="md">
+        <SectionHeading
+          eyebrow="Electrician near me"
+          title="Your trusted local electrician"
+          intro="When you search for an electrician near you, Cruz Electric is the local answer. Our licensed electricians cover every kind of electrical work."
+        />
+        <div className="mt-12 grid grid-cols-1 gap-6 lg:grid-cols-3">
+          <Card tone="muted" pad="lg" className="border-l-4 border-cruz-blue">
+            <h3 className="font-display text-2xl font-bold uppercase text-gray-900">
+              Residential electrician
+            </h3>
+            <p className="mt-3 text-sm leading-6 text-gray-600">
+              Home electrical repairs, outlet installation, lighting upgrades, panel replacements,
+              circuit breaker repairs, whole house rewiring, GFCI installation, ceiling fan
+              installation, and all residential electrical needs.
             </p>
-          </div>
-          <div className="mx-auto mt-16 grid max-w-2xl grid-cols-1 gap-6 sm:mt-20 lg:mx-0 lg:max-w-none lg:grid-cols-3">
-            <div className="flex flex-col rounded-2xl bg-gray-50 p-8">
-              <h3 className="text-lg font-semibold text-gray-900">Residential Electrician</h3>
-              <p className="mt-4 text-sm text-gray-600">
-                Home electrical repairs, outlet installation, lighting upgrades, panel replacements, circuit breaker repairs, whole house rewiring, GFCI installation, ceiling fan installation, and all residential electrical needs.
-              </p>
-            </div>
-            <div className="flex flex-col rounded-2xl bg-gray-50 p-8">
-              <h3 className="text-lg font-semibold text-gray-900">Commercial Electrician</h3>
-              <p className="mt-4 text-sm text-gray-600">
-                Commercial electrical installations, parking lot lighting, storefront electrical, office wiring, electrical code compliance, three-phase power, commercial panel upgrades, and business electrical systems.
-              </p>
-            </div>
-            <div className="flex flex-col rounded-2xl bg-gray-50 p-8">
-              <h3 className="text-lg font-semibold text-gray-900">Emergency Electrician</h3>
-              <p className="mt-4 text-sm text-gray-600">
-                24/7 emergency electrical repair, power outage troubleshooting, electrical fire prevention, circuit breaker tripping issues, no power problems, electrical safety inspections, and urgent electrical repairs.
-              </p>
-            </div>
-          </div>
+          </Card>
+          <Card tone="muted" pad="lg" className="border-l-4 border-cruz-dark-blue">
+            <h3 className="font-display text-2xl font-bold uppercase text-gray-900">
+              Commercial electrician
+            </h3>
+            <p className="mt-3 text-sm leading-6 text-gray-600">
+              Commercial electrical installations, parking lot lighting, storefront electrical,
+              office wiring, electrical code compliance, three-phase power, commercial panel
+              upgrades, and business electrical systems.
+            </p>
+          </Card>
+          <Card tone="muted" pad="lg" className="border-l-4 border-cruz-red">
+            <h3 className="font-display text-2xl font-bold uppercase text-gray-900">
+              Emergency electrician
+            </h3>
+            <p className="mt-3 text-sm leading-6 text-gray-600">
+              24/7 emergency electrical repair, power outage troubleshooting, electrical fire
+              prevention, circuit breaker tripping issues, no power problems, electrical safety
+              inspections, and urgent electrical repairs.
+            </p>
+          </Card>
         </div>
-      </div>
+      </Section>
 
-      {/* About Section */}
-      <div id="about" className="relative overflow-hidden bg-gray-900 py-16 sm:py-24">
-        <div className="absolute inset-0">
-          <Image
-            src="/header.jpg"
-            alt="Cruz Electric team"
-            fill
-            sizes="100vw"
-            className="object-cover brightness-[0.15] saturate-50"
+      {/* ---------------- About ---------------- */}
+      <div id="about" className="relative isolate overflow-hidden bg-cruz-dark-blue">
+        <Image
+          src="/header.jpg"
+          alt=""
+          aria-hidden="true"
+          fill
+          sizes="100vw"
+          className="-z-20 object-cover"
+        />
+        <div aria-hidden="true" className="absolute inset-0 -z-10 bg-cruz-dark-blue/90" />
+        <div className="mx-auto max-w-7xl px-5 py-16 sm:px-6 sm:py-24 lg:px-8">
+          <SectionHeading
+            eyebrow="About your local electrician"
+            title="We cruise right through it"
+            tone="light"
+            intro={`Cruz Electric opened in ${SITE.foundingDate} in Cherokee, Iowa. As a licensed electrician and professional electrical contractor, we have expanded to serve Storm Lake, Aurelia, Larrabee, and all surrounding communities throughout Buena Vista County and Cherokee County. Whether you need an emergency electrician, residential electrician, commercial electrician, or agricultural electrical services, we are dedicated to serving our community with excellent, reliable electrical work.`}
           />
         </div>
-        <div aria-hidden="true" className="absolute -left-80 -top-56 transform-gpu blur-3xl">
-          <div
-            style={{
-              clipPath:
-                'polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)',
-            }}
-            className="aspect-[1097/845] w-[68.5625rem] bg-gradient-to-r from-cruz-yellow to-cruz-blue opacity-20"
-          />
-        </div>
-        <div className="relative mx-auto max-w-7xl px-6 lg:px-8">
-          <div className="mx-auto max-w-2xl lg:mx-0">
-            <h2 className="text-base font-semibold leading-7 text-cruz-yellow">About Your Local Electrician</h2>
-            <p className="mt-2 text-3xl font-bold tracking-tight text-white sm:text-4xl">
-              Licensed Electrician & Electrical Contractor — We Cruise Right Through It!
-            </p>
-            <p className="mt-6 text-lg leading-8 text-gray-300">
-              Cruz Electric opened in 2020 in Cherokee, Iowa. As a licensed electrician and professional electrical contractor, we have expanded to serve Storm Lake, Aurelia, Larrabee, and all surrounding communities throughout Buena Vista County and Cherokee County. Whether you need an emergency electrician, residential electrician, commercial electrician, or agricultural electrical services, we are dedicated to serving our community with excellent, reliable electrical services.
-            </p>
-          </div>
-
-          <div className="mx-auto mt-10 grid max-w-2xl grid-cols-1 gap-8 sm:grid-cols-3 lg:mx-0 lg:max-w-none">
-            <div className="flex flex-col items-center rounded-2xl bg-white/5 p-8 ring-1 ring-inset ring-white/10 backdrop-blur-sm">
-              <p className="text-4xl font-bold text-cruz-yellow">5+</p>
-              <p className="mt-2 text-sm text-gray-300">Years of Experience</p>
-            </div>
-            <div className="flex flex-col items-center rounded-2xl bg-white/5 p-8 ring-1 ring-inset ring-white/10 backdrop-blur-sm">
-              <p className="text-4xl font-bold text-cruz-yellow">100%</p>
-              <p className="mt-2 text-sm text-gray-300">Licensed &amp; Insured</p>
-            </div>
-            <div className="flex flex-col items-center rounded-2xl bg-white/5 p-8 ring-1 ring-inset ring-white/10 backdrop-blur-sm">
-              <p className="text-4xl font-bold text-cruz-yellow">5★</p>
-              <p className="mt-2 text-sm text-gray-300">Customer Reviews</p>
-            </div>
-          </div>
-        </div>
       </div>
 
-      {/* Testimonials / Reviews Section */}
-      <div id="reviews" className="bg-white py-16 sm:py-24">
-        <div className="mx-auto max-w-7xl px-6 lg:px-8">
-          <div className="mx-auto max-w-2xl text-center">
-            <h2 className="text-base font-semibold leading-7 text-cruz-blue">Client Testimonials</h2>
-            <p className="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-              Why Choose Our Electricians
-            </p>
-          </div>
+      {/* ---------------- Reviews: curated + live ---------------- */}
+      <Section tone="white" space="md" className="scroll-mt-28" id="reviews">
+        <SectionHeading
+          eyebrow="What customers say"
+          title="Five stars, five years running"
+        />
 
-          <div className="mx-auto mt-12 grid max-w-md grid-cols-1 gap-6 sm:mt-16 md:max-w-2xl md:grid-cols-2 lg:max-w-none lg:grid-cols-3">
-            {testimonials.map((review) => (
-              <div
-                key={review.name}
-                className="flex flex-col rounded-2xl bg-gray-50 p-6 shadow-sm ring-1 ring-gray-200"
+        <div className="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {testimonials.map((review) => (
+            <Card key={review.name} tone="muted" pad="md" className="border-t-4 border-cruz-blue">
+              <div className="flex gap-x-1" aria-label="5 out of 5 stars">
+                {[...Array(5)].map((_, i) => (
+                  <StarIcon key={i} className="h-5 w-5 text-cruz-yellow" aria-hidden="true" />
+                ))}
+              </div>
+              <blockquote className="mt-4 flex-1">
+                <p className="text-sm leading-6 text-gray-700">&ldquo;{review.text}&rdquo;</p>
+              </blockquote>
+              <p className="mt-4 border-t border-gray-200 pt-4 text-sm font-bold text-gray-900">
+                {review.name}
+              </p>
+            </Card>
+          ))}
+        </div>
+
+        {/* Renders only once a Place ID and API key are configured. */}
+        <div className="mt-10">
+          <GoogleReviews />
+        </div>
+      </Section>
+
+      {/* ---------------- Service areas ---------------- */}
+      <Section tone="muted" space="md">
+        <SectionHeading
+          eyebrow="Service areas"
+          title="Proudly serving northwest Iowa"
+          intro="Cruz Electric covers Buena Vista County, Cherokee County and the communities around them. Each area has its own page with the work we do there."
+        />
+        <ul role="list" className="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {locations.map((loc) => (
+            <li key={loc.slug}>
+              <Link
+                href={`/locations/${loc.slug}`}
+                className="flex h-full flex-col gap-1 rounded-sm border-l-4 border-cruz-yellow bg-white p-5 ring-1 ring-gray-200 transition-shadow hover:shadow-md"
               >
-                {/* Stars */}
-                <div className="flex gap-x-1">
-                  {[...Array(5)].map((_, i) => (
-                    <StarIcon key={i} className="h-5 w-5 text-cruz-yellow" />
-                  ))}
-                </div>
-                <blockquote className="mt-4 flex-1">
-                  <p className="text-sm leading-6 text-gray-600">
-                    &ldquo;{review.text}&rdquo;
-                  </p>
-                </blockquote>
-                <div className="mt-4 border-t border-gray-200 pt-4">
-                  <p className="text-sm font-semibold text-gray-900">— {review.name}</p>
-                </div>
-              </div>
-            ))}
-          </div>
+                <span className="font-display text-xl font-bold uppercase text-gray-900">
+                  {loc.name}, IA
+                </span>
+                <span className="text-sm text-gray-500">
+                  {loc.type === 'county' ? 'County-wide service' : loc.county}
+                </span>
+              </Link>
+            </li>
+          ))}
+        </ul>
+        <p className="mt-6 text-sm text-gray-600">
+          We also serve Alta, Newell, Marcus, Quimby, Washta, Sioux Rapids, Cleghorn and more
+          throughout northwest Iowa.
+        </p>
+      </Section>
+
+      {/* ---------------- FAQ ---------------- */}
+      <Section tone="white" space="md">
+        <div className="mx-auto max-w-4xl">
+          <SectionHeading eyebrow="FAQ" title="Frequently asked questions" />
+          <FaqAccordion faqs={faqs} />
         </div>
-      </div>
+      </Section>
 
-      {/* Service Areas Section */}
-      <div className="bg-white py-16 sm:py-24">
-        <div className="mx-auto max-w-7xl px-6 lg:px-8">
-          <div className="mx-auto max-w-2xl text-center">
-            <h2 className="text-base font-semibold leading-7 text-cruz-blue">Service Areas</h2>
-            <p className="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-              Proudly Serving Northwest Iowa
-            </p>
-            <p className="mt-6 text-lg leading-8 text-gray-600">
-              Cruz Electric provides expert electrical services throughout Buena Vista County, Cherokee County, and surrounding areas in Iowa.
-            </p>
-          </div>
-
-          <div className="mx-auto mt-16 max-w-2xl sm:mt-20 lg:max-w-4xl">
-            <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
-              <div className="rounded-2xl bg-gray-50 p-8 ring-1 ring-gray-200">
-                <h3 className="text-xl font-bold text-gray-900 mb-4">Primary Service Areas</h3>
-                <ul className="space-y-3 text-gray-600">
-                  <li className="flex items-start">
-                    <span className="mr-2 text-cruz-blue">•</span>
-                    <div>
-                      <Link href="/locations/storm-lake" className="font-semibold hover:text-cruz-blue transition-colors">Storm Lake, IA</Link>
-                      <span className="text-sm block text-gray-500">Buena Vista County</span>
-                    </div>
-                  </li>
-                  <li className="flex items-start">
-                    <span className="mr-2 text-cruz-blue">•</span>
-                    <div>
-                      <Link href="/locations/cherokee" className="font-semibold hover:text-cruz-blue transition-colors">Cherokee, IA</Link>
-                      <span className="text-sm block text-gray-500">Cherokee County</span>
-                    </div>
-                  </li>
-                  <li className="flex items-start">
-                    <span className="mr-2 text-cruz-blue">•</span>
-                    <div>
-                      <Link href="/locations/aurelia" className="font-semibold hover:text-cruz-blue transition-colors">Aurelia, IA</Link>
-                      <span className="text-sm block text-gray-500">Cherokee County</span>
-                    </div>
-                  </li>
-                  <li className="flex items-start">
-                    <span className="mr-2 text-cruz-blue">•</span>
-                    <div>
-                      <Link href="/locations/larrabee" className="font-semibold hover:text-cruz-blue transition-colors">Larrabee, IA</Link>
-                      <span className="text-sm block text-gray-500">Cherokee County</span>
-                    </div>
-                  </li>
-                </ul>
-              </div>
-
-              <div className="rounded-2xl bg-gray-50 p-8 ring-1 ring-gray-200">
-                <h3 className="text-xl font-bold text-gray-900 mb-4">Counties Served</h3>
-                <ul className="space-y-3 text-gray-600">
-                  <li className="flex items-start">
-                    <span className="mr-2 text-cruz-blue">•</span>
-                    <Link href="/locations/buena-vista-county" className="font-semibold hover:text-cruz-blue transition-colors">Buena Vista County</Link>
-                  </li>
-                  <li className="flex items-start">
-                    <span className="mr-2 text-cruz-blue">•</span>
-                    <Link href="/locations/cherokee-county" className="font-semibold hover:text-cruz-blue transition-colors">Cherokee County</Link>
-                  </li>
-                </ul>
-                <div className="mt-6 pt-6 border-t border-gray-200">
-                  <p className="text-sm text-gray-600">
-                    We also serve surrounding communities including Alta, Newell, Marcus, Quimby, Washta, and more throughout northwest Iowa.
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* FAQ Section */}
-      <div className="bg-gray-50 py-16 sm:py-24">
-        <div className="mx-auto max-w-7xl px-6 lg:px-8">
-          <div className="mx-auto max-w-4xl">
-            <h2 className="text-base font-semibold leading-7 text-cruz-blue">FAQ</h2>
-            <p className="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-              Frequently Asked Questions
-            </p>
-            <FaqAccordion faqs={faqs} />
-          </div>
-        </div>
-      </div>
-
-      {/* Apprenticeship CTA Banner */}
-      <div className="bg-cruz-red">
-        <div className="mx-auto max-w-7xl px-6 py-8 sm:py-12 lg:flex lg:items-center lg:justify-between lg:px-8">
-          <div>
-            <h2 className="text-2xl font-bold tracking-tight text-white sm:text-3xl">
-              Ask About Our Apprenticeship Program!
+      {/* ---------------- Apprenticeship ---------------- */}
+      <Section tone="ink" space="sm">
+        <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
+          <div className="max-w-2xl">
+            <h2 className="font-display text-3xl font-extrabold uppercase leading-tight text-white sm:text-4xl">
+              Ask about our apprenticeship program
             </h2>
-            <p className="mt-2 text-sm leading-6 text-white/80">
-              We&apos;re committed to training the next generation of skilled electricians.
+            <p className="mt-3 text-base leading-7 text-gray-300">
+              We&rsquo;re committed to training the next generation of skilled electricians. If
+              you&rsquo;re looking to start in the trade, get in touch.
             </p>
           </div>
-          <div className="mt-6 flex flex-col gap-3 sm:flex-row lg:mt-0 lg:shrink-0">
-            <a
-              href={SITE.phoneHref}
-              className="inline-flex items-center justify-center rounded-md bg-white px-5 py-2.5 text-sm font-semibold text-cruz-red shadow-sm hover:bg-gray-100 transition-colors"
-            >
-              Call Us Today
-            </a>
-            <a
+          <div className="flex flex-col gap-3 sm:flex-row lg:shrink-0">
+            <Button href={SITE.phoneHref} variant="bolt" size="md">
+              Call us today
+            </Button>
+            <Button
               href={`mailto:${SITE.email}?subject=Apprenticeship Program Inquiry`}
-              className="inline-flex items-center justify-center rounded-md bg-white/10 px-5 py-2.5 text-sm font-semibold text-white ring-1 ring-inset ring-white/20 hover:bg-white/20 transition-colors"
+              variant="ghost"
+              size="md"
             >
-              Learn More <span aria-hidden="true" className="ml-1">&rarr;</span>
-            </a>
+              Learn more <span aria-hidden="true">&rarr;</span>
+            </Button>
           </div>
         </div>
-      </div>
-    </div>
+      </Section>
+
+      <BottomCTA />
+    </>
   )
 }

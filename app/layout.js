@@ -1,5 +1,5 @@
 import './globals.css'
-import { Lato } from 'next/font/google'
+import { Lato, Barlow_Condensed } from 'next/font/google'
 import SiteHeader from '@/app/components/SiteHeader'
 import SiteFooter from '@/app/components/SiteFooter'
 import { SITE, localBusinessSchema } from '@/app/lib/site'
@@ -13,9 +13,23 @@ import { SITE, localBusinessSchema } from '@/app/lib/site'
  */
 const lato = Lato({
   subsets: ['latin'],
-  weight: ['300', '400', '700', '900'],
+  weight: ['400', '700', '900'],
   display: 'swap',
   variable: '--font-lato',
+})
+
+/**
+ * Display face. Condensed to echo the logo's varsity letterforms, which Lato
+ * cannot do at any weight. Only 700/800 are loaded and only the latin subset,
+ * so the cost is roughly one 22 KB woff2 per weight -- a deliberate trade for
+ * brand fit, and still far cheaper than the render-blocking @import it
+ * replaced.
+ */
+const display = Barlow_Condensed({
+  subsets: ['latin'],
+  weight: ['700', '800'],
+  display: 'swap',
+  variable: '--font-display',
 })
 
 export const metadata = {
@@ -97,7 +111,16 @@ export const viewport = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className={lato.variable}>
+    // data-scroll-behavior is required from Next 16 on. globals.css sets
+    // `scroll-behavior: smooth` for in-page anchor links; Next used to
+    // suppress that during route changes and no longer does by default, so
+    // without this attribute every navigation would smooth-scroll to the top
+    // and feel sluggish.
+    <html
+      lang="en"
+      className={`${lato.variable} ${display.variable}`}
+      data-scroll-behavior="smooth"
+    >
       <body className="bg-white font-sans antialiased">
         {/*
           Business identity for Google. Rendered from a single shared object so

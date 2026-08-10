@@ -3,53 +3,65 @@
 @tailwind utilities;
 
 /*
-  The Lato @import that used to live here was removed. An @import inside a CSS
-  file is render-blocking AND serialised: the browser had to download this
-  stylesheet, parse it, then open a fresh connection to fonts.googleapis.com,
-  then another to fonts.gstatic.com, before any text could paint. Lato is now
-  self-hosted through next/font/google in app/layout.js -- same origin, no
-  extra round trips, and no layout shift on swap.
+  Fonts are self-hosted through next/font/google in app/layout.js (Lato for
+  body, Barlow Condensed for display). There is deliberately no @import of
+  fonts.googleapis.com here: an @import inside CSS is render-blocking and
+  serialised, costing two extra connections before any text can paint.
 */
 
 @layer base {
   html {
+    /* Smooth scrolling is for in-page anchor links (#about, #reviews).
+       From Next 16 this needs data-scroll-behavior="smooth" on <html> or
+       every route change also smooth-scrolls and feels sluggish. */
     scroll-behavior: smooth;
-    /* Stops iOS Safari from inflating text in landscape. */
     -webkit-text-size-adjust: 100%;
+    /* Sticky header is ~104px; keep anchor targets clear of it. */
+    scroll-padding-top: 7rem;
   }
 
   body {
-    @apply font-sans antialiased;
-  }
-
-  /*
-    Belt-and-braces guard against horizontal scroll on phones. The decorative
-    blurred gradient blobs on the homepage are ~68rem wide and deliberately
-    positioned outside the viewport; without this, some mobile browsers let the
-    body scroll sideways to reveal them.
-  */
-  body {
+    @apply bg-white font-sans antialiased text-gray-900;
+    /* The decorative blurred gradient blobs are ~68rem wide and deliberately
+       positioned outside the viewport; without this some mobile browsers let
+       the body scroll sideways to reveal them. */
     overflow-x: hidden;
   }
 
-  /* Never let a media element force the page wider than the screen. */
   img,
   video,
   svg {
     max-width: 100%;
   }
-}
 
-@media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto;
+  /* Visible keyboard focus everywhere, in the brand's own yellow. */
+  :focus-visible {
+    outline: 3px solid theme('colors.cruz.yellow');
+    outline-offset: 3px;
   }
 }
 
-/* Gallery carousel styles */
+@layer components {
+  /*
+    Hazard striping — lifted from electrical safety signage rather than
+    invented. Used as the section divider throughout the site.
+  */
+  .hazard-stripe {
+    height: 10px;
+    background: repeating-linear-gradient(
+      135deg,
+      theme('colors.cruz.yellow') 0 14px,
+      theme('colors.cruz.ink') 14px 28px
+    );
+  }
+  .hazard-stripe--thin {
+    height: 6px;
+  }
+}
+
+/* Gallery carousel */
 .embla {
   overflow: hidden;
-  border-radius: 0.75rem;
 }
 .embla__container {
   display: flex;
@@ -57,4 +69,17 @@
 .embla__slide {
   flex: 0 0 100%;
   min-width: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }

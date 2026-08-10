@@ -1,6 +1,7 @@
 import PictureContainer from "@/app/components/PictureContainer"
 import { commImages } from "@/app/lib/images/images"
 import { pageMetadata } from "@/app/lib/site"
+import { getPublishedItems } from "@/app/lib/gallery-store"
 
 // Server component. This page used to be 'use client', which made it
 // impossible to export metadata -- so it shipped with no title, no
@@ -13,10 +14,14 @@ export const metadata = pageMetadata({
   path: "/gallary/commercial",
 })
 
-export default function CommercialGallery() {
+export default async function CommercialGallery() {
+  // Owner uploads from /admin are appended to the photos bundled with the
+  // site rather than replacing them.
+  const uploaded = await getPublishedItems("commercial")
+
   return (
     <PictureContainer
-      imageSrc={commImages}
+      imageSrc={[...commImages, ...uploaded.map((u) => ({ src: u.url, alt: u.alt }))]}
       title="Commercial Electrical Projects"
       description="A look at commercial electrical work by Cruz Electric — storefront wiring, three-phase power, parking lot lighting and business panel upgrades throughout Buena Vista and Cherokee Counties, Iowa."
     />

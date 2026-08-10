@@ -1,6 +1,7 @@
 import PictureContainer from "@/app/components/PictureContainer"
 import { resImages } from "@/app/lib/images/images"
 import { pageMetadata } from "@/app/lib/site"
+import { getPublishedItems } from "@/app/lib/gallery-store"
 
 // Server component. This page used to be 'use client', which made it
 // impossible to export metadata -- so it shipped with no title, no
@@ -13,10 +14,14 @@ export const metadata = pageMetadata({
   path: "/gallary/residential",
 })
 
-export default function ResidentialGallery() {
+export default async function ResidentialGallery() {
+  // Owner uploads from /admin are appended to the photos bundled with the
+  // site rather than replacing them.
+  const uploaded = await getPublishedItems("residential")
+
   return (
     <PictureContainer
-      imageSrc={resImages}
+      imageSrc={[...resImages, ...uploaded.map((u) => ({ src: u.url, alt: u.alt }))]}
       title="Residential Electrical Projects"
       description="Browse completed residential electrical projects from Cruz Electric — panel upgrades, whole-house rewiring, lighting, and outlet installation across Storm Lake, Cherokee, Aurelia and Larrabee, Iowa."
     />

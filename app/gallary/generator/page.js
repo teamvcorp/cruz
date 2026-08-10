@@ -1,6 +1,7 @@
 import PictureContainer from "@/app/components/PictureContainer"
 import { genImages } from "@/app/lib/images/images"
 import { pageMetadata } from "@/app/lib/site"
+import { getPublishedItems } from "@/app/lib/gallery-store"
 
 // Server component. This page used to be 'use client', which made it
 // impossible to export metadata -- so it shipped with no title, no
@@ -13,10 +14,14 @@ export const metadata = pageMetadata({
   path: "/gallary/generator",
 })
 
-export default function GeneratorGallery() {
+export default async function GeneratorGallery() {
+  // Owner uploads from /admin are appended to the photos bundled with the
+  // site rather than replacing them.
+  const uploaded = await getPublishedItems("generator")
+
   return (
     <PictureContainer
-      imageSrc={genImages}
+      imageSrc={[...genImages, ...uploaded.map((u) => ({ src: u.url, alt: u.alt }))]}
       title="Generac Generator Installations"
       description="Standby generator installations by Cruz Electric — certified Generac installers serving Storm Lake, Cherokee, Aurelia, Larrabee and all of northwest Iowa."
     />

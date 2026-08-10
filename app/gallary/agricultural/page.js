@@ -1,6 +1,7 @@
 import PictureContainer from "@/app/components/PictureContainer"
 import { agImages } from "@/app/lib/images/images"
 import { pageMetadata } from "@/app/lib/site"
+import { getPublishedItems } from "@/app/lib/gallery-store"
 
 // Server component. This page used to be 'use client', which made it
 // impossible to export metadata -- so it shipped with no title, no
@@ -13,10 +14,14 @@ export const metadata = pageMetadata({
   path: "/gallary/agricultural",
 })
 
-export default function AgriculturalGallery() {
+export default async function AgriculturalGallery() {
+  // Owner uploads from /admin are appended to the photos bundled with the
+  // site rather than replacing them.
+  const uploaded = await getPublishedItems("agricultural")
+
   return (
     <PictureContainer
-      imageSrc={agImages}
+      imageSrc={[...agImages, ...uploaded.map((u) => ({ src: u.url, alt: u.alt }))]}
       title="Agricultural Electrical Projects"
       description="Farm and agricultural electrical work by Cruz Electric — grain system wiring, outbuilding power, and livestock facility electrical across northwest Iowa."
     />
