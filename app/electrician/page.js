@@ -1,262 +1,216 @@
-import Image from "next/image";
-import Link from "next/link";
-import { PhoneIcon, EnvelopeIcon, CheckCircleIcon, BoltIcon, ShieldCheckIcon, ClockIcon, StarIcon } from '@heroicons/react/24/solid'
-import { SITE, pageMetadata } from '@/app/lib/site'
+import Link from 'next/link'
+import {
+  PhoneIcon,
+  ShieldCheckIcon,
+  ClockIcon,
+  StarIcon,
+  BoltIcon,
+} from '@heroicons/react/24/solid'
+import { SITE, pageMetadata, quoteMailto } from '@/app/lib/site'
+import { locations } from '@/app/lib/locations'
+import Section from '@/app/components/ui/Section'
+import SectionHeading from '@/app/components/ui/SectionHeading'
+import Card from '@/app/components/ui/Card'
+import Button from '@/app/components/ui/Button'
+import ServiceChecklist from '@/app/components/ServiceChecklist'
+import BottomCTA from '@/app/components/BottomCTA'
 
 export const metadata = pageMetadata({
   title: 'Professional Electrician | Electrical Contractor | Cruz Electric',
-  description: 'Experienced electrician providing expert electrical services. Licensed electrician for residential, commercial & agricultural electrical repair, installation & service. Call (712) 299-7004.',
-  keywords: 'electrician, professional electrician, licensed electrician, electrical contractor, residential electrician, commercial electrician, emergency electrician, electrician near me, certified electrician, local electrician, electrical services, electrical repair, electrical installation',
-  // Self-referencing canonical: tells Google THIS url is the original.
+  description:
+    'Experienced electrician providing expert electrical services. Licensed electrician for residential, commercial & agricultural electrical repair, installation & service. Call (712) 299-7004.',
+  keywords:
+    'electrician, professional electrician, licensed electrician, electrical contractor, residential electrician, commercial electrician, emergency electrician, electrician near me, certified electrician, local electrician, electrical services, electrical repair, electrical installation',
   path: '/electrician',
 })
 
 const services = [
-  'Residential Electrical Services',
-  'Commercial Electrical Services',
-  'Agricultural Electrical Systems',
-  'Emergency Electrical Repair',
-  'Electrical Panel Upgrades',
-  'Circuit Breaker Repair & Replacement',
-  'Outlet & Switch Installation',
-  'Lighting Installation & Repair',
-  'Ceiling Fan Installation',
-  'GFCI Outlet Installation',
-  'Electrical Troubleshooting',
-  'Electrical Safety Inspections',
-  'Generac Generator Installation',
-  'Security Camera Installation',
-  'Whole House Rewiring',
-  'Electrical Code Compliance',
-  'Three-Phase Power Installation',
-  'Parking Lot Lighting',
+  'Residential electrical services',
+  'Commercial electrical services',
+  'Agricultural electrical systems',
+  'Emergency electrical repair',
+  'Electrical panel upgrades',
+  'Circuit breaker repair & replacement',
+  'Outlet & switch installation',
+  'Lighting installation & repair',
+  'Ceiling fan installation',
+  'GFCI outlet installation',
+  'Electrical troubleshooting',
+  'Electrical safety inspections',
+  'Generac generator installation',
+  'Security camera installation',
+  'Whole house rewiring',
+  'Electrical code compliance',
+  'Three-phase power installation',
+  'Parking lot lighting',
 ]
 
 const features = [
   {
-    title: 'Licensed & Insured Electrician',
-    description: 'All our electricians are fully licensed and insured, meeting all Iowa electrical codes and safety standards.',
+    title: 'Licensed & insured',
+    description:
+      'All our electricians are fully licensed and insured, meeting all Iowa electrical codes and safety standards.',
     icon: ShieldCheckIcon,
   },
   {
-    title: 'Fast Response Times',
-    description: 'Need an electrician fast? We provide prompt electrical service with same-day and emergency electrician services available.',
+    title: 'Fast response',
+    description:
+      'Need an electrician fast? We provide prompt electrical service with same-day and emergency electrician services available.',
     icon: ClockIcon,
   },
   {
-    title: '5-Star Rated Electrician',
-    description: 'Our professional electricians are highly rated by customers. We deliver quality electrical workmanship on every job.',
+    title: '5-star rated',
+    description:
+      'Our professional electricians are highly rated by customers. We deliver quality electrical workmanship on every job.',
     icon: StarIcon,
   },
   {
-    title: 'Comprehensive Electrical Services',
-    description: 'From simple electrical repairs to complete electrical installations, our electricians handle all types of electrical work.',
+    title: 'Every kind of job',
+    description:
+      'From simple electrical repairs to complete electrical installations, our electricians handle all types of electrical work.',
     icon: BoltIcon,
+  },
+]
+
+const kinds = [
+  {
+    title: 'Residential electrician',
+    body: 'Home electrical repair, panel upgrades, rewiring, lighting, outlets and GFCI protection for houses of every age.',
+    href: '/gallary/residential',
+    linkText: 'See residential work',
+    accent: 'border-cruz-blue',
+  },
+  {
+    title: 'Commercial electrician',
+    body: 'Three-phase power, storefront and office wiring, parking lot lighting, panel upgrades and code compliance.',
+    href: '/gallary/commercial',
+    linkText: 'See commercial work',
+    accent: 'border-cruz-dark-blue',
+  },
+  {
+    title: 'Emergency electrician',
+    body: 'Power outages, tripping breakers, burning smells and dead circuits. Call us and we will get someone to you.',
+    href: SITE.phoneHref,
+    linkText: `Call ${SITE.phoneDisplay}`,
+    accent: 'border-cruz-red',
   },
 ]
 
 export default function ElectricianPage() {
   return (
-    <div className="bg-white">
-      {/* Hero Section */}
-      <div className="relative isolate overflow-hidden bg-gradient-to-b from-cruz-blue/10">
-        <div className="mx-auto max-w-7xl px-6 py-24 sm:py-32 lg:px-8">
-          <div className="mx-auto max-w-3xl text-center">
-            <div className="mb-4 inline-flex items-center rounded-full bg-cruz-yellow px-4 py-1.5 text-sm font-bold text-gray-900">
-              Licensed & Insured Professional Electrician
-            </div>
-            <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
-              Experienced Electrician — Expert Electrical Services
+    <>
+      {/* Hero */}
+      <div className="relative isolate overflow-hidden bg-cruz-ink">
+        <div className="mx-auto max-w-7xl px-5 py-16 sm:px-6 sm:py-24 lg:px-8">
+          <div className="max-w-3xl">
+            <p className="inline-flex items-center gap-2 rounded-sm bg-cruz-yellow px-3.5 py-2 font-display text-sm font-extrabold uppercase tracking-wider text-cruz-ink">
+              <BoltIcon className="h-4 w-4" aria-hidden="true" />
+              Licensed &amp; insured
+            </p>
+            <h1 className="mt-5 text-balance font-display text-5xl font-extrabold uppercase leading-[0.92] text-white sm:text-6xl lg:text-7xl">
+              Professional
+              <span className="block text-cruz-yellow">electrician</span>
             </h1>
-            <p className="mt-6 text-lg leading-8 text-gray-600">
-              Cruz Electric is your trusted professional electrician providing comprehensive electrical services for homes, businesses, and farms. Our licensed electricians deliver expert electrical repair, installation, and service with a commitment to quality, safety, and customer satisfaction.
+            <div className="my-6 h-1.5 w-32 bg-cruz-red" aria-hidden="true" />
+            <p className="max-w-2xl text-lg leading-8 text-gray-200">
+              Cruz Electric is a licensed electrical contractor serving homes, businesses and farms
+              across northwest Iowa. Whatever the job, it gets done to code by an electrician who
+              will explain what they did and why.
             </p>
-            <div className="mt-10 flex items-center justify-center gap-x-4">
-              <a
-                href={SITE.phoneHref}
-                className="rounded-md bg-cruz-red px-6 py-3 text-center text-sm font-semibold text-white shadow-sm hover:bg-red-500"
-              >
-                <PhoneIcon className="inline-block h-5 w-5 mr-2" />
-                Call Electrician: (712) 299-7004
-              </a>
-              <a
-                href="mailto:cruzelectric712@gmail.com?subject=Electrician Service Request"
-                className="rounded-md bg-cruz-blue px-6 py-3 text-center text-sm font-semibold text-white shadow-sm hover:bg-blue-600"
-              >
-                <EnvelopeIcon className="inline-block h-5 w-5 mr-2" />
-                Email Us
-              </a>
+            <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
+              <Button href={SITE.phoneHref} variant="primary" size="lg">
+                <PhoneIcon className="h-5 w-5" aria-hidden="true" />
+                Call {SITE.phoneDisplay}
+              </Button>
+              <Button href={quoteMailto} variant="ghost" size="lg">
+                Request a quote
+              </Button>
             </div>
           </div>
         </div>
+        <div className="hazard-stripe" aria-hidden="true" />
       </div>
 
-      {/* Why Choose Our Electricians */}
-      <div className="bg-white py-24 sm:py-32">
-        <div className="mx-auto max-w-7xl px-6 lg:px-8">
-          <div className="mx-auto max-w-2xl lg:text-center">
-            <h2 className="text-base font-semibold leading-7 text-cruz-blue">Why Choose Our Electricians</h2>
-            <p className="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-              Professional Electrician Services You Can Trust
-            </p>
-            <p className="mt-6 text-lg leading-8 text-gray-600">
-              When you need an electrician, choosing the right electrical contractor matters. Our licensed electricians bring experience, professionalism, and dedication to every electrical project.
-            </p>
-          </div>
-          <div className="mx-auto mt-16 max-w-2xl sm:mt-20 lg:mt-24 lg:max-w-none">
-            <dl className="grid max-w-xl grid-cols-1 gap-x-8 gap-y-16 lg:max-w-none lg:grid-cols-2">
-              {features.map((feature) => (
-                <div key={feature.title} className="flex flex-col">
-                  <dt className="flex items-center gap-x-3 text-xl font-semibold leading-7 text-gray-900">
-                    <feature.icon className="h-8 w-8 flex-none text-cruz-blue" aria-hidden="true" />
-                    {feature.title}
-                  </dt>
-                  <dd className="mt-4 flex flex-auto flex-col text-base leading-7 text-gray-600">
-                    <p className="flex-auto">{feature.description}</p>
-                  </dd>
-                </div>
-              ))}
-            </dl>
-          </div>
+      {/* Why choose us */}
+      <Section tone="white" space="md">
+        <SectionHeading
+          eyebrow="Why choose us"
+          title="Electrical work you can trust"
+          intro="Five years of work across Buena Vista and Cherokee Counties, and a reputation we would rather not spend."
+        />
+        <div className="mt-12 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          {features.map((feature) => (
+            <Card key={feature.title} tone="muted" pad="lg" className="border-l-4 border-cruz-yellow">
+              <feature.icon className="h-8 w-8 text-cruz-blue" aria-hidden="true" />
+              <h3 className="mt-4 font-display text-xl font-bold uppercase text-gray-900">
+                {feature.title}
+              </h3>
+              <p className="mt-2 text-sm leading-6 text-gray-600">{feature.description}</p>
+            </Card>
+          ))}
         </div>
-      </div>
+      </Section>
 
-      {/* Electrician Services */}
-      <div className="bg-gray-50 py-24 sm:py-32">
-        <div className="mx-auto max-w-7xl px-6 lg:px-8">
-          <div className="mx-auto max-w-2xl lg:text-center">
-            <h2 className="text-base font-semibold leading-7 text-cruz-blue">Electrical Services</h2>
-            <p className="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-              Complete Electrician Services
-            </p>
-            <p className="mt-6 text-lg leading-8 text-gray-600">
-              Our electricians provide a full range of electrical services. From routine electrical repairs to complex electrical installations, we handle all your electrical needs.
-            </p>
-          </div>
-          <div className="mx-auto mt-16 max-w-2xl sm:mt-20 lg:mt-24 lg:max-w-none">
-            <dl className="grid max-w-xl grid-cols-1 gap-x-8 gap-y-4 lg:max-w-none lg:grid-cols-3">
-              {services.map((service) => (
-                <div key={service} className="flex gap-x-3">
-                  <CheckCircleIcon className="h-6 w-6 flex-none text-cruz-blue" aria-hidden="true" />
-                  <dd className="text-base leading-7 text-gray-600">{service}</dd>
-                </div>
-              ))}
-            </dl>
-          </div>
+      {/* Full service list */}
+      <Section tone="ink" space="md">
+        <SectionHeading
+          eyebrow="Services"
+          title="Complete electrician services"
+          intro="If it carries current, we work on it."
+          tone="light"
+        />
+        <div className="mt-10">
+          <ServiceChecklist services={services} tone="light" />
         </div>
-      </div>
+      </Section>
 
-      {/* Types of Electricians */}
-      <div className="bg-white py-24 sm:py-32">
-        <div className="mx-auto max-w-7xl px-6 lg:px-8">
-          <div className="mx-auto max-w-2xl lg:text-center">
-            <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-              Specialized Electrician Services
-            </h2>
-            <p className="mt-6 text-lg leading-8 text-gray-600">
-              Our team includes specialized electricians for every type of electrical work. Whether you need a residential electrician, commercial electrician, or emergency electrician, we have the expertise.
-            </p>
-          </div>
-          <div className="mx-auto mt-16 grid max-w-2xl grid-cols-1 gap-8 sm:mt-20 lg:mx-0 lg:max-w-none lg:grid-cols-3">
-            <div className="flex flex-col rounded-2xl bg-gray-50 p-8 ring-1 ring-gray-200">
-              <h3 className="text-xl font-semibold text-gray-900">Residential Electrician</h3>
-              <p className="mt-4 text-base text-gray-600">
-                Our residential electricians specialize in home electrical services. From electrical repairs to complete home rewiring, our electricians ensure your home's electrical system is safe and reliable. We handle outlet installation, lighting upgrades, panel replacements, and all residential electrical needs.
-              </p>
+      {/* Types of electrician */}
+      <Section tone="white" space="md">
+        <SectionHeading eyebrow="Specialisms" title="What kind of electrician do you need?" />
+        <div className="mt-12 grid grid-cols-1 gap-6 lg:grid-cols-3">
+          {kinds.map((kind) => (
+            <Card key={kind.title} tone="muted" pad="lg" className={`border-l-4 ${kind.accent}`}>
+              <h3 className="font-display text-2xl font-bold uppercase text-gray-900">
+                {kind.title}
+              </h3>
+              <p className="mt-3 flex-1 text-sm leading-6 text-gray-600">{kind.body}</p>
               <Link
-                href="/gallary/residential"
-                className="mt-6 text-sm font-semibold text-cruz-blue hover:text-blue-700"
+                href={kind.href}
+                className="mt-5 font-display text-base font-extrabold uppercase tracking-wide text-cruz-blue hover:text-cruz-dark-blue"
               >
-                View Residential Work <span aria-hidden="true">→</span>
+                {kind.linkText} <span aria-hidden="true">&rarr;</span>
               </Link>
-            </div>
+            </Card>
+          ))}
+        </div>
+      </Section>
 
-            <div className="flex flex-col rounded-2xl bg-gray-50 p-8 ring-1 ring-gray-200">
-              <h3 className="text-xl font-semibold text-gray-900">Commercial Electrician</h3>
-              <p className="mt-4 text-base text-gray-600">
-                Our commercial electricians understand business electrical needs. We provide commercial electrical installation, repair, and maintenance services for offices, retail stores, warehouses, and all commercial properties. Our electricians minimize downtime and keep your business running.
-              </p>
+      {/* Service areas */}
+      <Section tone="muted" space="md">
+        <SectionHeading
+          eyebrow="Where we work"
+          title="A local electrician, genuinely local"
+          intro="Based in Cherokee County and covering the communities around it. Each area has its own page describing the work we actually do there."
+        />
+        <ul role="list" className="mt-10 flex flex-wrap gap-2.5">
+          {locations.map((loc) => (
+            <li key={loc.slug}>
               <Link
-                href="/gallary/commercial"
-                className="mt-6 text-sm font-semibold text-cruz-blue hover:text-blue-700"
+                href={`/locations/${loc.slug}`}
+                className="inline-flex items-center gap-1.5 rounded-sm bg-white px-4 py-2.5 text-sm font-semibold text-gray-900 ring-1 ring-gray-200 transition hover:ring-cruz-blue"
               >
-                View Commercial Work <span aria-hidden="true">→</span>
+                <BoltIcon className="h-4 w-4 text-cruz-yellow" aria-hidden="true" />
+                {loc.name}, IA
               </Link>
-            </div>
+            </li>
+          ))}
+        </ul>
+      </Section>
 
-            <div className="flex flex-col rounded-2xl bg-gray-50 p-8 ring-1 ring-gray-200">
-              <h3 className="text-xl font-semibold text-gray-900">Emergency Electrician</h3>
-              <p className="mt-4 text-base text-gray-600">
-                When you need an emergency electrician, we respond fast. Our electricians provide 24/7 emergency electrical services for urgent electrical issues. Power outages, electrical fires, circuit problems — our emergency electrician service is here when you need it most.
-              </p>
-              <a
-                href={SITE.phoneHref}
-                className="mt-6 text-sm font-semibold text-cruz-red hover:text-red-700"
-              >
-                Call Emergency Electrician <span aria-hidden="true">→</span>
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Service Areas */}
-      <div className="bg-gray-50 py-24 sm:py-32">
-        <div className="mx-auto max-w-7xl px-6 lg:px-8">
-          <div className="mx-auto max-w-2xl lg:text-center">
-            <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-              Local Electrician Serving Iowa
-            </h2>
-            <p className="mt-6 text-lg leading-8 text-gray-600">
-              As your local electrician, we serve communities throughout Storm Lake, Cherokee, and all surrounding areas in Buena Vista County and Cherokee County, Iowa.
-            </p>
-          </div>
-          <div className="mx-auto mt-12 max-w-2xl">
-            <div className="flex flex-wrap justify-center gap-4">
-              <Link href="/locations/storm-lake" className="rounded-lg bg-white px-5 py-3 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-gray-200 hover:bg-gray-50">
-                Electrician Storm Lake
-              </Link>
-              <Link href="/locations/cherokee" className="rounded-lg bg-white px-5 py-3 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-gray-200 hover:bg-gray-50">
-                Electrician Cherokee
-              </Link>
-              <Link href="/locations/aurelia" className="rounded-lg bg-white px-5 py-3 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-gray-200 hover:bg-gray-50">
-                Electrician Aurelia
-              </Link>
-              <Link href="/locations/larrabee" className="rounded-lg bg-white px-5 py-3 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-gray-200 hover:bg-gray-50">
-                Electrician Larrabee
-              </Link>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* CTA Section */}
-      <div className="bg-cruz-blue">
-        <div className="px-6 py-24 sm:px-6 sm:py-32 lg:px-8">
-          <div className="mx-auto max-w-2xl text-center">
-            <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl">
-              Need an Electrician?
-            </h2>
-            <p className="mx-auto mt-6 max-w-xl text-lg leading-8 text-blue-100">
-              Call Cruz Electric today for professional electrician services. Our licensed electricians are ready to help with all your electrical needs.
-            </p>
-            <div className="mt-10 flex items-center justify-center gap-x-6">
-              <a
-                href={SITE.phoneHref}
-                className="rounded-md bg-cruz-red px-8 py-3 text-lg font-semibold text-white shadow-sm hover:bg-red-500"
-              >
-                Call Electrician: (712) 299-7004
-              </a>
-              <Link
-                href="/"
-                className="text-lg font-semibold leading-6 text-white hover:text-cruz-yellow"
-              >
-                Learn more <span aria-hidden="true">→</span>
-              </Link>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+      <BottomCTA
+        title="Need an electrician?"
+        body="Free estimates, licensed and insured, and a real person on the phone."
+      />
+    </>
   )
 }

@@ -1,9 +1,15 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { ArrowRightIcon } from '@heroicons/react/24/outline'
-import { StarIcon, TrophyIcon } from '@heroicons/react/24/solid'
-import {empImages} from '@/app/lib/images/images'
+import { BoltIcon } from '@heroicons/react/24/solid'
+import { empImages } from '@/app/lib/images/images'
 import { pageMetadata } from '@/app/lib/site'
+import { getPublishedItems } from '@/app/lib/gallery-store'
+import Section from '@/app/components/ui/Section'
+import SectionHeading from '@/app/components/ui/SectionHeading'
+import Card from '@/app/components/ui/Card'
+import Stat from '@/app/components/ui/Stat'
+import BottomCTA from '@/app/components/BottomCTA'
 
 export const metadata = pageMetadata({
   title: 'Electrical Project Gallery & Our Team | Cruz Electric',
@@ -15,164 +21,135 @@ export const metadata = pageMetadata({
 })
 
 const galleries = [
-  { name: 'Residential', href: '/gallary/residential', color: 'bg-cruz-blue' },
-  { name: 'Commercial', href: '/gallary/commercial', color: 'bg-cruz-yellow' },
-  { name: 'Agricultural', href: '/gallary/agricultural', color: 'bg-cruz-dark-blue' },
-  { name: 'Communications', href: '/gallary/communications', color: 'bg-cruz-red' },
-  { name: 'Generator', href: '/gallary/generator', color: 'bg-cruz-blue-grey' },
+  { name: 'Residential', slug: 'residential', barClass: 'bg-cruz-blue' },
+  { name: 'Commercial', slug: 'commercial', barClass: 'bg-cruz-dark-blue' },
+  { name: 'Agricultural', slug: 'agricultural', barClass: 'bg-cruz-ink' },
+  { name: 'Communications', slug: 'communications', barClass: 'bg-cruz-red' },
+  { name: 'Generators', slug: 'generator', barClass: 'bg-cruz-blue-grey' },
 ]
 
-const employees = [
-  {
-    name: 'Two Dudes',
-    role: 'Electrician',
-    recognition: 'Licensed Master Electrician with 10+ years experience',
-    achievements: ['Licensed Master Electrician', 'Generac Certified Installer', 'Business Owner since 2020'],
-    imageUrl: empImages[0].src,
-  },
-  {
-    name: 'Crew Members',
-    role: ' Electrician',
-    recognition: 'Exceptional craftsmanship and customer service',
-    achievements: ['Journeyman Electrician', '8+ years experience', 'Safety Certified'],
-    imageUrl: empImages[1].src, 
-  },
-  {
-    name: 'Crew Member',
-    role: 'Electrician',
-    recognition: 'Exceptional craftsmanship and customer service',
-    achievements: ['Journeyman Electrician', '8+ years experience', 'Safety Certified'],
-    imageUrl: empImages[2].src, 
-  },
-  {
-    name: 'Crew Member',
-    role: 'Electrician',
-    recognition: 'Exceptional craftsmanship and customer service',
-    achievements: ['Journeyman Electrician', '8+ years experience', 'Safety Certified'],
-    imageUrl: empImages[3].src, 
-  },
-  {
-    name: 'Crew Member',
-    role: ' Electrician',
-    recognition: 'Exceptional craftsmanship and customer service',
-    achievements: ['Journeyman Electrician', '8+ years experience', 'Safety Certified'],
-    imageUrl: empImages[4].src, 
-  },
- 
+/**
+ * TODO(owner): replace `name` with the crew's real names. These are
+ * deliberately role-based rather than the previous "Two Dudes" / "Crew
+ * Members" placeholders, but real names and real credentials are far stronger
+ * trust signals on a trades site than anonymous labels.
+ */
+const crew = [
+  { name: 'Owner & master electrician', note: 'Licensed master electrician, Generac certified', src: empImages[0].src, alt: empImages[0].alt },
+  { name: 'Journeyman electrician', note: 'Residential and commercial installations', src: empImages[1].src, alt: empImages[1].alt },
+  { name: 'Journeyman electrician', note: 'Agricultural and farmstead systems', src: empImages[2].src, alt: empImages[2].alt },
+  { name: 'Electrician', note: 'Service calls and troubleshooting', src: empImages[3].src, alt: empImages[3].alt },
+  { name: 'Electrician', note: 'Generator installation and service', src: empImages[4].src, alt: empImages[4].alt },
 ]
 
-const GalleryIndex = () => {
+export default async function GalleryIndex() {
+  // Counts include owner uploads from /admin so the tiles stay accurate.
+  const counts = Object.fromEntries(
+    await Promise.all(
+      galleries.map(async (g) => [g.slug, (await getPublishedItems(g.slug)).length])
+    )
+  )
+
   return (
-    <div className="min-h-screen bg-gray-50 py-12">
-      <div className="mx-auto max-w-3xl px-6 lg:px-8">
-        <h1 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-          Project Gallery
-        </h1>
-        <p className="mt-4 text-lg leading-8 text-gray-600">
-          Browse our completed projects across all service categories.
-        </p>
-        <div className="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-2">
-          {galleries.map((gallery) => (
-            <Link
-              key={gallery.name}
-              href={gallery.href}
-              className={`${gallery.color} group flex items-center justify-between rounded-xl px-6 py-5 text-white shadow-md transition-shadow hover:shadow-lg`}
-            >
-              <span className="text-lg font-bold uppercase tracking-wide">{gallery.name}</span>
-              <ArrowRightIcon className="h-5 w-5 transition-transform group-hover:translate-x-1" />
-            </Link>
-          ))}
-        </div>
-      </div>
-
-      {/* Employee Recognition Section */}
-      <div className="bg-white py-24 sm:py-32">
-        <div className="mx-auto max-w-7xl px-6 lg:px-8">
-          <div className="mx-auto max-w-2xl text-center">
-            <div className="flex items-center justify-center gap-x-2 mb-4">
-              <TrophyIcon className="h-8 w-8 text-cruz-yellow" />
-              <h2 className="text-base font-semibold leading-7 text-cruz-blue">Our Team</h2>
-            </div>
-            <p className="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-              Meet Our Licensed Electricians
+    <>
+      {/* Hero */}
+      <div className="relative isolate overflow-hidden bg-cruz-ink">
+        <div className="mx-auto max-w-7xl px-5 py-14 sm:px-6 sm:py-20 lg:px-8">
+          <div className="max-w-3xl">
+            <p className="flex items-center gap-2.5 font-display text-[13px] font-bold uppercase tracking-[0.16em] text-cruz-yellow">
+              <span className="h-0.5 w-[18px] flex-none bg-cruz-yellow" aria-hidden="true" />
+              Our work
             </p>
-            <p className="mt-6 text-lg leading-8 text-gray-600">
-              Our team of professional electricians brings expertise, dedication, and exceptional service to every project. Licensed, certified, and committed to excellence.
+            <h1 className="mt-3 text-balance font-display text-5xl font-extrabold uppercase leading-[0.92] text-white sm:text-6xl">
+              Project gallery
+            </h1>
+            <p className="mt-5 max-w-2xl text-lg leading-8 text-gray-200">
+              Completed jobs across every service we offer, plus the crew who did them.
             </p>
           </div>
+        </div>
+        <div className="hazard-stripe" aria-hidden="true" />
+      </div>
 
-          <div className="mx-auto mt-16 grid max-w-2xl grid-cols-1 gap-8 sm:mt-20 lg:mx-0 lg:max-w-none lg:grid-cols-2 xl:grid-cols-4">
-            {employees.map((employee) => (
-              <div
-                key={employee.name}
-                className="flex flex-col overflow-hidden rounded-2xl bg-gray-50 shadow-md ring-1 ring-gray-200 transition-shadow hover:shadow-lg"
+      {/* Gallery tiles */}
+      <Section tone="muted" space="md">
+        <SectionHeading eyebrow="Browse by trade" title="Pick a gallery" />
+        <ul role="list" className="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {galleries.map((gallery) => (
+            <li key={gallery.slug}>
+              <Link
+                href={`/gallary/${gallery.slug}`}
+                className={`${gallery.barClass} group flex items-center justify-between gap-3 rounded-sm px-6 py-5 text-white transition hover:brightness-110`}
               >
-                {/* Employee Photo */}
-                <div className="relative h-72 w-full overflow-hidden bg-gray-200">
+                <span>
+                  <span className="block font-display text-2xl font-extrabold uppercase tracking-wide">
+                    {gallery.name}
+                  </span>
+                  {counts[gallery.slug] > 0 && (
+                    <span className="text-sm text-white/80">
+                      {counts[gallery.slug]} recent photo{counts[gallery.slug] === 1 ? '' : 's'} added
+                    </span>
+                  )}
+                </span>
+                <ArrowRightIcon
+                  className="h-6 w-6 flex-none transition-transform group-hover:translate-x-1"
+                  aria-hidden="true"
+                />
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </Section>
+
+      {/* Crew */}
+      <Section tone="white" space="md">
+        <SectionHeading
+          eyebrow="Our team"
+          title="Meet the electricians"
+          intro="Licensed, certified and local. The same crew that quotes the job is the crew that turns up to do it."
+        />
+        <ul
+          role="list"
+          className="mt-12 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5"
+        >
+          {crew.map((person, i) => (
+            <li key={i}>
+              <Card tone="muted" pad="none" className="h-full">
+                <div className="relative aspect-[3/4] w-full overflow-hidden bg-gray-200">
                   <Image
-                    src={employee.imageUrl}
-                    alt={employee.name}
+                    src={person.src}
+                    alt={person.alt}
                     fill
+                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 20vw"
                     className="object-cover object-top"
-                    sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 25vw"
                   />
                 </div>
-
-                {/* Employee Info */}
-                <div className="flex flex-1 flex-col p-6">
-                  <div className="flex items-center gap-x-2 mb-2">
-                    <StarIcon className="h-5 w-5 text-cruz-yellow" />
-                    <h3 className="text-xl font-bold text-gray-900">{employee.name}</h3>
-                  </div>
-                  <p className="text-sm font-semibold text-cruz-blue mb-3">{employee.role}</p>
-                  <p className="text-sm leading-6 text-gray-600 mb-4">{employee.recognition}</p>
-                  
-                  {/* Achievements */}
-                  {/* <div className="mt-auto">
-                    <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">
-                      Certifications & Achievements
-                    </p>
-                    <ul className="space-y-1">
-                      {employee.achievements.map((achievement, index) => (
-                        <li key={index} className="flex items-start text-xs text-gray-600">
-                          <span className="mr-2 text-cruz-blue">•</span>
-                          {achievement}
-                        </li>
-                      ))}
-                    </ul>
-                  </div> */}
+                <div className="flex flex-1 flex-col gap-1 border-l-4 border-cruz-yellow p-4">
+                  <h3 className="font-display text-lg font-bold uppercase leading-tight text-gray-900">
+                    {person.name}
+                  </h3>
+                  <p className="text-sm text-gray-600">{person.note}</p>
                 </div>
-              </div>
-            ))}
-          </div>
+              </Card>
+            </li>
+          ))}
+        </ul>
+      </Section>
 
-          {/* Team Values */}
-          <div className="mx-auto mt-16 max-w-2xl rounded-2xl bg-cruz-blue p-8 text-center sm:p-10">
-            <h3 className="text-2xl font-bold text-white sm:text-3xl">
-              Why Our Team Stands Out
-            </h3>
-            <p className="mt-4 text-base leading-7 text-blue-100">
-              Every member of the Cruz Electric team is committed to providing exceptional electrical services with professionalism, safety, and quality workmanship. We invest in ongoing training and certifications to ensure our electricians stay current with the latest electrical codes, technologies, and best practices.
-            </p>
-            <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-3">
-              <div className="flex flex-col items-center">
-                <p className="text-3xl font-bold text-cruz-yellow">100%</p>
-                <p className="mt-2 text-sm text-blue-100">Licensed & Insured</p>
-              </div>
-              <div className="flex flex-col items-center">
-                <p className="text-3xl font-bold text-cruz-yellow">50+</p>
-                <p className="mt-2 text-sm text-blue-100">Years Combined Experience</p>
-              </div>
-              <div className="flex flex-col items-center">
-                <p className="text-3xl font-bold text-cruz-yellow">5★</p>
-                <p className="mt-2 text-sm text-blue-100">Customer Rated</p>
-              </div>
-            </div>
-          </div>
+      {/* Team stats */}
+      <Section tone="ink" space="sm">
+        <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
+          <Stat value="100%" label="Licensed &amp; insured" />
+          <Stat value="50+" label="Years combined experience" />
+          <Stat value="5.0" label="Customer rated" />
+          <Stat value="2020" label="Serving Iowa since" />
         </div>
-      </div>
-    </div>
+      </Section>
+
+      <BottomCTA
+        title="Want work like this?"
+        body="Tell us what you need and we will get you a free estimate."
+      />
+    </>
   )
 }
-
-export default GalleryIndex

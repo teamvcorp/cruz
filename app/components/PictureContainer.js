@@ -1,147 +1,165 @@
-"use client";
+'use client'
 
-import useEmblaCarousel from "embla-carousel-react";
-import Autoplay from "embla-carousel-autoplay";
-import Image from "next/image";
-import Link from "next/link";
-import { HomeIcon, ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/solid";
-import { useCallback, useEffect, useState } from "react";
-import { SITE, quoteMailto } from "@/app/lib/site";
+import useEmblaCarousel from 'embla-carousel-react'
+import Autoplay from 'embla-carousel-autoplay'
+import Image from 'next/image'
+import Link from 'next/link'
+import { ChevronLeftIcon, ChevronRightIcon, PhoneIcon } from '@heroicons/react/24/solid'
+import { useCallback, useEffect, useState } from 'react'
+import { SITE, quoteMailto } from '@/app/lib/site'
+import Button from '@/app/components/ui/Button'
 
 /**
  * Gallery carousel.
  *
- * Two things here are load-speed decisions, not styling:
- *  - Only the FIRST slide gets `priority`. Every other slide is explicitly
- *    lazy. Embla keeps all slides mounted and offset horizontally inside an
- *    overflow-hidden track, so without this the browser can be tricked into
- *    fetching all 8 full-size photos during initial page load.
- *  - `sizes` is capped at 896px (the max-w-4xl track width) so next/image never
- *    serves a 1920px derivative into an 896px box.
+ * Two things here are load-speed decisions rather than styling:
+ *  - Only the FIRST slide gets `priority`; the rest are explicitly lazy. Embla
+ *    keeps every slide mounted and offset inside an overflow-hidden track, so
+ *    without this the browser can be tricked into fetching all of the
+ *    full-size photos during initial page load.
+ *  - `sizes` is capped at the 896px track width so next/image never serves a
+ *    1920px derivative into an 896px box.
+ *
+ * `imageSrc` mixes two shapes on purpose: static imports for the photos
+ * bundled with the site, and plain URL strings for owner uploads out of
+ * Vercel Blob. next/image accepts both when `fill` is used.
  */
-const PictureContainer = ({ imageSrc, title, description }) => {
+export default function PictureContainer({ imageSrc = [], title, description }) {
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true }, [
     Autoplay({ delay: 5000, stopOnInteraction: true }),
-  ]);
-  const [selected, setSelected] = useState(0);
+  ])
+  const [selected, setSelected] = useState(0)
 
-  const scrollPrev = useCallback(() => emblaApi && emblaApi.scrollPrev(), [emblaApi]);
-  const scrollNext = useCallback(() => emblaApi && emblaApi.scrollNext(), [emblaApi]);
+  const scrollPrev = useCallback(() => emblaApi && emblaApi.scrollPrev(), [emblaApi])
+  const scrollNext = useCallback(() => emblaApi && emblaApi.scrollNext(), [emblaApi])
 
   useEffect(() => {
-    if (!emblaApi) return;
-    const onSelect = () => setSelected(emblaApi.selectedScrollSnap());
-    onSelect();
-    emblaApi.on("select", onSelect);
-    return () => emblaApi.off("select", onSelect);
-  }, [emblaApi]);
+    if (!emblaApi) return
+    const onSelect = () => setSelected(emblaApi.selectedScrollSnap())
+    onSelect()
+    emblaApi.on('select', onSelect)
+    return () => emblaApi.off('select', onSelect)
+  }, [emblaApi])
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <div className="mx-auto max-w-4xl px-4 pt-10 sm:px-6 lg:px-8">
-        {/* Every gallery page previously had NO h1 and no text at all -- just a
-            carousel. That gave Google nothing to rank. */}
-        {title && (
-          <div className="mb-8">
-            <h1 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-              {title}
-            </h1>
-            {description && (
-              <p className="mt-4 text-base leading-7 text-gray-600 sm:text-lg sm:leading-8">
-                {description}
-              </p>
-            )}
-          </div>
-        )}
+    <>
+      {/* Header */}
+      <div className="relative isolate overflow-hidden bg-cruz-ink">
+        <div className="mx-auto max-w-5xl px-5 py-12 sm:px-6 sm:py-16 lg:px-8">
+          <p className="flex items-center gap-2.5 font-display text-[13px] font-bold uppercase tracking-[0.16em] text-cruz-yellow">
+            <span className="h-0.5 w-[18px] flex-none bg-cruz-yellow" aria-hidden="true" />
+            Project gallery
+          </p>
+          <h1 className="mt-3 text-balance font-display text-4xl font-extrabold uppercase leading-[0.94] text-white sm:text-5xl lg:text-6xl">
+            {title}
+          </h1>
+          {description && (
+            <p className="mt-5 max-w-2xl text-base leading-7 text-gray-200 sm:text-lg sm:leading-8">
+              {description}
+            </p>
+          )}
+        </div>
+        <div className="hazard-stripe" aria-hidden="true" />
+      </div>
 
-        <div className="relative">
-          <div className="embla overflow-hidden rounded-2xl shadow-lg" ref={emblaRef}>
-            <div className="embla__container flex">
-              {imageSrc?.map((image, index) => (
-                <div
-                  key={index}
-                  className="embla__slide relative aspect-video min-w-0 flex-[0_0_100%]"
-                >
-                  <Image
-                    src={image.src}
-                    alt={image.alt}
-                    fill
-                    sizes="(max-width: 896px) 100vw, 896px"
-                    className="object-cover"
-                    priority={index === 0}
-                    loading={index === 0 ? undefined : "lazy"}
-                    quality={78}
-                  />
+      {/* Carousel */}
+      <div className="bg-gray-50 py-10 sm:py-14">
+        <div className="mx-auto max-w-5xl px-5 sm:px-6 lg:px-8">
+          {imageSrc.length === 0 ? (
+            <p className="rounded-sm bg-white p-8 text-center text-gray-600 ring-1 ring-gray-200">
+              Photos for this gallery are on their way.
+            </p>
+          ) : (
+            <>
+              <div className="relative">
+                <div className="embla overflow-hidden rounded-sm ring-1 ring-gray-200" ref={emblaRef}>
+                  <div className="embla__container flex">
+                    {imageSrc.map((image, index) => (
+                      <div
+                        key={index}
+                        className="embla__slide relative aspect-video min-w-0 flex-[0_0_100%] bg-gray-200"
+                      >
+                        <Image
+                          src={image.src}
+                          alt={image.alt}
+                          fill
+                          sizes="(max-width: 1024px) 100vw, 896px"
+                          className="object-cover"
+                          priority={index === 0}
+                          loading={index === 0 ? undefined : 'lazy'}
+                          quality={78}
+                        />
+                      </div>
+                    ))}
+                  </div>
                 </div>
-              ))}
+
+                {imageSrc.length > 1 && (
+                  <>
+                    <button
+                      type="button"
+                      onClick={scrollPrev}
+                      className="absolute left-2 top-1/2 inline-flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-sm bg-cruz-ink/75 text-white backdrop-blur transition hover:bg-cruz-ink"
+                    >
+                      <span className="sr-only">Previous photo</span>
+                      <ChevronLeftIcon className="h-6 w-6" aria-hidden="true" />
+                    </button>
+                    <button
+                      type="button"
+                      onClick={scrollNext}
+                      className="absolute right-2 top-1/2 inline-flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-sm bg-cruz-ink/75 text-white backdrop-blur transition hover:bg-cruz-ink"
+                    >
+                      <span className="sr-only">Next photo</span>
+                      <ChevronRightIcon className="h-6 w-6" aria-hidden="true" />
+                    </button>
+                  </>
+                )}
+              </div>
+
+              <p
+                className="mt-3 text-center font-display text-sm uppercase tracking-widest text-gray-500 tabular-nums"
+                aria-live="polite"
+              >
+                {selected + 1} / {imageSrc.length}
+              </p>
+            </>
+          )}
+        </div>
+      </div>
+
+      {/* Conversion + internal linking. A gallery with only a "home" button is
+          a dead end for visitors and crawlers alike. */}
+      <div className="bg-white py-12 sm:py-16">
+        <div className="mx-auto max-w-5xl px-5 sm:px-6 lg:px-8">
+          <div className="rounded-sm border-l-4 border-cruz-yellow bg-gray-50 p-6 text-center ring-1 ring-gray-200 sm:p-10">
+            <h2 className="text-balance font-display text-3xl font-extrabold uppercase leading-tight text-gray-900 sm:text-4xl">
+              Need a licensed electrician for a job like this?
+            </h2>
+            <p className="mx-auto mt-4 max-w-xl text-base leading-7 text-gray-600">
+              Cruz Electric serves Storm Lake, Cherokee, Aurelia, Larrabee and all of Buena Vista
+              and Cherokee Counties. Free estimates on every job.
+            </p>
+            <div className="mt-7 flex flex-col gap-3 sm:flex-row sm:justify-center">
+              <Button href={SITE.phoneHref} variant="primary" size="lg">
+                <PhoneIcon className="h-5 w-5" aria-hidden="true" />
+                Call {SITE.phoneDisplay}
+              </Button>
+              <Button href={quoteMailto} variant="secondary" size="lg">
+                Request a quote
+              </Button>
             </div>
           </div>
 
-          {/* Arrows: 44px touch targets, and they sit inside the frame on
-              mobile so they never push the layout past the viewport edge. */}
-          <button
-            type="button"
-            onClick={scrollPrev}
-            className="absolute left-2 top-1/2 inline-flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full bg-white/80 text-gray-900 shadow-md backdrop-blur transition-colors hover:bg-white"
-          >
-            <span className="sr-only">Previous image</span>
-            <ChevronLeftIcon className="h-6 w-6" />
-          </button>
-          <button
-            type="button"
-            onClick={scrollNext}
-            className="absolute right-2 top-1/2 inline-flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full bg-white/80 text-gray-900 shadow-md backdrop-blur transition-colors hover:bg-white"
-          >
-            <span className="sr-only">Next image</span>
-            <ChevronRightIcon className="h-6 w-6" />
-          </button>
-        </div>
-
-        {/* Slide counter doubles as an accessible status for the autoplay. */}
-        <p className="mt-3 text-center text-sm text-gray-500" aria-live="polite">
-          {selected + 1} of {imageSrc?.length ?? 0}
-        </p>
-      </div>
-
-      {/* Conversion + internal linking. A gallery page with only a "Home"
-          button is a dead end for both users and crawlers. */}
-      <div className="mx-auto mt-10 max-w-4xl px-4 pb-16 sm:px-6 lg:px-8">
-        <div className="rounded-2xl bg-white p-6 text-center shadow-sm ring-1 ring-gray-200 sm:p-8">
-          <h2 className="text-xl font-bold text-gray-900 sm:text-2xl">
-            Need a licensed electrician for a project like this?
-          </h2>
-          <p className="mt-3 text-sm leading-6 text-gray-600">
-            Cruz Electric serves Storm Lake, Cherokee, Aurelia, Larrabee and all of Buena Vista
-            and Cherokee Counties. Free estimates on every job.
-          </p>
-          <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:justify-center">
-            <a
-              href={SITE.phoneHref}
-              className="rounded-md bg-cruz-red px-6 py-3 text-center text-sm font-semibold text-white shadow-sm transition-colors hover:bg-red-500"
+          <div className="mt-8 flex justify-center">
+            <Link
+              href="/gallary"
+              className="font-display text-base font-extrabold uppercase tracking-wide text-cruz-blue hover:text-cruz-dark-blue"
             >
-              Call {SITE.phoneDisplay}
-            </a>
-            <a
-              href={quoteMailto}
-              className="rounded-md bg-cruz-blue px-6 py-3 text-center text-sm font-semibold text-white shadow-sm transition-colors hover:bg-blue-600"
-            >
-              Request A Quote
-            </a>
+              &larr; All galleries
+            </Link>
           </div>
         </div>
-
-        <div className="mt-8 flex justify-center">
-          <Link
-            href="/gallary"
-            className="inline-flex items-center gap-2 rounded-full bg-cruz-dark-blue px-6 py-3 text-sm font-bold uppercase text-white shadow-lg transition-colors hover:bg-cruz-blue"
-          >
-            <HomeIcon className="h-5 w-5" />
-            All Galleries
-          </Link>
-        </div>
       </div>
-    </div>
-  );
-};
-
-export default PictureContainer;
+    </>
+  )
+}
