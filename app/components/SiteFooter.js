@@ -119,11 +119,25 @@ export default function SiteFooter() {
           </ul>
         </div>
 
-        <div className="mt-8 border-t border-white/10 pt-8">
+        <div className="mt-8 flex flex-col gap-3 border-t border-white/10 pt-8 sm:flex-row sm:items-center sm:justify-between">
           <p className="text-xs leading-5 text-gray-400">
             &copy; {new Date().getFullYear()} {SITE.name}. All rights reserved. Licensed &amp;
             Insured.
           </p>
+          {/*
+            Staff-only entry point. rel="nofollow" asks crawlers not to pass
+            authority here; the noindex in app/admin/layout.js is what keeps it
+            out of results, and the session check in each route handler is what
+            keeps people out. Obscurity was never the protection, so linking it
+            costs nothing and saves the owner hunting for the URL on a phone.
+          */}
+          <Link
+            href="/admin"
+            rel="nofollow"
+            className="text-xs leading-5 text-gray-500 underline-offset-2 transition-colors hover:text-gray-300 hover:underline"
+          >
+            Staff login
+          </Link>
         </div>
       </div>
     </footer>

@@ -1,14 +1,15 @@
 /**
  * The admin area must never be indexed.
  *
- * Three separate layers, because each covers a gap the others leave:
- *   - robots meta here stops indexing if a crawler reaches the page anyway
- *   - app/robots.js disallows /admin for crawlers that respect robots.txt
- *   - the sitemap simply never lists it
+ * This noindex is now the PRIMARY defence, not a backup. /admin is linked from
+ * the site footer, and app/robots.js deliberately does not disallow it —
+ * because robots.txt and noindex cannot both work on the same URL. A
+ * disallowed page is never fetched, so the crawler never sees a noindex and
+ * can still index the bare URL from a link's anchor text. Allowing the fetch
+ * is what lets this tag do its job.
  *
- * robots.txt alone is not enough: a disallowed URL can still be indexed if
- * something links to it, because the crawler is told not to *fetch* it and
- * therefore never sees a noindex. Both are needed.
+ * The sitemap also never lists it. None of this is access control: the
+ * session check in every route handler is.
  */
 export const metadata = {
   title: 'Photo manager | Cruz Electric',

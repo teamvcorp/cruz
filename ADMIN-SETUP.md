@@ -52,6 +52,23 @@ Deployments → ⋯ → **Redeploy**.
 If `/admin` says *"Admin is not configured on this deployment"*, this is the
 step you are missing.
 
+## Finding the page
+
+There is a discreet **Staff login** link in the site footer, or go straight to
+`/admin`.
+
+Linking it is safe — the protection is the password, never the URL being
+secret. One consequence is worth knowing: `robots.txt` deliberately does
+**not** block `/admin`.
+
+`robots.txt` and `noindex` cannot both work on the same URL. A blocked page is
+never fetched, so the crawler never sees the `noindex` meta tag — and can
+still index the bare URL from a link's anchor text. Allowing the fetch is
+precisely what keeps `/admin` out of search results.
+
+**Do not "harden" this by adding the disallow back.** It would have the exact
+opposite effect from the one intended.
+
 ## 5. Test it end to end
 
 1. `cruzelectric.com/admin` → login form appears
