@@ -3,7 +3,8 @@ import { NextResponse } from 'next/server'
 import {
   verifyPassword,
   createSessionToken,
-  isAdminConfigured,
+  missingAdminConfig,
+  adminHashLooksValid,
   rateLimit,
   clearRateLimit,
   SESSION_COOKIE,
@@ -25,9 +26,24 @@ export const dynamic = 'force-dynamic'
  * was right. (verifyPassword is run unconditionally below for that reason.)
  */
 export async function POST(request) {
-  if (!isAdminConfigured()) {
+  const missing = missingAdminConfig()
+  if (missing.length) {
     return NextResponse.json(
-      { error: 'Admin is not configured on this deployment.' },
+      { error: 'Admin is not configured on this deployment.', code: 'not_configured', missing },
+      { status: 503 }
+    )
+  }
+
+  // A hash mangled by $VARIABLE expansion in a .env file rejects every
+  // password forever and is otherwise indistinguishable from simply typing
+  // the wrong one. Detect the malformed shape and say so.
+  if (!adminHashLooksValid()) {
+    return NextResponse.json(
+      {
+        error:
+          'ADMIN_PASSWORD_HASH is malformed — it must look like scrypt:<32 hex>:<128 hex>. Re-run npm run admin:hash and paste the whole line.',
+        code: 'bad_hash',
+      },
       { status: 503 }
     )
   }

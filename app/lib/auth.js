@@ -110,13 +110,32 @@ export function verifySessionToken(token) {
   }
 }
 
+/**
+ * Names of any required variables that are unset.
+ *
+ * The names are safe to return to the client: if admin is unconfigured there
+ * is nothing to attack, and without this the owner has no way to tell a typo
+ * from a missing redeploy. Values are of course never exposed.
+ */
+export function missingAdminConfig() {
+  return ['ADMIN_USERNAME', 'ADMIN_PASSWORD_HASH', 'ADMIN_SESSION_SECRET'].filter(
+    (name) => !process.env[name]
+  )
+}
+
 /** True when every required secret is present — used to fail closed. */
 export function isAdminConfigured() {
-  return Boolean(
-    process.env.ADMIN_USERNAME &&
-      process.env.ADMIN_PASSWORD_HASH &&
-      process.env.ADMIN_SESSION_SECRET
-  )
+  return missingAdminConfig().length === 0
+}
+
+/**
+ * Catches a password hash mangled by $VARIABLE expansion in a .env file.
+ * A hash that lost its salt silently rejects every password forever, which is
+ * otherwise indistinguishable from simply typing the wrong one.
+ */
+export function adminHashLooksValid() {
+  const h = process.env.ADMIN_PASSWORD_HASH
+  return typeof h === 'string' && /^scrypt:[0-9a-f]{32}:[0-9a-f]{128}$/.test(h)
 }
 
 /**

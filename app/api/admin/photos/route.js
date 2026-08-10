@@ -1,7 +1,7 @@
 import { cookies } from 'next/headers'
 import { NextResponse } from 'next/server'
 import { revalidatePath, revalidateTag } from 'next/cache'
-import { getAdminUser, isAdminConfigured } from '@/app/lib/auth'
+import { getAdminUser, missingAdminConfig } from '@/app/lib/auth'
 import { getAllItems, updateItem, removeItem, CATEGORIES, GALLERY_TAG } from '@/app/lib/gallery-store'
 
 export const runtime = 'nodejs'
@@ -16,8 +16,14 @@ export const dynamic = 'force-dynamic'
  */
 
 async function requireAdmin() {
-  if (!isAdminConfigured()) {
-    return { error: NextResponse.json({ error: 'Admin is not configured.' }, { status: 503 }) }
+  const missing = missingAdminConfig()
+  if (missing.length) {
+    return {
+      error: NextResponse.json(
+        { error: 'Admin is not configured on this deployment.', code: 'not_configured', missing },
+        { status: 503 }
+      ),
+    }
   }
   const user = await getAdminUser(await cookies())
   if (!user) {

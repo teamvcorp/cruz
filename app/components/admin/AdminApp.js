@@ -50,6 +50,63 @@ function Banner({ kind, children }) {
 
 /* -------------------------------------------------------------------------- */
 
+/**
+ * Shown when the deployment is missing its admin environment variables.
+ * Names the exact variables that are unset — with nothing configured there is
+ * nothing to attack, and the alternative is the owner guessing.
+ */
+function NotConfigured({ detail, onRetry }) {
+  const missing = Array.isArray(detail?.missing) ? detail.missing : []
+  return (
+    <div className="mx-auto flex min-h-screen max-w-lg flex-col justify-center px-5 py-12">
+      <div className="rounded-sm border-l-4 border-cruz-yellow bg-white p-7 ring-1 ring-gray-200">
+        <h1 className="font-display text-3xl font-extrabold uppercase text-gray-900">
+          Not configured yet
+        </h1>
+        <p className="mt-3 text-sm leading-6 text-gray-700">
+          {detail?.error || 'Admin is not configured on this deployment.'}
+        </p>
+
+        {missing.length > 0 && (
+          <>
+            <p className="mt-5 text-sm font-semibold text-gray-900">
+              Missing environment variable{missing.length === 1 ? '' : 's'}:
+            </p>
+            <ul className="mt-2 flex flex-col gap-1">
+              {missing.map((name) => (
+                <li key={name} className="rounded-sm bg-gray-100 px-3 py-2 font-mono text-xs text-gray-800">
+                  {name}
+                </li>
+              ))}
+            </ul>
+          </>
+        )}
+
+        <div className="mt-6 rounded-sm bg-gray-50 p-4 text-sm leading-6 text-gray-700 ring-1 ring-gray-200">
+          <p className="font-semibold text-gray-900">Most likely cause</p>
+          <p className="mt-1">
+            Vercel applies environment variables at <strong>build</strong> time. If you added them
+            after the last deploy, they are not live yet — go to Deployments, then the ⋯ menu, then
+            Redeploy.
+          </p>
+          <p className="mt-2">
+            Also check the variables are scoped to <strong>Production</strong>. Full steps are in{' '}
+            <code className="rounded bg-gray-200 px-1">ADMIN-SETUP.md</code>.
+          </p>
+        </div>
+
+        <Button onClick={onRetry} variant="secondary" size="md" className="mt-6 w-full">
+          Check again
+        </Button>
+      </div>
+
+      <Link href="/" className="mt-6 text-center text-sm text-gray-500 hover:text-gray-900">
+        &larr; Back to the website
+      </Link>
+    </div>
+  )
+}
+
 function LoginForm({ onSignedIn }) {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
@@ -373,17 +430,38 @@ export default function AdminApp() {
   const [authed, setAuthed] = useState(null) // null = still checking
   const [items, setItems] = useState([])
   const [loading, setLoading] = useState(false)
+  const [configError, setConfigError] = useState(null)
 
+  /**
+   * Fail closed.
+   *
+   * This previously checked only for 401 and treated everything else as
+   * authenticated. When the server returned 503 (admin env vars unset) that
+   * fell through and rendered the manager UI to an unauthenticated visitor.
+   * No data or capability leaked -- every route rejects independently, so the
+   * list came back empty and writes were refused -- but it looked signed in,
+   * which is unacceptable on its own.
+   *
+   * Only an explicit 200 counts as signed in now. Anything else is not.
+   */
   const load = useCallback(async () => {
     setLoading(true)
     try {
       const res = await fetch('/api/admin/photos')
-      if (res.status === 401) {
+      const data = await res.json().catch(() => ({}))
+
+      if (res.status === 503) {
+        setConfigError(data)
         setAuthed(false)
         return
       }
-      const data = await res.json().catch(() => ({}))
-      setItems(data.items ?? [])
+      if (res.status !== 200) {
+        setAuthed(false)
+        return
+      }
+
+      setConfigError(null)
+      setItems(Array.isArray(data.items) ? data.items : [])
       setAuthed(true)
     } catch {
       setAuthed(false)
@@ -409,6 +487,10 @@ export default function AdminApp() {
       </div>
     )
   }
+
+  // Misconfiguration is not a login failure — showing a login form the owner
+  // can never get through would send them hunting for a wrong password.
+  if (configError) return <NotConfigured detail={configError} onRetry={load} />
 
   if (!authed) return <LoginForm onSignedIn={load} />
 

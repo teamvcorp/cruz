@@ -163,3 +163,152 @@ npm run build
 grep -c '<title>' .next/server/app/locations/storm-lake.html   # must be 1
 grep -o '<link rel="canonical"[^>]*>' .next/server/app/locations/storm-lake.html
 ```
+
+---
+
+# Phase 2 — Redesign, Next.js 16, admin upload (2026-08-09)
+
+Companion doc: `ADMIN-SETUP.md` for the operational runbook.
+
+## Design system
+
+Before this there was no system. The audit found the same red primary CTA
+written **six different ways**, three competing section padding scales, roughly
+ten card permutations, and seven distinct `h3` class strings.
+
+- `app/components/ui/{Button,Section,SectionHeading,Card,Stat}.js`
+- **Heading hierarchy was inverted** — eyebrows were marked up as `<h2>` while
+  the visually dominant title was a `<p>`. Roughly half the site's `<h2>`
+  elements were eyebrow text, so the document outline claimed pages were about
+  "FAQ" and "Service Areas". `SectionHeading` fixes this permanently.
+- Corners 16px → 2px. The logo is built from hard-outlined letterforms; soft
+  `rounded-2xl` fought it, which is much of why the mark read as a sticker on
+  someone else's template.
+- Display face: Barlow Condensed 700/800 via `next/font/google`, latin subset
+  only (~22 KB per weight). Lato stays for body.
+
+### Header colour — the exact value matters
+
+The nav is `#005CB9`, **sampled from the logo swoosh**, not matched by eye.
+`headerplain.png` is transparent except the artwork, and the blue swoosh bleeds
+to the image's top-left edge — so on white it rendered as a hard blue blob.
+`cruz-blue` was `#005CBB`, two units off, which is enough to leave a faint
+seam. Only an exact match makes the boundary disappear.
+
+Pink strip sits above the blue nav separated by a black rule. That is not
+decoration: saturated pink directly against saturated blue vibrates along the
+edge, and the logo already solves it the same way with black outlines.
+
+## Location pages — a doorway-page fix, not a refactor
+
+Six files collapsed into `app/locations/[slug]/page.js`. URLs unchanged, all
+six still prerender via `generateStaticParams`.
+
+The important part is **not** the deduplication. Those pages shared a
+byte-identical 12-item service array, "Why Choose Us" block and CTA with only
+the town name swapped — which is what Google calls a doorway page, a ranking
+liability rather than a tidiness problem. Componentising alone would have made
+the duplication neater without making it safer.
+
+`app/lib/locations.js` now carries genuinely different content per place: real
+local geography, actual housing stock, the industries driving electrical
+demand, and a service list ordered for that community.
+
+**`featuredWork` is a flagged placeholder on all six entries.** Real completed
+jobs are the strongest local content available, but they must come from the
+owner — inventing them would put false claims on a real business's site.
+
+## Next.js 16 upgrade
+
+`next 16.3.0` · `react 19.2.8` · `embla 8.6.0`. **`npm audit`: 5 vulnerabilities
+(1 critical, 4 high) → 0.**
+
+Four traps, all specific to this codebase:
+
+1. **`images.qualities` defaults to `[75]`** and silently coerces anything else.
+   The hero's `quality={70}` and the carousel's `quality={78}` would have been
+   rewritten. Pinned to `[70, 75, 78]`. Verified: the three qualities return
+   26,780 / 28,180 / 31,046 bytes — three distinct sizes, so not coerced — and
+   an unlisted `quality=60` returns 400, which also stops anyone hammering the
+   optimizer with arbitrary values.
+2. **Next no longer suppresses `scroll-behavior` during navigation.**
+   `globals.css` sets `scroll-behavior: smooth` for anchor links, so without
+   `data-scroll-behavior="smooth"` on `<html>` every route change would
+   smooth-scroll and feel sluggish.
+3. **Turbopack resolves file extensions case-sensitively.** `gen2.PNG` failed
+   the build outright with "Unknown module type" — the same file behind the
+   earlier "Fix case-sensitive import" commit. Renamed via `git mv`.
+4. `embla-carousel-react@8.0.0` peers excluded React 19; 8.6.0 adds it.
+
+Also removed the `/_next/static` `Cache-Control` override added in phase 1 —
+Next already serves fingerprinted output as immutable and warns that overriding
+it can break dev behaviour.
+
+## Admin photo upload
+
+Full runbook in `ADMIN-SETUP.md`. Architecture summary:
+
+Two hard blockers ruled out writing into `public/`: the gallery uses build-time
+static imports that a runtime file can never join, and Vercel's filesystem is
+read-only and ephemeral. So uploads go to Vercel Blob with a JSON manifest, and
+bundled images are never replaced — only appended to.
+
+Security ordering in `app/api/admin/upload/route.js` is deliberate: fail closed
+if unconfigured → authenticate **before** reading the body → size cap → **magic
+bytes**, not extension or `Content-Type` → re-encode through sharp →
+server-generated filename.
+
+The re-encode is the highest-value step: it normalises to a known-good JPEG,
+neutralises polyglot files, and **strips EXIF including GPS**. Job-site photos
+carry the coordinates of customers' homes and farms; publishing them raw would
+leak those addresses.
+
+### The `$` vs `:` bug
+
+The hash delimiter is `:`, not the conventional `$`. **Next.js expands
+`$VARIABLE` inside `.env` files**, so `scrypt$salt$hash` silently becomes
+`scrypt` and login fails forever with no diagnostic. Found during testing.
+Do not "fix" this back to `$`.
+
+### Verification
+
+18/18 security tests pass — unauthenticated upload/list/delete/patch all 401,
+forged session cookies rejected, identical error text for bad username vs bad
+password (no user enumeration), `Secure`/`HttpOnly`/`SameSite=strict` cookie,
+non-image renamed `.jpg` rejected on magic bytes, path-traversal category
+rejected, short alt text rejected, and robots/noindex/sitemap exclusion.
+
+EXIF stripping verified against a GPS-tagged image: 204-byte EXIF block before,
+none after.
+
+**Not verified:** the Vercel Blob round-trip. All testing used a dummy token,
+so `put`/`list`/`del` and the manifest write-then-read cycle have never run
+against real storage. Test with one photo before relying on it.
+
+## SEO
+
+- **Removed `aggregateRating`.** Google excludes pages where "the entity that's
+  being reviewed controls the reviews about itself" from the star feature —
+  which covers both self-published testimonials and embedded Google review
+  widgets. It could never render stars, and `aggregateRating` is the element
+  most associated with spammy-markup manual actions. Individual `Review`
+  objects stay: truthful, and useful to AI/LLM search.
+- `GoogleReviews` uses the **Places UI Kit**, not the Places API. Reviews sit
+  in the Enterprise + Atmosphere SKU at $40/1,000 calls with 1,000 free/month,
+  and Google's terms forbid caching Places content — making ISR a terms
+  violation and every render billable. The UI Kit is 10,000 free/month and
+  Google renders the mandatory attribution itself. Lazy-loaded on scroll;
+  renders nothing until a Place ID and key exist.
+- Live reviews are a **trust signal, not SEO** — client-rendered, not
+  indexable, and never eligible for stars. The curated testimonials remain the
+  indexable content. Do not delete one in favour of the other.
+
+## Still outstanding
+
+1. Six `featuredWork` placeholders in `app/lib/locations.js` (`pending: true`)
+2. Real crew names on `/gallary` — currently role-based labels with a TODO
+3. Place ID converted from CID `03545373047881462406`, and a Maps key
+   restricted by HTTP referrer to `cruzelectric.com/*` and to the Maps
+   JavaScript API only
+4. `/gallary/communications` still renders the commercial photo set
+5. `sameAs: []` in the business schema — add the Google Business Profile URL
